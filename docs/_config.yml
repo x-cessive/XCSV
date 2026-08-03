@@ -1,0 +1,18 @@
+title: XCSV
+description: A dedicated Arma 3 Exile server, and every piece of software that keeps it alive.
+baseurl: "/XCSV"
+url: "https://x-cessive.github.io"
+
+# No theme. Layouts in _layouts/ carry the whole design so the docs pages match
+# XCSV GUARD's own palette rather than a stock Jekyll theme.
+theme:
+
+# index.html has no front matter, so Jekyll copies it through byte-for-byte.
+exclude:
+  - build-docs.ps1
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter_opts:
+    disable: true

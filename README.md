@@ -29,7 +29,7 @@ If you are looking for something specific, start here.
 
 | repo | what it is | visibility |
 |---|---|---|
-| **[XCSV](https://github.com/x-cessive/XCSV)** *(you are here)* | Hub. System map, [documentation site](https://x-cessive.github.io/XCSV/), [wiki](https://github.com/x-cessive/XCSV/wiki), submodules. | public |
+| **[XCSV](https://github.com/x-cessive/XCSV)** *(you are here)* | Hub. System map, [site](https://x-cessive.github.io/XCSV/), [documentation](https://x-cessive.github.io/XCSV/wiki/Home.html), submodules. | public |
 | 🛡️ **[XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD)** | Operations console. Rust + egui. PBO integrity gate, BattlEye RCon, crash autopsy, live metrics, whole-stack start/stop. | private |
 | 🧩 **[XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS)** | Our own addons and mission scripts. Written from scratch — contains no Exile source. | private |
 | 📦 **[Exile](https://github.com/x-cessive/Exile)** | Catalogue of third-party addons and scripts, plus the custom PBO packer and BattlEye tooling. | public |
@@ -71,7 +71,7 @@ system rather than a finished product.
 | Engine binary | `arma3server.exe` — **32-bit, required** (see below) |
 | Database | MariaDB 10.11 via extDB2 v71 |
 | Anti-cheat | BattlEye + infiSTAR |
-| Headless client | connection unresolved — [see the wiki](https://github.com/x-cessive/XCSV/wiki) |
+| Headless client | connection unresolved — [see the docs](https://x-cessive.github.io/XCSV/wiki/Runbook.html) |
 
 ## ⚠️ Five things that are easy to get catastrophically wrong
 
@@ -100,9 +100,11 @@ GUARD so they cannot cost them twice.
 
 | I want to… | go to |
 |---|---|
-| Understand the architecture | [Wiki → Architecture](https://github.com/x-cessive/XCSV/wiki/Architecture) |
-| Diagnose a server that will not start | [Wiki → Runbook](https://github.com/x-cessive/XCSV/wiki/Runbook) |
-| See what is being built next | [Wiki → Roadmap](https://github.com/x-cessive/XCSV/wiki/Roadmap) |
+| Understand the architecture | [Docs → Architecture](https://x-cessive.github.io/XCSV/wiki/Architecture.html) |
+| Diagnose a server that will not start | [Docs → Runbook](https://x-cessive.github.io/XCSV/wiki/Runbook.html) |
+| Build an XM8 app | [Docs → XM8 Apps](https://x-cessive.github.io/XCSV/wiki/XM8-Apps.html) |
+| Avoid a mistake already paid for | [Docs → Lessons](https://x-cessive.github.io/XCSV/wiki/Lessons.html) |
+| See what is being built next | [Docs → Roadmap](https://x-cessive.github.io/XCSV/wiki/Roadmap.html) |
 | Read about the operations console | [XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD) |
 | Read about our own addons | [XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS) |
 | Find a third-party addon or script | [Exile](https://github.com/x-cessive/Exile) |
