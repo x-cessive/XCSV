@@ -20,12 +20,22 @@
 
 [CmdletBinding()]
 param(
-    [string] $Root = (Split-Path $PSScriptRoot -Parent),
+    [string] $Root,
     [switch] $Install,
     [switch] $Quiet
 )
 
 $ErrorActionPreference = 'Stop'
+
+# Resolve paths in the body, not in a param() default. Under the scheduled
+# task's `powershell.exe -File ...` invocation $PSScriptRoot came back empty,
+# so `Split-Path $PSScriptRoot -Parent` threw before the script had run a single
+# line - and the task reported failure every hour while a hand-run of the same
+# script worked perfectly.
+$ToolsDir = $PSScriptRoot
+if (-not $ToolsDir) { $ToolsDir = Split-Path -Parent $MyInvocation.MyCommand.Path }
+if (-not $ToolsDir) { $ToolsDir = 'D:\XCSV\tools' }
+if (-not $Root)     { $Root = Split-Path -Parent $ToolsDir }
 
 function Say($msg, $colour = 'Gray') {
     if (-not $Quiet) { Write-Host $msg -ForegroundColor $colour }
@@ -51,7 +61,7 @@ function Invoke-Git {
 # ---------------------------------------------------------------- install ----
 
 if ($Install) {
-    $script = Join-Path $PSScriptRoot 'sync-all.ps1'
+    $script = Join-Path $ToolsDir 'sync-all.ps1'
     $action = New-ScheduledTaskAction -Execute 'powershell.exe' `
         -Argument "-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$script`" -Quiet"
 
@@ -137,7 +147,7 @@ if (($before -join "`n") -ne ($after -join "`n")) {
 
 # ------------------------------------------------------------------ docs -----
 
-& (Join-Path $PSScriptRoot 'build-docs.ps1') -Root $Root | ForEach-Object { Say "  $_" 'DarkGray' }
+& (Join-Path $ToolsDir 'build-docs.ps1') -Root $Root | ForEach-Object { Say "  $_" 'DarkGray' }
 
 $pending = & git -C $Root status --porcelain 2>$null
 if ($pending) {
@@ -159,7 +169,7 @@ if ($pending) {
 # ------------------------------------------------------------------ wiki -----
 
 try {
-    & (Join-Path $PSScriptRoot 'push-wiki.ps1') -Root $Root | ForEach-Object { Say "  $_" 'DarkGray' }
+    & (Join-Path $ToolsDir 'push-wiki.ps1') -Root $Root | ForEach-Object { Say "  $_" 'DarkGray' }
 }
 catch {
     # A missing wiki is a known state, not a failure - it needs one manual click.
@@ -169,7 +179,7 @@ catch {
 
 # ---------------------------------------------------------------- status -----
 
-$statusPath = Join-Path $PSScriptRoot 'sync-status.json'
+$statusPath = Join-Path $ToolsDir 'sync-status.json'
 $json = $status | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($statusPath, $json, (New-Object System.Text.UTF8Encoding($false)))
 
