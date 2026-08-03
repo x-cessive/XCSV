@@ -122,6 +122,27 @@ cd XCSV
 git submodule update --remote --merge     # refresh pointers to each repo's tip
 ```
 
+## ✍️ Working on the documentation
+
+`wiki/` is the **single source of truth**, written in GitHub-wiki flavour so the
+same files serve both the site and the wiki. Everything else is generated.
+
+```powershell
+.\tools\build-docs.ps1     # wiki\*.md  ->  docs\wiki\*.md  (front matter, .html links)
+.\tools\push-wiki.ps1      # wiki\*.md  ->  the GitHub wiki
+```
+
+Never hand-edit `docs/wiki/` — it is overwritten. `build-docs.ps1` refuses to
+finish if a page would render as raw markdown, which is what a stray BOM ahead
+of the front matter causes, silently and with no error anywhere.
+
+> **The GitHub wiki needs one manual click to exist.** GitHub does not create
+> `XCSV.wiki.git` until the first page is saved in the web UI, and there is no
+> API for it. Open [the wiki](https://github.com/x-cessive/XCSV/wiki), click
+> *Create the first page*, save anything, then run `push-wiki.ps1` — it
+> overwrites the placeholder with all seven pages. Until then the same content
+> is live on [the site](https://x-cessive.github.io/XCSV/wiki/Home.html).
+
 ## 🔒 What is deliberately not here
 
 No RCon password, no Telegram bot token, no database credentials, no infiSTAR
