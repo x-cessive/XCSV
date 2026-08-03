@@ -1,0 +1,12 @@
+[submodule "guard"]
+	path = guard
+	url = https://github.com/x-cessive/XCSV_GUARD.git
+	branch = master
+[submodule "addons"]
+	path = addons
+	url = https://github.com/x-cessive/XCSV_ADDONS.git
+	branch = master
+[submodule "catalogue"]
+	path = catalogue
+	url = https://github.com/x-cessive/Exile.git
+	branch = master
