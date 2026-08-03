@@ -1,0 +1,84 @@
+name: Sync docs and wiki
+
+# Keeps the generated half of the repo in step with its source, so nobody has
+# to remember to run a script.
+#
+#   wiki/*.md          the single source of truth, hand-written
+#   docs/wiki/*.md     generated from it - regenerated here, committed back
+#   the GitHub wiki    mirrored from wiki/ - pushed here
+#
+# Runs on every push that touches the source, and once a day regardless so a
+# drifted state repairs itself even with no commits.
+#
+# Note: this workflow deliberately does NOT touch submodule pointers. The
+# runner's GITHUB_TOKEN is scoped to this repository only and cannot clone the
+# private members, so bumping them happens on the machine that has access -
+# see tools/sync-all.ps1 and the XCSV Sync scheduled task.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wiki/**'
+      - 'tools/build-docs.ps1'
+      - '.github/workflows/sync.yml'
+  schedule:
+    # 04:17 UTC. Off the hour, because everything runs on the hour.
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      # pwsh is preinstalled on the ubuntu runners, so the same generator runs
+      # here and locally. One implementation, not two that drift apart.
+      - name: Regenerate docs/wiki from wiki/
+        shell: pwsh
+        run: ./tools/build-docs.ps1
+
+      - name: Commit regenerated pages
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- docs/wiki; then
+            echo "docs/wiki already in step with wiki/"
+          else
+            git add docs/wiki
+            git commit -m "Regenerate docs/wiki from wiki/ [skip ci]"
+            git push
+            echo "regenerated pages pushed"
+          fi
+
+      - name: Mirror wiki/ to the GitHub wiki
+        run: |
+          set -e
+          if ! git clone --quiet \
+              "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git" wiki-repo; then
+            echo "::warning::wiki repository does not exist yet - create the first page in the web UI"
+            exit 0
+          fi
+          rm -f wiki-repo/*.md
+          cp wiki/*.md wiki-repo/
+          cd wiki-repo
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo "wiki already up to date"
+          else
+            git commit -m "Sync wiki from XCSV/wiki"
+            git push
+            echo "wiki updated"
+          fi

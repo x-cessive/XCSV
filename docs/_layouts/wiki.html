@@ -130,8 +130,11 @@ footer .bar{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;
 
 <footer>
   <div class="bar">
-    <div>XCSV EXILE · built in the open</div>
-    <div><a href="https://github.com/x-cessive/XCSV/blob/main/wiki/{{ page.source }}">Edit this page</a></div>
+    <div>XCSV EXILE · built {{ site.time | date: "%-d %B %Y" }}</div>
+    <div>
+      <a href="https://github.com/x-cessive/XCSV/wiki/{{ page.source | remove: '.md' }}">On the wiki</a> ·
+      <a href="https://github.com/x-cessive/XCSV/blob/main/wiki/{{ page.source }}">Edit this page</a>
+    </div>
   </div>
 </footer>
 

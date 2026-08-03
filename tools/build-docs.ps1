@@ -77,6 +77,24 @@ foreach ($name in $names) {
 
 Write-Host "build-docs: wrote $written pages to $dst"
 
+# Stamp the landing page's "last updated" date. index.html deliberately has no
+# front matter - Jekyll copies it through byte-for-byte - so this is a marker
+# replacement rather than a Liquid tag. Adding front matter to index.html would
+# put the whole hand-written page through the templating engine for one date.
+$index = Join-Path $Root 'docs\index.html'
+if (Test-Path $index) {
+    $html  = [System.IO.File]::ReadAllText($index)
+    $stamp = (Get-Date).ToUniversalTime().ToString('d MMMM yyyy', [cultureinfo]::InvariantCulture)
+    $new   = [regex]::Replace($html, '(?s)<!--STAMP-->.*?<!--/STAMP-->', "<!--STAMP-->$stamp<!--/STAMP-->")
+    if ($new -ne $html) {
+        [System.IO.File]::WriteAllText($index, $new, $utf8NoBom)
+        Write-Host "build-docs: stamped index.html - $stamp"
+    }
+    elseif ($html -notmatch '<!--STAMP-->') {
+        Write-Warning "build-docs: no <!--STAMP--> marker in index.html; date not updated"
+    }
+}
+
 # Cheap guard against the failure this script is most likely to have: a page
 # that renders as raw markdown because the front matter was not recognised.
 Get-ChildItem $dst -Filter *.md | ForEach-Object {
