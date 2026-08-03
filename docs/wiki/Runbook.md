@@ -16,6 +16,8 @@ Open **XCSV GUARD**. Its Overview tab runs the pre-flight checks below
 automatically, every poll. If it is already telling you what is wrong, believe it
 before you believe the RPT.
 
+![XCSV GUARD Overview](https://x-cessive.github.io/XCSV/assets/shots/overview.png)
+
 Then, from a shell:
 
 ```powershell

@@ -25,6 +25,12 @@ is the shop window; the [hub repo](https://github.com/x-cessive/XCSV) is the map
 | **[Roadmap](Roadmap.html)** | deciding what to work on next |
 | **[Lessons](Lessons.html)** | before repeating a mistake someone already paid for |
 
+## The console
+
+![XCSV GUARD](https://x-cessive.github.io/XCSV/assets/shots/tour.gif)
+
+More at [the project page](https://x-cessive.github.io/XCSV/guard/).
+
 ## The one-paragraph version
 
 `arma3server.exe` (**32-bit — this is not optional**) loads Exile 1.0.4a and the

@@ -138,29 +138,45 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
 <section id="shots">
   <div class="wrap">
     <h2><span class="num">03 — SCREENSHOTS</span>The console itself</h2>
-    <p class="sub">Captured from the live install supervising XCSV EXILE.</p>
+    <p class="sub">
+      Captured from the live install supervising XCSV EXILE. Nothing staged —
+      that is the real server, mid-session.
+    </p>
+
+    <figure class="shot" style="margin-bottom:26px">
+      <img src="{{ site.baseurl }}/assets/shots/tour.gif" alt="Touring the XCSV GUARD tabs" loading="lazy">
+      <figcaption>Overview → Integrity → Metrics → Players → RCon → infiSTAR.</figcaption>
+    </figure>
+
     <div class="shots">
       <figure class="shot">
-        <img src="{{ site.baseurl }}/assets/shots/overview.png" alt="XCSV GUARD Overview tab"
-             onerror="this.outerHTML='&lt;div class=\'shot-placeholder\'&gt;Overview — capture pending&lt;/div&gt;'">
-        <figcaption>Overview — process state, memory headroom and every pre-flight check.</figcaption>
+        <img src="{{ site.baseurl }}/assets/shots/overview.png" alt="XCSV GUARD Overview tab" loading="lazy">
+        <figcaption>Overview — process state, memory headroom, and every pre-flight
+        check with its reasoning spelled out rather than a bare tick.</figcaption>
       </figure>
       <figure class="shot">
-        <img src="{{ site.baseurl }}/assets/shots/integrity.png" alt="XCSV GUARD Integrity tab"
-             onerror="this.outerHTML='&lt;div class=\'shot-placeholder\'&gt;Integrity — capture pending&lt;/div&gt;'">
-        <figcaption>Integrity — every PBO's entry table, judged. The gate on server start.</figcaption>
+        <img src="{{ site.baseurl }}/assets/shots/integrity.png" alt="XCSV GUARD Integrity tab" loading="lazy">
+        <figcaption>Integrity — every PBO's entry table, judged. This is the gate
+        that blocks a server start, and the check that would have caught the
+        outage in one second.</figcaption>
       </figure>
       <figure class="shot">
-        <img src="{{ site.baseurl }}/assets/shots/metrics.png" alt="XCSV GUARD Metrics tab"
-             onerror="this.outerHTML='&lt;div class=\'shot-placeholder\'&gt;Metrics — capture pending&lt;/div&gt;'">
-        <figcaption>Metrics — server FPS, players and memory as live sparklines.</figcaption>
+        <img src="{{ site.baseurl }}/assets/shots/metrics.png" alt="XCSV GUARD Metrics tab" loading="lazy">
+        <figcaption>Metrics — server FPS, FPS floor, players, world objects, memory,
+        CPU and SQF threads over 240 samples.</figcaption>
       </figure>
       <figure class="shot">
-        <img src="{{ site.baseurl }}/assets/shots/stack.gif" alt="Starting the whole stack from XCSV GUARD"
-             onerror="this.outerHTML='&lt;div class=\'shot-placeholder\'&gt;Stack start — capture pending&lt;/div&gt;'">
-        <figcaption>One button: database, integrity gate, server, headless client, model.</figcaption>
+        <img src="{{ site.baseurl }}/assets/shots/ai.png" alt="XCSV GUARD AI tab" loading="lazy">
+        <figcaption>AI — the boundary stated in the product, not just the docs:
+        it reads and summarises, it cannot act, and its input is
+        attacker-controlled.</figcaption>
       </figure>
     </div>
+
+    <figure class="shot" style="margin-top:6px">
+      <img src="{{ site.baseurl }}/assets/shots/integrity.gif" alt="Re-scanning every addon PBO" loading="lazy">
+      <figcaption>A full re-scan of 23 addon PBOs, then the results.</figcaption>
+    </figure>
   </div>
 </section>
 
