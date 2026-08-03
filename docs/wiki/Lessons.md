@@ -70,6 +70,17 @@ before declaring a rotation done.
 
 ## Debugging discipline
 
+**A log that stopped writing is not a process that stopped working.** The
+headless client was recorded for days as "loads the world and then never joins",
+because its RPT goes quiet the moment loading finishes. It had been connecting
+the whole time — the client's own console window said `Player headlessclient
+connected` in plain text. Nobody had looked at the window. When a process is
+alive and its log is silent, check the process, not the log.
+
+**Volume of errors is not severity.** Every HC join floods the server RPT with
+hundreds of `BEServer::finishDestroyPlayer(<id>): users.get failed`. It is
+noise, and it pulled attention away from the real question for a long time.
+
 **Seven failed hypotheses on the headless client** — BattlEye, SteamCMD binary,
 loopback vs LAN, missing slot, server busy, `@A3XAI_HC`, startup race — produced
 nothing. A packet capture produced the only hard fact in the whole investigation:
