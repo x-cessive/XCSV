@@ -31,6 +31,23 @@ function Say($msg, $colour = 'Gray') {
     if (-not $Quiet) { Write-Host $msg -ForegroundColor $colour }
 }
 
+# git writes progress and CRLF notices to stderr, and under
+# $ErrorActionPreference = 'Stop' PowerShell 5.1 turns any native stderr write
+# into a terminating error. Capture output, judge on the exit code.
+# Deliberately a simple function with no param() block. An advanced function
+# tries to bind leading-dash tokens to its own parameters, so `Invoke-Git -C
+# <path> add -A` failed with "missing an argument for parameter 'Args'" - the
+# trailing -A prefix-matched the parameter name. With no param() block every
+# token lands in $args untouched.
+function Invoke-Git {
+    $rest = $args
+    $old = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try   { $script:GitOut = (& git @rest 2>&1 | Out-String) }
+    finally { $ErrorActionPreference = $old }
+    return $LASTEXITCODE
+}
+
 # ---------------------------------------------------------------- install ----
 
 if ($Install) {
@@ -85,9 +102,9 @@ foreach ($m in $members) {
         continue
     }
 
-    & git -C $m.Path fetch --quiet origin 2>$null
+    [void](Invoke-Git -C $m.Path fetch --quiet origin)
 
-    $dirty = & git -C $m.Path status --porcelain
+    $dirty = & git -C $m.Path status --porcelain 2>$null
     if ($dirty) {
         $r.dirty = $true
         $n = @($dirty).Count
@@ -95,7 +112,7 @@ foreach ($m in $members) {
         Say "  $($m.Name): $n uncommitted file(s) - not touched" 'Yellow'
     }
 
-    $branch = (& git -C $m.Path rev-parse --abbrev-ref HEAD).Trim()
+    $branch = (& git -C $m.Path rev-parse --abbrev-ref HEAD 2>$null).Trim()
     $ahead  = (& git -C $m.Path rev-list --count "origin/$branch..$branch" 2>$null)
     if ($ahead -and [int]$ahead -gt 0) {
         $r.ahead = [int]$ahead
@@ -110,9 +127,9 @@ foreach ($m in $members) {
 # ------------------------------------------------------------- submodules ----
 
 Say "--- hub ---" 'Cyan'
-$before = & git -C $Root submodule status
-& git -C $Root submodule update --remote --merge --quiet 2>$null
-$after = & git -C $Root submodule status
+$before = & git -C $Root submodule status 2>$null
+[void](Invoke-Git -C $Root submodule update --remote --merge --quiet)
+$after = & git -C $Root submodule status 2>$null
 if (($before -join "`n") -ne ($after -join "`n")) {
     Say "  submodule pointers moved" 'Green'
     $status.changed = $true
@@ -122,13 +139,12 @@ if (($before -join "`n") -ne ($after -join "`n")) {
 
 & (Join-Path $PSScriptRoot 'build-docs.ps1') -Root $Root | ForEach-Object { Say "  $_" 'DarkGray' }
 
-$pending = & git -C $Root status --porcelain
+$pending = & git -C $Root status --porcelain 2>$null
 if ($pending) {
-    & git -C $Root add -A
-    & git -C $Root -c user.name='x-cessive' -c user.email='graygryphonooi@gmail.com' `
-        commit --quiet -m "Sync: submodule pointers and generated docs ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))"
-    & git -C $Root push --quiet origin main
-    if ($LASTEXITCODE -ne 0) {
+    [void](Invoke-Git -C $Root add -A)
+    [void](Invoke-Git -C $Root -c user.name='x-cessive' -c user.email='graygryphonooi@gmail.com' `
+        commit --quiet -m "Sync: submodule pointers and generated docs ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))")
+    if ((Invoke-Git -C $Root push --quiet origin main) -ne 0) {
         $status.ok = $false
         $status.notes += 'hub push failed'
         Say "  hub push FAILED" 'Red'
