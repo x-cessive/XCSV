@@ -1,0 +1,13 @@
+<header class="top">
+  <div class="bar">
+    <a class="logo" href="{{ site.baseurl }}/">XC<span>SV</span></a>
+    <nav>
+      <a class="keep{% if page.section == 'home' %} on{% endif %}" href="{{ site.baseurl }}/">Overview</a>
+      <a class="{% if page.section == 'guard' %}on{% endif %}"     href="{{ site.baseurl }}/guard/">GUARD</a>
+      <a class="{% if page.section == 'addons' %}on{% endif %}"    href="{{ site.baseurl }}/addons/">Addons</a>
+      <a class="{% if page.section == 'catalogue' %}on{% endif %}" href="{{ site.baseurl }}/catalogue/">Catalogue</a>
+      <a class="keep{% if page.section == 'docs' %} on{% endif %}" href="{{ site.baseurl }}/wiki/Home.html">Docs</a>
+      <a href="https://github.com/x-cessive/XCSV">GitHub</a>
+    </nav>
+  </div>
+</header>

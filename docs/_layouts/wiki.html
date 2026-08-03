@@ -1,108 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page.title }} — XCSV</title>
-<meta name="description" content="{{ page.blurb | default: site.description }}">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230E1014'/><text x='16' y='23' font-size='18' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%233D9CFF'>X</text></svg>">
-<style>
-:root{
-  --bg:#0E1014; --panel:#13161B; --card:#1A1E25; --line:#2A303A;
-  --text:#E2E7EE; --dim:#7E8896; --accent:#3D9CFF; --brand:#E23B3B;
-  --good:#3FC16A; --warn:#E8B339; --bad:#E05050;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
-  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-
-header{position:sticky;top:0;z-index:20;background:rgba(14,16,20,.85);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-header .bar{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;
-  align-items:center;gap:24px;height:58px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:.16em;font-size:17px;color:var(--text)}
-.logo span{color:var(--accent)}
-header nav{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
-header nav a{color:var(--dim);font-size:14px}
-header nav a:hover{color:var(--text);text-decoration:none}
-
-.shell{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;
-  grid-template-columns:224px minmax(0,1fr);gap:44px;align-items:start}
-
-aside{position:sticky;top:78px;padding:34px 0 40px}
-aside h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--dim);margin:0 0 10px}
-aside ul{list-style:none;padding:0;margin:0 0 26px}
-aside li{margin:0 0 2px}
-aside li a{display:block;padding:5px 10px;border-radius:6px;font-size:14.5px;color:var(--dim)}
-aside li a:hover{background:var(--card);color:var(--text);text-decoration:none}
-aside li a.on{background:var(--card);color:var(--text);
-  box-shadow:inset 2px 0 0 var(--accent)}
-
-main{padding:34px 0 80px;min-width:0}
-.crumb{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-main h1{font-size:clamp(30px,4.6vw,42px);margin:0 0 26px;letter-spacing:-.02em;line-height:1.15}
-main h2{font-size:24px;margin:44px 0 12px;padding-top:22px;border-top:1px solid var(--line);letter-spacing:-.01em}
-main h3{font-size:18px;margin:30px 0 8px;color:var(--text)}
-main h4{font-size:15.5px;margin:22px 0 6px;color:var(--dim)}
-main p{margin:0 0 16px}
-main ul,main ol{padding-left:22px;margin:0 0 16px}
-main li{margin:0 0 7px}
-main hr{border:0;border-top:1px solid var(--line);margin:34px 0}
-main strong{color:#fff}
-main em{color:var(--dim)}
-
-code{font-family:var(--mono);font-size:13px;background:var(--card);
-  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:#b9c6d6}
-pre{background:#0A0C0F;border:1px solid var(--line);border-radius:10px;
-  padding:18px;overflow-x:auto;margin:0 0 20px}
-pre code{background:none;border:0;padding:0;font-size:12.8px;line-height:1.55;color:var(--dim)}
-
-blockquote{margin:0 0 20px;padding:14px 18px;background:var(--panel);
-  border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 10px 10px 0}
-blockquote p:last-child{margin:0}
-
-.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 22px}
-table{border-collapse:collapse;width:100%;min-width:480px;font-size:14.5px}
-th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--line);vertical-align:top}
-th{background:var(--card);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--dim);font-weight:600;white-space:nowrap}
-tr:last-child td{border-bottom:0}
-
-footer{border-top:1px solid var(--line);padding:26px 0 60px;color:#5f6a78;font-size:13.5px}
-footer .bar{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;
-  flex-wrap:wrap;gap:14px;justify-content:space-between}
-
-@media (max-width:860px){
-  .shell{grid-template-columns:1fr;gap:0}
-  aside{position:static;padding:22px 0 0;border-bottom:1px solid var(--line)}
-  aside ul{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px}
-  aside li a.on{box-shadow:inset 0 -2px 0 var(--accent)}
-  header nav a:not(.keep){display:none}
-}
-</style>
-</head>
-<body>
-
-<header>
-  <div class="bar">
-    <a class="logo" href="{{ site.baseurl }}/">XC<span>SV</span></a>
-    <nav>
-      <a class="keep" href="{{ site.baseurl }}/">Home</a>
-      <a href="https://github.com/x-cessive/XCSV">Hub</a>
-      <a href="https://github.com/x-cessive/XCSV_GUARD">GUARD</a>
-      <a href="https://github.com/x-cessive/XCSV_ADDONS">Addons</a>
-      <a href="https://github.com/x-cessive/Exile">Catalogue</a>
-    </nav>
-  </div>
-</header>
-
+---
+layout: base
+---
 <div class="shell">
   <aside>
     <h4>Documentation</h4>
@@ -114,29 +12,23 @@ footer .bar{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;
     </ul>
     <h4>Repositories</h4>
     <ul>
-      <li><a href="https://github.com/x-cessive/XCSV">XCSV · hub</a></li>
-      <li><a href="https://github.com/x-cessive/XCSV_GUARD">XCSV_GUARD</a></li>
-      <li><a href="https://github.com/x-cessive/XCSV_ADDONS">XCSV_ADDONS</a></li>
-      <li><a href="https://github.com/x-cessive/Exile">Exile</a></li>
+      <li><a href="{{ site.baseurl }}/guard/">XCSV GUARD</a></li>
+      <li><a href="{{ site.baseurl }}/addons/">XCSV ADDONS</a></li>
+      <li><a href="{{ site.baseurl }}/catalogue/">Exile catalogue</a></li>
+    </ul>
+    <h4>Source</h4>
+    <ul>
+      <li><a href="https://github.com/x-cessive/XCSV/wiki/{{ page.source | remove: '.md' }}">On the wiki</a></li>
+      <li><a href="https://github.com/x-cessive/XCSV/blob/main/wiki/{{ page.source }}">Edit this page</a></li>
     </ul>
   </aside>
 
-  <main>
+  <main class="doc">
     <div class="crumb">Documentation</div>
     <h1>{{ page.title }}</h1>
     {{ content }}
   </main>
 </div>
-
-<footer>
-  <div class="bar">
-    <div>XCSV EXILE · built {{ site.time | date: "%-d %B %Y" }}</div>
-    <div>
-      <a href="https://github.com/x-cessive/XCSV/wiki/{{ page.source | remove: '.md' }}">On the wiki</a> ·
-      <a href="https://github.com/x-cessive/XCSV/blob/main/wiki/{{ page.source }}">Edit this page</a>
-    </div>
-  </div>
-</footer>
 
 <script>
 // Tables come out of kramdown bare; wrap them so wide ones scroll inside the
@@ -149,5 +41,3 @@ document.querySelectorAll('main table').forEach(function (t) {
   w.appendChild(t);
 });
 </script>
-</body>
-</html>

@@ -1,0 +1,47 @@
+<section>
+  <div class="wrap">
+    <h2><span class="num">ELSEWHERE IN THE SYSTEM</span>The other three</h2>
+    <p class="sub">Four repositories, one system. Nothing here stands alone.</p>
+    <div class="siblings">
+
+      {% unless page.section == 'home' %}
+      <a class="sibling" href="{{ site.baseurl }}/">
+        <span class="k">Overview</span>
+        <span class="n">XCSV</span>
+        <span class="d">The hub — how everything fits together.</span>
+      </a>
+      {% endunless %}
+
+      {% unless page.section == 'guard' %}
+      <a class="sibling" href="{{ site.baseurl }}/guard/">
+        <span class="k">Operations console</span>
+        <span class="n">XCSV GUARD</span>
+        <span class="d">Rust + egui. Integrity gate, RCon, crash autopsy.</span>
+      </a>
+      {% endunless %}
+
+      {% unless page.section == 'addons' %}
+      <a class="sibling" href="{{ site.baseurl }}/addons/">
+        <span class="k">Our own content</span>
+        <span class="n">XCSV ADDONS</span>
+        <span class="d">Faction radio, speaking traders, XM8 apps.</span>
+      </a>
+      {% endunless %}
+
+      {% unless page.section == 'catalogue' %}
+      <a class="sibling" href="{{ site.baseurl }}/catalogue/">
+        <span class="k">Third-party</span>
+        <span class="n">Exile catalogue</span>
+        <span class="d">51 addons, 29 scripts, and the PBO tooling.</span>
+      </a>
+      {% endunless %}
+
+      <a class="sibling" href="{{ site.baseurl }}/wiki/Home.html">
+        <span class="k">Documentation</span>
+        <span class="n">Runbook &amp; architecture</span>
+        <span class="d">How it works, and how to fix it at 2am.</span>
+      </a>
+
+    </div>
+  </div>
+</section>

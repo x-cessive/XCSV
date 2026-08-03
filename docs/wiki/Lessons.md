@@ -1,6 +1,8 @@
 ---
 layout: wiki
+section: docs
 title: Lessons
+heading: Lessons
 blurb: Mistakes actually made here, and the rule each one produced.
 order: 7
 source: Lessons.md

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% include head.html %}
+</head>
+<body class="{% if page.section %}s-{{ page.section }}{% endif %}">
+
+{% include nav.html %}
+
+{{ content }}
+
+{% include foot.html %}
+
+</body>
+</html>

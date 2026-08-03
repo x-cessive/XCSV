@@ -1,0 +1,167 @@
+---
+layout: base
+section: addons
+heading: XCSV ADDONS
+blurb: Our own Arma 3 Exile addons and mission scripts — faction radio, speaking traders, a lore briefing, admin tools and XM8 apps. Written from scratch, no Exile source.
+---
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">SQF · CfgExileCustomCode · CfgXM8</p>
+    <h1>XCSV ADDONS</h1>
+    <p class="lede">
+      Our own content for XCSV EXILE. Written from scratch and kept deliberately
+      separate from the third-party catalogue and from Exile itself — because the
+      licence makes that separation load-bearing, not cosmetic.
+    </p>
+    <div class="badges">
+      <span class="badge">Language <b>SQF</b></span>
+      <span class="badge">Exile source <b>none included</b></span>
+      <span class="badge">Traders speaking <b>16 types</b></span>
+      <span class="badge">XM8 apps <b>1 shipped · 20 planned</b></span>
+      <span class="badge">Repo <b>private</b></span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/x-cessive/XCSV_ADDONS">Repository</a>
+      <a class="btn" href="{{ site.baseurl }}/wiki/XM8-Apps.html">XM8 app catalogue</a>
+      <a class="btn" href="{{ site.baseurl }}/wiki/Architecture.html">Architecture</a>
+    </div>
+  </div>
+</div>
+
+<section id="licence">
+  <div class="wrap">
+    <h2><span class="num">01 — LICENSING</span>Why this is clean</h2>
+    <p class="sub">
+      Exile Mod is <strong>CC BY-NC-ND 4.0</strong>. That forbids distributing modified
+      Exile. It does <em>not</em> forbid writing independent addons that <em>call</em>
+      Exile, which is what everything here is.
+    </p>
+    <p class="sub">
+      The rule, and it is not negotiable: <strong>never paste Exile source into this
+      repository.</strong> Where Exile's behaviour needs changing, the function is
+      overridden through <code>CfgExileCustomCode</code> — Exile's own PBOs ship
+      unmodified and our replacement is our copyright. The whole third-party
+      ecosystem has worked this way for a decade.
+    </p>
+    <blockquote style="margin:0;padding:16px 20px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 10px 10px 0;color:var(--dim)">
+      <code>CfgExileCustomCode</code> allows exactly <strong>one</strong> registration per
+      function. If two addons want the same one, they must be merged by hand. A lost
+      merge is why <code>Exile_Scavenge</code> was silently dead on this server for
+      weeks — three addons wanted
+      <code>ExileClient_object_player_initialize</code>, two made it into the merge and
+      Scavenge did not.
+    </blockquote>
+  </div>
+</section>
+
+<section id="content">
+  <div class="wrap">
+    <h2><span class="num">02 — WHAT IS HERE</span>Shipped content</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>📻 xcsv_chatter<span class="tag">server</span></h3>
+        <p>In-world faction radio. Three voices — <b>WARDEN CONTROL</b>, <b>THE YARD</b>,
+        <b>SALVAGE NET</b> — on a weighted rotation that never repeats a channel twice
+        in a row. Rides <code>ExileServer_system_thread_addTask</code>, never its own
+        loop.</p>
+        <div class="stack">packs to @ExileServer\addons\xcsv_chatter.pbo</div>
+      </div>
+
+      <div class="card">
+        <h3>🗣️ fn_traderVoice<span class="tag">mission</span></h3>
+        <p>All 16 trader types speak when a player comes within 12 m. Four-second
+        proximity check, 240-second per-trader cooldown so a safezone does not become
+        a wall of noise.</p>
+        <div class="stack">client-side · costs the player's frame, not the server's</div>
+      </div>
+
+      <div class="card">
+        <h3>📖 fn_welcome<span class="tag">mission</span></h3>
+        <p>The lore briefing, once per profile, framed as a message waiting on the
+        XM8. Version-gated through <code>profileNamespace</code> so a rewrite can
+        re-reach players who already saw it.</p>
+        <div class="stack">static text · no runtime generation</div>
+      </div>
+
+      <div class="card">
+        <h3>🗺️ fn_census<span class="tag">admin</span></h3>
+        <p>World-object census on demand. Buckets and maps every simulated object with
+        <code>createMarkerLocal</code>, so the markers exist on the admin's machine
+        only. Written after an object-count runaway took hours to identify.</p>
+        <div class="stack">markers are not objects — no BattlEye exception needed</div>
+      </div>
+
+      <div class="card">
+        <h3>📍 fn_adminTeleport<span class="tag">admin</span></h3>
+        <p>XM8 App14. Shift-click the map (45-second arming window), teleport to a
+        player, or to a named place. Moves <code>vehicle player</code>, not the player —
+        teleporting someone out of a moving vehicle leaves it driverless at speed.</p>
+        <div class="stack">trips setpos · exception must be written by hand</div>
+      </div>
+
+      <div class="card">
+        <h3>⏭️ Next<span class="tag">planned</span></h3>
+        <p>Territory browser with a <b>days until decay</b> column — the single most
+        common support ticket — then a real scoreboard, which establishes the
+        <code>Rsc</code> slide pattern for every app after it.</p>
+        <div class="stack">20 apps catalogued in the docs</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <h2><span class="num">03 — HOUSE RULES</span>Four constraints on anything added</h2>
+    <ul class="feat">
+      <li><b>Static text only.</b><span>No runtime generation and no model call. If a
+        language model helps write lines, that happens offline, a human reads the
+        output, and the survivors are pasted in as literals. Players must have no path
+        to influence what the world says — enforced by there being nothing running to
+        influence.</span></li>
+      <li><b>Create no objects unless there is no alternative.</b><span>BattlEye fights
+        <code>createVehicle</code> / <code>deleteVehicle</code> / <code>setPos</code>, and
+        auto-whitelisting those filters is how a cheat vector gets opened. Text- and
+        UI-only addons need no exception at all.</span></li>
+      <li><b>Never <code>while {true} do {sleep n}</code> on the server.</b><span>Arma
+        shares roughly 3 ms per frame across every scheduled script, so a private loop
+        does not get its own thread — it takes a slice from everything else. Use
+        <code>ExileServer_system_thread_addTask</code>. Client-side loops are fine.</span></li>
+      <li><b>Verify entry paths after packing.</b><span>A checksum verify passes on a
+        PBO whose internal paths are corrupt. No entry may begin with <code>\</code> or
+        <code>/</code>. This is not theoretical — it took the server down for six
+        hours.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="setting">
+  <div class="wrap">
+    <h2><span class="num">04 — SETTING</span>2039</h2>
+    <p class="sub">
+      A resource war over Greece emptied the treasuries; the deflation that followed
+      emptied everything else. NATO's Security Council exiled the overflow to this
+      island and then largely forgot it. A private contractor holds the paperwork,
+      runs the safe zones and takes a cut of the trade.
+    </p>
+    <p class="sub">
+      Corroborated by the mission's own <code>mission.sqm</code>, which sets
+      <code>year = 2039</code>.
+    </p>
+    <p class="sub">
+      <strong>Not canon:</strong> the "four gangs" framing (Cartel / Mafia / Syndicate /
+      Yakuza) that circulates online appears to come from <em>ExileLifeMod</em>, a fork.
+      It is not written into anything here as though it were the original.
+    </p>
+    <p class="sub">
+      Tone is dry and bleak, not heroic and not fantasy. Poptabs are prison scrip,
+      respect is standing among inmates, territory tax is protection money, and a
+      Bambi is a new arrival who has not learned yet.
+    </p>
+  </div>
+</section>
+
+{% include siblings.html %}

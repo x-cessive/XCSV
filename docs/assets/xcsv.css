@@ -1,0 +1,248 @@
+/* ---------------------------------------------------------------------------
+   XCSV — one stylesheet for every page on the site.
+
+   The palette is XCSV GUARD's own (src/theme.rs), so the site and the console
+   look like the same product. Change a colour here and every page follows.
+--------------------------------------------------------------------------- */
+
+:root{
+  --bg:#0E1014; --panel:#13161B; --card:#1A1E25; --line:#2A303A;
+  --text:#E2E7EE; --dim:#7E8896; --accent:#3D9CFF; --brand:#E23B3B;
+  --good:#3FC16A; --warn:#E8B339; --bad:#E05050;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+/* Each section re-tints the accent so you always know which repo you are in,
+   without four separate stylesheets. */
+body.s-guard     { --accent:#3D9CFF; }
+body.s-addons    { --accent:#ffb400; }
+body.s-catalogue { --accent:#3FC16A; }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ---------- top bar ---------- */
+header.top{
+  position:sticky;top:0;z-index:20;
+  background:rgba(14,16,20,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+header.top .bar{max-width:1180px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:22px;height:58px}
+.logo{font-family:var(--mono);font-weight:700;letter-spacing:.16em;font-size:17px;color:var(--text)}
+.logo:hover{text-decoration:none}
+.logo span{color:var(--accent)}
+header.top nav{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+header.top nav a{color:var(--dim);font-size:14px;position:relative}
+header.top nav a:hover{color:var(--text);text-decoration:none}
+header.top nav a.on{color:var(--text)}
+header.top nav a.on::after{
+  content:"";position:absolute;left:0;right:0;bottom:-19px;height:2px;background:var(--accent);
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(900px 380px at 12% -10%, rgba(61,156,255,.16), transparent 70%),
+    radial-gradient(700px 320px at 92% 0%, rgba(226,59,59,.10), transparent 70%);
+  pointer-events:none;
+}
+body.s-guard     .hero::before{background:radial-gradient(900px 380px at 12% -10%, rgba(61,156,255,.20), transparent 70%),radial-gradient(700px 320px at 92% 0%, rgba(226,59,59,.10), transparent 70%)}
+body.s-addons    .hero::before{background:radial-gradient(900px 380px at 12% -10%, rgba(255,180,0,.16), transparent 70%),radial-gradient(700px 320px at 92% 0%, rgba(61,156,255,.10), transparent 70%)}
+body.s-catalogue .hero::before{background:radial-gradient(900px 380px at 12% -10%, rgba(63,193,106,.16), transparent 70%),radial-gradient(700px 320px at 92% 0%, rgba(61,156,255,.10), transparent 70%)}
+
+.hero .wrap{position:relative;padding:74px 24px 62px}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 18px;
+}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.08;margin:0 0 18px;letter-spacing:-.02em}
+.lede{font-size:clamp(17px,2.2vw,20px);color:var(--dim);max-width:62ch;margin:0 0 30px}
+
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+.badge{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  border:1px solid var(--line);background:var(--card);
+  padding:5px 11px;border-radius:999px;color:var(--dim);
+}
+.badge b{color:var(--text);font-weight:600}
+.badge.live{border-color:rgba(232,179,57,.45)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:7px;
+  box-shadow:0 0 0 0 rgba(232,179,57,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(232,179,57,.55)}
+  70%{box-shadow:0 0 0 8px rgba(232,179,57,0)}
+  100%{box-shadow:0 0 0 0 rgba(232,179,57,0)}
+}
+
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  display:inline-block;padding:11px 20px;border-radius:8px;font-size:14.5px;font-weight:600;
+  border:1px solid var(--line);background:var(--card);color:var(--text);transition:.15s;
+}
+.btn:hover{border-color:var(--accent);text-decoration:none;transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#08111c}
+.btn.primary:hover{filter:brightness(1.1)}
+
+/* ---------- sections ---------- */
+section{padding:66px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h2{font-size:clamp(24px,3.4vw,32px);margin:0 0 10px;letter-spacing:-.01em}
+h2 .num{font-family:var(--mono);font-size:13px;color:var(--accent);display:block;
+  letter-spacing:.2em;margin-bottom:8px;font-weight:400}
+.sub{color:var(--dim);max-width:70ch;margin:0 0 32px}
+
+/* ---------- cards ---------- */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;
+  transition:.16s;position:relative;overflow:hidden;
+}
+.card::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;
+  background:linear-gradient(90deg,var(--accent),transparent);opacity:0;transition:.16s}
+.card:hover{border-color:#3a4453;transform:translateY(-2px)}
+.card:hover::after{opacity:1}
+.card h3{margin:0 0 4px;font-size:18px;font-family:var(--mono);letter-spacing:.02em}
+.card h3 a{color:var(--text)}
+.card .tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:2px 7px;margin-left:8px;
+  vertical-align:middle;
+}
+.card .tag.pub{color:var(--good);border-color:rgba(63,193,106,.35)}
+.card p{margin:12px 0 0;color:var(--dim);font-size:14.5px}
+.card .stack{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:#5f6a78}
+
+/* ---------- code / diagram ---------- */
+pre.diagram, pre{
+  background:#0A0C0F;border:1px solid var(--line);border-radius:10px;
+  padding:20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;
+  line-height:1.5;color:var(--dim);margin:0 0 20px;
+}
+pre.diagram b{color:var(--accent);font-weight:400}
+code{font-family:var(--mono);font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:#b9c6d6}
+pre code{background:none;border:0;padding:0;font-size:12.8px;color:var(--dim)}
+
+/* ---------- numbered facts ---------- */
+ol.facts{list-style:none;counter-reset:f;padding:0;margin:0;display:grid;gap:14px}
+ol.facts li{
+  counter-increment:f;background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--bad);border-radius:0 10px 10px 0;padding:18px 20px 18px 56px;position:relative;
+}
+ol.facts li::before{
+  content:counter(f,decimal-leading-zero);position:absolute;left:18px;top:16px;
+  font-family:var(--mono);font-size:13px;color:var(--bad);font-weight:700;
+}
+ol.facts strong{color:var(--text)}
+ol.facts span{color:var(--dim);font-size:14.5px}
+
+/* ---------- feature list ---------- */
+ul.feat{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+ul.feat li{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+ul.feat b{display:block;margin-bottom:4px}
+ul.feat span{color:var(--dim);font-size:14.5px}
+
+/* ---------- tables ---------- */
+.tablewrap,.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 22px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:14.5px}
+th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--card);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.mono{font-family:var(--mono);font-size:13px;color:var(--dim)}
+
+/* ---------- roadmap phases ---------- */
+.phases{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.phase .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.phase .st.done{color:var(--good)}
+.phase .st.now{color:var(--warn)}
+.phase .st.next{color:var(--dim)}
+.phase h4{margin:8px 0 6px;font-size:15.5px}
+.phase p{margin:0;color:var(--dim);font-size:13.5px}
+
+/* ---------- screenshots ---------- */
+figure.shot{margin:0 0 22px}
+figure.shot img{
+  display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;
+  background:#0A0C0F;
+}
+figure.shot figcaption{margin-top:10px;color:var(--dim);font-size:13.5px}
+.shots{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.shot-placeholder{
+  display:flex;align-items:center;justify-content:center;min-height:220px;
+  border:1px dashed var(--line);border-radius:10px;background:#0A0C0F;
+  color:#4a5461;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ---------- sibling nav (bottom of every repo page) ---------- */
+.siblings{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.sibling{
+  display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:18px;color:var(--text);transition:.16s;
+}
+.sibling:hover{border-color:var(--accent);text-decoration:none;transform:translateY(-2px)}
+.sibling .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);display:block;margin-bottom:6px}
+.sibling .n{font-size:16px;font-weight:600}
+.sibling .d{color:var(--dim);font-size:13.5px;margin-top:5px}
+
+/* ---------- footer ---------- */
+footer.bottom{border-top:1px solid var(--line);padding:34px 0 60px;color:#5f6a78;font-size:13.5px}
+footer.bottom .bar{max-width:1180px;margin:0 auto;padding:0 24px;
+  display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+
+/* ---------- documentation shell ---------- */
+.shell{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;
+  grid-template-columns:224px minmax(0,1fr);gap:44px;align-items:start}
+aside{position:sticky;top:78px;padding:34px 0 40px}
+aside h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+aside ul{list-style:none;padding:0;margin:0 0 26px}
+aside li{margin:0 0 2px}
+aside li a{display:block;padding:5px 10px;border-radius:6px;font-size:14.5px;color:var(--dim)}
+aside li a:hover{background:var(--card);color:var(--text);text-decoration:none}
+aside li a.on{background:var(--card);color:var(--text);box-shadow:inset 2px 0 0 var(--accent)}
+
+main.doc{padding:34px 0 80px;min-width:0;line-height:1.7}
+main.doc .crumb{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+main.doc h1{font-size:clamp(30px,4.6vw,42px);margin:0 0 26px}
+main.doc h2{font-size:24px;margin:44px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main.doc h3{font-size:18px;margin:30px 0 8px}
+main.doc h4{font-size:15.5px;margin:22px 0 6px;color:var(--dim)}
+main.doc p{margin:0 0 16px}
+main.doc ul,main.doc ol{padding-left:22px;margin:0 0 16px}
+main.doc li{margin:0 0 7px}
+main.doc hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+main.doc strong{color:#fff}
+main.doc em{color:var(--dim)}
+main.doc blockquote{margin:0 0 20px;padding:14px 18px;background:var(--panel);
+  border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 10px 10px 0}
+main.doc blockquote p:last-child{margin:0}
+
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr;gap:0}
+  aside{position:static;padding:22px 0 0;border-bottom:1px solid var(--line)}
+  aside ul{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px}
+  aside li a.on{box-shadow:inset 0 -2px 0 var(--accent)}
+}
+@media (max-width:640px){
+  header.top nav a:not(.keep){display:none}
+  header.top nav a.on::after{display:none}
+  .hero .wrap{padding:52px 24px 44px}
+  section{padding:48px 0}
+}

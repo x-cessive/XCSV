@@ -1,0 +1,135 @@
+---
+layout: base
+section: catalogue
+heading: Exile catalogue
+blurb: Production-tested catalogue of Arma 3 Exile addons, scripts, database schemas and custom tooling — a PowerShell PBO packer and a BattlEye RPT auto-triage.
+---
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">SQF · SQL · PowerShell · C#</p>
+    <h1>Exile catalogue</h1>
+    <p class="lede">
+      Third-party addons, scripts, database schemas and administrative tooling for
+      Exile Mod 1.0.4a, collected and version-controlled. Everything here is other
+      people's work — with one exception, <code>tools/</code>, which is ours.
+    </p>
+    <div class="badges">
+      <span class="badge">Addons <b>51 systems</b></span>
+      <span class="badge">Scripts <b>29 mods</b></span>
+      <span class="badge">Exile <b>1.0.4a Pineapple</b></span>
+      <span class="badge">Database <b>MariaDB 10.11</b></span>
+      <span class="badge">Repo <b>public</b></span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/x-cessive/Exile">Repository</a>
+      <a class="btn" href="https://github.com/x-cessive/Exile/tree/master/tools">PBO tooling</a>
+      <a class="btn" href="{{ site.baseurl }}/wiki/Runbook.html">Runbook</a>
+    </div>
+  </div>
+</div>
+
+<section id="layout">
+  <div class="wrap">
+    <h2><span class="num">01 — LAYOUT</span>What is in the repository</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Directory</th><th>Contents</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">tools/</td><td><strong>Ours.</strong> PowerShell PBO packer/unpacker, BattlEye RPT auto-triage, classname validation.</td></tr>
+          <tr><td class="mono">Addons/</td><td>51 server-side addons — AI patrol engines, economy frameworks, dynamic events.</td></tr>
+          <tr><td class="mono">Scripts/</td><td>29 mission-side scripts — UI overlays, QoL fixes, player interaction extensions.</td></tr>
+          <tr><td class="mono">docs/</td><td>Dedicated server setup, prerequisites, and the verified live installs matrix.</td></tr>
+          <tr><td class="mono">ExileLootDrop/</td><td>Native C# DLL extension source for accelerated loot distribution.</td></tr>
+          <tr><td class="mono">ops/</td><td>Auto-restart loops, SteamCMD update scripts, process management.</td></tr>
+          <tr><td class="mono">reference/</td><td>Economy balancing spreadsheets, MySQL strict-mode fixes, governance rules.</td></tr>
+          <tr><td class="mono">editor-tools/</td><td>3DEN editor plugins, loot table compilers, stock 1.0.4a server pack backups.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <h2><span class="num">02 — THE PACKER</span>Read the entry paths. Every time.</h2>
+    <p class="sub">
+      <code>tools/pbo/pbo.ps1</code> packs and unpacks PBOs without Arma 3 Tools or
+      Mikero's suite. It is also, historically, the thing that took the server down.
+    </p>
+<pre><code>tools\pbo\pbo.ps1 Pack -Path &lt;src&gt; -Out &lt;dst&gt; -Prefix &lt;prefix&gt;
+tools\pbo\pbo.ps1 List -Path &lt;dst&gt;      <span style="color:var(--warn)"># not optional</span></code></pre>
+    <p class="sub">
+      The packer used <code>Resolve-Path</code>, which hands a path back in whatever
+      form it was given — so a source path containing an 8.3 short name
+      (<code>C:\Users\ARCHIT~1\…</code>) stayed short while directory enumeration
+      returned the canonical long form. One character of difference left a separator
+      on <em>every</em> entry path, producing PBOs that pass a checksum verify and
+      break the server completely.
+    </p>
+    <p class="sub">
+      It now uses <code>Get-Item -LiteralPath</code> and refuses outright to pack an
+      entry whose relative path is empty or begins with a separator. <strong>Verify
+      anyway</strong> — and let <a href="{{ site.baseurl }}/guard/">XCSV GUARD</a>'s
+      integrity gate check the result.
+    </p>
+  </div>
+</section>
+
+<section id="live">
+  <div class="wrap">
+    <h2><span class="num">03 — RUNNING HERE</span>A selection of what is live</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>AI &amp; missions</h3>
+        <p><b>A3XAI</b> — autonomous infantry, vehicle and air patrols.
+        <b>DMS</b> — the de-facto standard mission system.
+        <b>Occupation</b> — ambient roaming infantry, convoys, sea traders.</p>
+        <div class="stack">the largest ongoing FPS cost — destined for the headless client</div>
+      </div>
+      <div class="card">
+        <h3>Economy &amp; traders</h3>
+        <p><b>Scratchie</b> — XM8 lottery with instant prize delivery.
+        <b>Travelling Trader</b> — a mobile trader navigating map markers.
+        <b>Player Market</b> — XM8 player-to-player auction house.</p>
+        <div class="stack">all three already own XM8 slides worth studying</div>
+      </div>
+      <div class="card">
+        <h3>Territory &amp; raiding</h3>
+        <p><b>VPS</b> — locked territory vehicles survive restarts.
+        <b>Lockpick</b> — interactive lockpicking with SQL logging.
+        <b>Flag Hacking</b> — laptops, stolen base vehicles.</p>
+        <div class="stack">build height capped at 150 m</div>
+      </div>
+      <div class="card">
+        <h3>Deliberately standby</h3>
+        <p><b>ExileZ</b> zombies, <b>VcomAI</b>, <b>FuMS</b>, <b>ZCP</b>, <b>VEMFr</b>.
+        Each is a large simulation cost on a single-threaded server. Not until the
+        headless client is carrying AI.</p>
+        <div class="stack">performance before content, always</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="credits">
+  <div class="wrap">
+    <h2><span class="num">04 — CREDITS</span>Whose work this is</h2>
+    <p class="sub">
+      Every third-party addon and script in the repository remains the intellectual
+      property of its creator. The catalogue exists to keep versions straight and
+      installs reproducible — not to claim any of it.
+    </p>
+    <p class="sub" style="font-size:14px">
+      AliasCartoons · Andrew_S90 · Azroul13 · Bigfoot · Bjanski · Bones50 · Cyunide ·
+      Defent · DevZupa · dtavana · El Rabito · Enigma · eraser1 · [GADD]Monkeynutz ·
+      genesis92x · Ghostrider-GRG- · Halvhjearne · Happydayz · horbin · IT07 ·
+      JackFrost · John · kuplion · maca134 · MezoPlays · MGTDB · nabek · Patrix87 ·
+      Porkeld · Rod-Serling · Sarge · second_coming · ServerAtze · Shix ·
+      Taylor Swift · Team R3F · Vishpala · WolfkillArcadia · ynpmoose —
+      and the <strong>Exile Mod Team</strong>.
+    </p>
+  </div>
+</section>
+
+{% include siblings.html %}

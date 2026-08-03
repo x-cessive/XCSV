@@ -1,6 +1,8 @@
 ---
 layout: wiki
+section: docs
 title: Overview
+heading: Overview
 blurb: What XCSV EXILE is, and where to start.
 order: 1
 source: Home.md

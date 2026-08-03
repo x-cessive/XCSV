@@ -158,4 +158,9 @@ $json = $status | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($statusPath, $json, (New-Object System.Text.UTF8Encoding($false)))
 
 Say "--- done ---" 'Cyan'
-if (-not $status.ok) { exit 1 }
+
+# Exit explicitly. Without this the script inherits $LASTEXITCODE from whatever
+# native command ran last - and several git calls here return non-zero as a
+# normal answer ("no differences"), which the scheduler would report as a
+# failed task every hour.
+if ($status.ok) { exit 0 } else { exit 1 }

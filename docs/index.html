@@ -1,179 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XCSV — Arma 3 Exile development</title>
-<meta name="description" content="XCSV EXILE: a dedicated Arma 3 Exile server on Tanoa, its Rust operations console, our own addons, and the addon catalogue.">
-<meta property="og:title" content="XCSV — Arma 3 Exile development">
-<meta property="og:description" content="A dedicated Arma 3 Exile server, and every piece of software that keeps it alive.">
-<meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230E1014'/><text x='16' y='23' font-size='18' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%233D9CFF'>X</text></svg>">
-<style>
-:root{
-  --bg:#0E1014; --panel:#13161B; --card:#1A1E25; --line:#2A303A;
-  --text:#E2E7EE; --dim:#7E8896; --accent:#3D9CFF; --brand:#E23B3B;
-  --good:#3FC16A; --warn:#E8B339; --bad:#E05050;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:var(--sans);font-size:16px;line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-
-/* ---------- top bar ---------- */
-header{
-  position:sticky;top:0;z-index:20;
-  background:rgba(14,16,20,.82);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
-}
-header .wrap{display:flex;align-items:center;gap:24px;height:58px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:.16em;font-size:17px;color:var(--text)}
-.logo span{color:var(--accent)}
-nav{margin-left:auto;display:flex;gap:22px;flex-wrap:wrap}
-nav a{color:var(--dim);font-size:14px}
-nav a:hover{color:var(--text);text-decoration:none}
-
-/* ---------- hero ---------- */
-.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
-.hero::before{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(900px 380px at 12% -10%, rgba(61,156,255,.16), transparent 70%),
-    radial-gradient(700px 320px at 92% 0%, rgba(226,59,59,.10), transparent 70%);
-  pointer-events:none;
-}
-.hero .wrap{position:relative;padding:74px 24px 62px}
-.eyebrow{
-  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin:0 0 18px;
-}
-h1{font-size:clamp(34px,6vw,58px);line-height:1.08;margin:0 0 18px;letter-spacing:-.02em}
-.lede{font-size:clamp(17px,2.2vw,20px);color:var(--dim);max-width:62ch;margin:0 0 30px}
-.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
-.badge{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
-  border:1px solid var(--line);background:var(--card);
-  padding:5px 11px;border-radius:999px;color:var(--dim);
-}
-.badge b{color:var(--text);font-weight:600}
-.badge.live{border-color:rgba(232,179,57,.45)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:7px;
-  box-shadow:0 0 0 0 rgba(232,179,57,.6);animation:pulse 2.4s infinite}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(232,179,57,.55)}
-  70%{box-shadow:0 0 0 8px rgba(232,179,57,0)}
-  100%{box-shadow:0 0 0 0 rgba(232,179,57,0)}
-}
-.cta{display:flex;flex-wrap:wrap;gap:12px}
-.btn{
-  display:inline-block;padding:11px 20px;border-radius:8px;font-size:14.5px;font-weight:600;
-  border:1px solid var(--line);background:var(--card);color:var(--text);transition:.15s;
-}
-.btn:hover{border-color:var(--accent);text-decoration:none;transform:translateY(-1px)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#08111c}
-.btn.primary:hover{filter:brightness(1.1)}
-
-/* ---------- sections ---------- */
-section{padding:66px 0;border-bottom:1px solid var(--line)}
-section:last-of-type{border-bottom:0}
-h2{font-size:clamp(24px,3.4vw,32px);margin:0 0 10px;letter-spacing:-.01em}
-h2 .num{font-family:var(--mono);font-size:13px;color:var(--accent);display:block;
-  letter-spacing:.2em;margin-bottom:8px;font-weight:400}
-.sub{color:var(--dim);max-width:70ch;margin:0 0 32px}
-
-/* ---------- repo cards ---------- */
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
-.card{
-  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;
-  transition:.16s;position:relative;overflow:hidden;
-}
-.card::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;
-  background:linear-gradient(90deg,var(--accent),transparent);opacity:0;transition:.16s}
-.card:hover{border-color:#3a4453;transform:translateY(-2px)}
-.card:hover::after{opacity:1}
-.card h3{margin:0 0 4px;font-size:18px;font-family:var(--mono);letter-spacing:.02em}
-.card h3 a{color:var(--text)}
-.card .tag{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:2px 7px;margin-left:8px;
-  vertical-align:middle;
-}
-.card .tag.pub{color:var(--good);border-color:rgba(63,193,106,.35)}
-.card p{margin:12px 0 0;color:var(--dim);font-size:14.5px}
-.card .stack{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:#5f6a78}
-
-/* ---------- diagram ---------- */
-pre.diagram{
-  background:#0A0C0F;border:1px solid var(--line);border-radius:10px;
-  padding:20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;
-  line-height:1.5;color:var(--dim);
-}
-pre.diagram b{color:var(--accent);font-weight:400}
-
-/* ---------- facts ---------- */
-ol.facts{list-style:none;counter-reset:f;padding:0;margin:0;display:grid;gap:14px}
-ol.facts li{
-  counter-increment:f;background:var(--panel);border:1px solid var(--line);
-  border-left:3px solid var(--bad);border-radius:0 10px 10px 0;padding:18px 20px 18px 56px;position:relative;
-}
-ol.facts li::before{
-  content:counter(f,decimal-leading-zero);position:absolute;left:18px;top:16px;
-  font-family:var(--mono);font-size:13px;color:var(--bad);font-weight:700;
-}
-ol.facts strong{color:var(--text)}
-ol.facts span{color:var(--dim);font-size:14.5px}
-
-/* ---------- table ---------- */
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
-th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
-th{background:var(--card);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600}
-tr:last-child td{border-bottom:0}
-td.mono{font-family:var(--mono);font-size:13px;color:var(--dim)}
-
-/* ---------- roadmap ---------- */
-.phases{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.phase{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
-.phase .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
-.phase .st.done{color:var(--good)}
-.phase .st.now{color:var(--warn)}
-.phase .st.next{color:var(--dim)}
-.phase h4{margin:8px 0 6px;font-size:15.5px}
-.phase p{margin:0;color:var(--dim);font-size:13.5px}
-
-footer{padding:40px 0 56px;color:#5f6a78;font-size:13.5px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
-
-@media (max-width:640px){
-  nav{display:none}
-  .hero .wrap{padding:52px 24px 44px}
-  section{padding:48px 0}
-}
-</style>
-</head>
-<body>
-
-<header>
-  <div class="wrap">
-    <div class="logo">XC<span>SV</span></div>
-    <nav>
-      <a href="#system">System</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#facts">Hard-won</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="wiki/Home.html">Docs</a>
-      <a href="https://github.com/x-cessive/XCSV">GitHub</a>
-    </nav>
-  </div>
-</header>
+---
+layout: base
+section: home
+blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operations console, our own addons, and the addon catalogue.
+---
 
 <div class="hero">
   <div class="wrap">
@@ -193,9 +22,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
       <span class="badge">Console <b>Rust + egui</b></span>
     </div>
     <div class="cta">
-      <a class="btn primary" href="https://github.com/x-cessive/XCSV">Hub repository</a>
-      <a class="btn" href="wiki/Home.html">Read the docs</a>
-      <a class="btn" href="https://github.com/x-cessive/Exile">Addon catalogue</a>
+      <a class="btn primary" href="{{ site.baseurl }}/guard/">Meet XCSV GUARD</a>
+      <a class="btn" href="{{ site.baseurl }}/wiki/Home.html">Read the docs</a>
+      <a class="btn" href="https://github.com/x-cessive/XCSV">Hub repository</a>
     </div>
   </div>
 </div>
@@ -205,7 +34,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
     <h2><span class="num">01 — REPOSITORIES</span>Four repos, one system</h2>
     <p class="sub">
       The hub carries documentation and submodule pointers. Everything else lives
-      where it is built.
+      where it is built — and each has its own page here.
     </p>
     <div class="grid">
 
@@ -217,7 +46,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
       </div>
 
       <div class="card">
-        <h3><a href="https://github.com/x-cessive/XCSV_GUARD">XCSV_GUARD</a><span class="tag">private</span></h3>
+        <h3><a href="{{ site.baseurl }}/guard/">XCSV_GUARD</a><span class="tag">private</span></h3>
         <p>Operations console. PBO integrity gate, BattlEye RCon implemented from the
         protocol up, crash autopsy, live metrics, scheduled restarts, and one button
         that starts or stops the entire stack.</p>
@@ -225,14 +54,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
       </div>
 
       <div class="card">
-        <h3><a href="https://github.com/x-cessive/XCSV_ADDONS">XCSV_ADDONS</a><span class="tag">private</span></h3>
+        <h3><a href="{{ site.baseurl }}/addons/">XCSV_ADDONS</a><span class="tag">private</span></h3>
         <p>Our own addons and mission scripts — faction radio chatter, speaking traders,
         a lore briefing, an admin world census, and XM8 apps. No Exile source, ever.</p>
         <div class="stack">SQF · CfgExileCustomCode · CfgXM8</div>
       </div>
 
       <div class="card">
-        <h3><a href="https://github.com/x-cessive/Exile">Exile</a><span class="tag pub">public</span></h3>
+        <h3><a href="{{ site.baseurl }}/catalogue/">Exile</a><span class="tag pub">public</span></h3>
         <p>Catalogue of third-party addons and scripts, database schemas, plus custom
         engineering tooling: a PowerShell PBO packer and a BattlEye RPT auto-triage.</p>
         <div class="stack">SQF · SQL · PowerShell · C#</div>
@@ -340,7 +169,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
     <h2><span class="num">05 — ROADMAP</span>What comes next</h2>
     <p class="sub">
       Performance before content, always. The full roadmap lives in the
-      <a href="wiki/Roadmap.html">documentation</a>.
+      <a href="{{ site.baseurl }}/wiki/Roadmap.html">documentation</a>.
     </p>
     <div class="phases">
       <div class="phase"><div class="st done">✓ done</div><h4>Stabilise</h4>
@@ -363,17 +192,4 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-con
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div>XCSV EXILE · built in the open · last updated <!--STAMP-->3 August 2026<!--/STAMP--></div>
-    <div>
-      <a href="https://github.com/x-cessive/XCSV">Hub</a> ·
-      <a href="wiki/Home.html">Docs</a> ·
-      <a href="https://github.com/x-cessive/XCSV/wiki">Wiki</a> ·
-      <a href="https://github.com/x-cessive/Exile">Catalogue</a>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+{% include siblings.html %}
