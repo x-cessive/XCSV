@@ -15,3 +15,8 @@ Current first slice: run `D:\XCSV\tools\build-memory-index.ps1`, then
 `D:\XCSV\tools\build-docs.ps1`. It writes `wiki\Memory-Index.md`, a heading-level
 map of the vault and wiki that is safe to publish because it skips common
 secret/config filenames.
+
+Current server-state slice: live production is x64/extDB3. Operational evidence
+is captured by `E:\ExileRepo\tools\diagnostics\x64-baseline.ps1`, persistence is
+probed by `E:\ExileRepo\tools\database\test-extdb3-persistence.ps1`, and backups
+are created by `E:\ExileRepo\tools\database\backup-exile-db.ps1`.

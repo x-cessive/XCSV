@@ -4,7 +4,7 @@ section: docs
 title: Lessons
 heading: Lessons
 blurb: Mistakes actually made here, and the rule each one produced.
-order: 8
+order: 9
 source: Lessons.md
 ---
 

@@ -36,7 +36,8 @@ $pages = [ordered]@{
     'XM8-Apps'     = @{ Order = 5; Title = 'XM8 Apps';     Blurb = 'How XM8 apps register, what is shipped, what is next.' }
     'Roadmap'      = @{ Order = 6; Title = 'Roadmap';      Blurb = 'Done, in flight, next, and deliberately parked.' }
     'Memory'       = @{ Order = 7; Title = 'Memory';       Blurb = 'Where project truth is recorded, and the RAG plan.' }
-    'Lessons'      = @{ Order = 8; Title = 'Lessons';      Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'Memory-Index' = @{ Order = 8; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
+    'Lessons'      = @{ Order = 9; Title = 'Lessons';      Blurb = 'Mistakes actually made here, and the rule each one produced.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }

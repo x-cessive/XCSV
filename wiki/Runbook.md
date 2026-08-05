@@ -13,7 +13,7 @@ before you believe the RPT.
 Then, from a shell:
 
 ```powershell
-D:\XCSV_GUARD\tools\doctor.ps1          # 22 executable assertions
+D:\XCSV_GUARD\tools\doctor.ps1          # executable assertions
 D:\XCSV_GUARD\tools\doctor.ps1 -Json    # same, machine-readable, exit codes
 ```
 
@@ -53,7 +53,7 @@ In order of how often it has actually been the answer here:
    `@ExileServer\extdb3-conf.ini`, and `@ExileServer\sql_custom\exile.ini`.
 3. **Missing `-filePatching`.** A3XAI reads `a3xai_config.sqf` as a loose file
    and silently ends the mission during world init without it.
-4. **Database reachable?** MariaDB up, credentials in `extdb-conf.ini` current.
+4. **Database reachable?** MariaDB up, credentials in `extdb3-conf.ini` current.
 5. **A config parse error in the mission.** One bad brace in `config.cpp` ends
    the mission before anything else runs.
 
@@ -61,7 +61,7 @@ In order of how often it has actually been the answer here:
 
 XCSV GUARD's log guard watches MB/min and alerts. If it is climbing:
 
-- Confirm the binary is x86 (see above) — this is the usual cause.
+- Confirm the active process is `arma3server_x64.exe` and capture a baseline.
 - Check the newest RPT for a repeating line; a single addon in a tight failure
   loop can write hundreds of MB.
 - Old RPTs are safe to delete. The live one is not.
@@ -70,8 +70,22 @@ XCSV GUARD's log guard watches MB/min and alerts. If it is climbing:
 
 Use XCSV GUARD's **Restarts** tab, which issues **`#shutdown`**, not `#restart`.
 
-`#restart` reloads the mission inside the same process and never returns memory —
-useless on a 32-bit build that idles near half its address space.
+`#restart` reloads the mission inside the same process and never returns memory.
+Use `#shutdown` so the x64 process exits cleanly and comes back under the
+current launch parameters.
+
+## 4.1 x64/extDB3 operating checks
+
+Production is `arma3server_x64.exe` + extDB3 with `-maxMem=12288`.
+
+```powershell
+E:\ExileRepo\tools\diagnostics\x64-baseline.ps1
+E:\ExileRepo\tools\database\test-extdb3-persistence.ps1
+E:\ExileRepo\tools\database\backup-exile-db.ps1 -WhatIf
+```
+
+If the latest server RPT contains `No more slot to add connection`, the headless
+client did not claim an HC slot. GUARD doctor reports this as `hc-join`.
 
 ## 5. Whole-stack start / stop
 

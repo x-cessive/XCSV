@@ -31,12 +31,12 @@ function Add-NoteEntries([string]$Root, [string]$Tier, [System.Collections.Gener
             Select-String -Pattern '^(#{1,3})\s+(.+)$' |
             Select-Object -First 10
         if (-not $headings) {
-            $Lines.Add("| $Tier | `$rel` | |")
+            $Lines.Add("| $Tier | ``$rel`` | |")
             continue
         }
         foreach ($heading in $headings) {
             $title = $heading.Matches[0].Groups[2].Value.Replace('|', '\|')
-            $Lines.Add("| $Tier | `$rel` | $title |")
+            $Lines.Add("| $Tier | ``$rel`` | $title |")
         }
     }
 }
