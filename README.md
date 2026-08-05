@@ -11,7 +11,7 @@
 [![Arma 3](https://img.shields.io/badge/Arma_3-2.20.152984-blue.svg?logo=steam&logoColor=white)](https://arma3.com/)
 [![Exile Mod](https://img.shields.io/badge/Exile_Mod-1.0.4a_Pineapple-00b2cd.svg)](https://exile.majormittens.co.uk/)
 [![MariaDB](https://img.shields.io/badge/Database-MariaDB_10.11-003545.svg?logo=mariadb&logoColor=white)](https://mariadb.org/)
-[![extDB2](https://img.shields.io/badge/Driver-extDB2_v71_(x86)-00599c.svg)](https://github.com/x-cessive/Exile)
+[![extDB3](https://img.shields.io/badge/Driver-extDB3_x64-00599c.svg)](https://github.com/x-cessive/Exile)
 [![Rust](https://img.shields.io/badge/Console-Rust_+_egui-CE422B.svg?logo=rust&logoColor=white)](https://github.com/x-cessive/XCSV_GUARD)
 [![SQF](https://img.shields.io/badge/Addons-SQF-ffb400.svg)](https://github.com/x-cessive/XCSV_ADDONS)
 
@@ -54,9 +54,9 @@ If you are looking for something specific, start here.
         │               │             │              │               │
    ┌────▼────┐   ┌──────▼──────┐ ┌────▼─────┐  ┌─────▼─────┐  ┌──────▼──────┐
    │ MariaDB │◄──┤ arma3server │ │ Headless │  │ LM Studio │  │  BattlEye   │
-   │  10.11  │   │    (x86)    │ │  client  │  │  (local)  │  │    RCon     │
+   │  10.11  │   │    (x64)    │ │  client  │  │  (local)  │  │    RCon     │
    └─────────┘   └──────┬──────┘ └──────────┘  └───────────┘  └─────────────┘
-     extDB2 v71         │           AI + missions   triage only    UDP/CRC32
+     extDB3             │           AI + missions   triage only    UDP/CRC32
                         │           off the main    never in the
         ┌───────────────┴───────────────┐   thread  critical path
         │                               │
@@ -77,10 +77,10 @@ system rather than a finished product.
 | | |
 |---|---|
 | Map | Tanoa (`Exile.Tanoa`) |
-| Engine binary | `arma3server.exe` — **32-bit, required** (see below) |
-| Database | MariaDB 10.11 via extDB2 v71 |
+| Engine binary | `arma3server_x64.exe` with `-maxMem=12288` |
+| Database | MariaDB 10.11 via extDB3 |
 | Anti-cheat | BattlEye + infiSTAR |
-| Headless client | connection unresolved — [see the docs](https://x-cessive.github.io/XCSV/wiki/Runbook.html) |
+| Headless client | live; A3XAI authorized and FuMS heartbeat on owner 4 |
 
 ## ⚠️ Five things that are easy to get catastrophically wrong
 
@@ -92,9 +92,9 @@ GUARD so they cannot cost them twice.
    core silently never loads — producing a restart loop whose visible symptoms
    are all *database* errors. This once produced **219 mission starts in eight
    minutes**. Verifying is not enough; you have to read the entry table.
-2. **extDB2 is 32-bit only.** There is no `extDB2_x64.dll` and there never was.
-   Pairing it with `arma3server_x64.exe` wrote a **419 MB RPT in under an hour**
-   and forced a hard reboot.
+2. **extDB2 was 32-bit only.** There was no `extDB2_x64.dll`. Production now
+   runs extDB3 with `arma3server_x64.exe`; do not restore the old x86 path as a
+   fallback.
 3. **`-filePatching` is mandatory.** A3XAI reads its config as a loose file.
    Without the flag it silently ends the mission during world init and the
    server loops.
