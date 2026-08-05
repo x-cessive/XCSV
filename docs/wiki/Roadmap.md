@@ -64,3 +64,10 @@ Not until the HC is carrying AI.
 ## Related
 
 - [XM8 Apps](XM8-Apps.html) - [Architecture](Architecture.html) - [Lessons](Lessons.html)
+
+## 2026-08-05 Notes
+
+- FuMS active mission markers are expected; the red circle/X at Comms Alpha marks the active FuMS mission.
+- Admin teleport was hotfixed to execute server-side through `xcsvTeleportRequest` instead of client-local `setPosATL`. Source is mirrored under `E:\ExileRepo\LiveSource\...`; live backups use timestamp `20260805-100625`.
+- 64-bit server support is deferred to a full extDB3 migration. Current production remains 32-bit because extDB2 is 32-bit only.
+- Project memory rule tightened: every live change must update the Obsidian vault, Git-tracked source, and wiki source before completion.

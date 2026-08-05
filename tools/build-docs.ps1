@@ -35,7 +35,8 @@ $pages = [ordered]@{
     'Repositories' = @{ Order = 4; Title = 'Repositories'; Blurb = 'Four repos, one system: what lives where, and why.' }
     'XM8-Apps'     = @{ Order = 5; Title = 'XM8 Apps';     Blurb = 'How XM8 apps register, what is shipped, what is next.' }
     'Roadmap'      = @{ Order = 6; Title = 'Roadmap';      Blurb = 'Done, in flight, next, and deliberately parked.' }
-    'Lessons'      = @{ Order = 7; Title = 'Lessons';      Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'Memory'       = @{ Order = 7; Title = 'Memory';       Blurb = 'Where project truth is recorded, and the RAG plan.' }
+    'Lessons'      = @{ Order = 8; Title = 'Lessons';      Blurb = 'Mistakes actually made here, and the rule each one produced.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }
