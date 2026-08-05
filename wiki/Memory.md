@@ -10,3 +10,8 @@ XCSV project memory has four required layers:
 Rule: after any live server, PBO, database, launch, BattlEye, or GUARD change, update the vault, Git-tracked source, and wiki before calling the work done. Include exact paths, backup names, restart time, commit hashes, and validation evidence.
 
 RAG plan: build a local read-only index over the vault, wiki source, repos, selected live config/source files, and recent logs. The index must redact secrets and tag each chunk by trust tier: live, committed source, vault, generated wiki, or log.
+
+Current first slice: run `D:\XCSV\tools\build-memory-index.ps1`, then
+`D:\XCSV\tools\build-docs.ps1`. It writes `wiki\Memory-Index.md`, a heading-level
+map of the vault and wiki that is safe to publish because it skips common
+secret/config filenames.
