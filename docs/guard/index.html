@@ -104,6 +104,15 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
       </div>
 
       <div class="card">
+        <h3>Database</h3>
+        <p>Read-only extDB3-backed MariaDB console with grouped operator presets:
+        real players, living characters, recent deaths, territories, base assets,
+        vehicle ownership, stale vehicle timestamps, garage split, money summary,
+        market listings and unclaimed prizes. Custom SQL is still limited to
+        <code>SELECT</code> and <code>SHOW</code>.</p>
+      </div>
+
+      <div class="card">
         <h3>RCon</h3>
         <p>A full BattlEye RCon console over UDP, implemented from the protocol up:
         CRC32-framed packets, multi-part reply reassembly, server-message
@@ -129,6 +138,13 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
         <p>One button starts database → integrity gate → server → headless client →
         local model. One button stops them cleanly in reverse. Survives a machine
         reboot.</p>
+      </div>
+
+      <div class="card">
+        <h3>RAG pulse</h3>
+        <p>A top-bar <code>rag</code> chip watches the local project-memory index and
+        pulses when a RAG search was just used, so the operator can see at a glance
+        whether the agent memory layer is alive.</p>
       </div>
 
     </div>
