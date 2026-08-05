@@ -18,7 +18,7 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
       <span class="badge">Arma 3 <b>2.20.152984</b></span>
       <span class="badge">Exile <b>1.0.4a Pineapple</b></span>
       <span class="badge">MariaDB <b>10.11</b></span>
-      <span class="badge">extDB2 <b>v71 · x86</b></span>
+      <span class="badge">extDB3 <b>x64 · 12 GB target</b></span>
       <span class="badge">Console <b>Rust + egui</b></span>
     </div>
     <div class="cta">
@@ -38,7 +38,7 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
       </a>
       <figcaption>
         <strong>XCSV GUARD</strong> supervising the live server — process state,
-        memory against the 32-bit ceiling, and every pre-flight check that exists
+        memory against the 12 GB x64 target, and every pre-flight check that exists
         because something once broke.
         <a href="{{ site.baseurl }}/guard/">More screenshots →</a>
       </figcaption>
@@ -106,9 +106,9 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
         │               │             │              │               │
    ┌────▼────┐   ┌──────▼──────┐ ┌────▼─────┐  ┌─────▼─────┐  ┌──────▼──────┐
    │ MariaDB │◄──┤ arma3server │ │ Headless │  │ LM Studio │  │  BattlEye   │
-   │  10.11  │   │    (x86)    │ │  client  │  │  (local)  │  │    RCon     │
+   │  10.11  │   │    (x64)    │ │  client  │  │  (local)  │  │    RCon     │
    └─────────┘   └──────┬──────┘ └──────────┘  └───────────┘  └─────────────┘
-     extDB2 v71         │           AI + missions   triage only    UDP/CRC32
+     extDB3             │           AI + missions   triage only    UDP/CRC32
                         │           off the main    never in the
         ┌───────────────┴───────────────┐   thread  critical path
         │                               │
@@ -141,10 +141,10 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
         load the server core. Once produced <strong>219 mission starts in eight
         minutes</strong> — and every visible error was a <em>database</em> error.
         Verifying is not enough; you have to read the entry table.</span></li>
-      <li><strong>extDB2 is 32-bit only.</strong>
-        <span>There is no <code>extDB2_x64.dll</code> and there never was. Pairing it
-        with the x64 binary wrote a <strong>419 MB RPT in under an hour</strong> and
-        forced a hard reboot of the machine.</span></li>
+      <li><strong>extDB3/x64 is production now.</strong>
+        <span>The old extDB2 bridge and 32-bit rollback artifacts were removed by
+        policy. The server runs <code>arma3server_x64.exe</code> with
+        <code>-maxMem=12288</code>.</span></li>
       <li><strong><code>-filePatching</code> is mandatory.</strong>
         <span>A3XAI reads its config as a loose file. Without the flag it silently
         ends the mission during world init and the server loops.</span></li>
@@ -153,10 +153,9 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
         shares roughly 3&nbsp;ms per frame on the main thread. More cores do not help.
         A headless client does.</span></li>
       <li><strong>Half the errors you can see are symptoms.</strong>
-        <span><code>extDB2 is already setup &amp; locked</code> and
-        <code>Unknown Protocol</code> both appear <em>after</em> the real failure. Count
-        <code>Starting mission:</code> instead; more than one means a restart loop, and
-        only the first error is real.</span></li>
+        <span>Bridge errors and protocol noise can appear <em>after</em> the real
+        failure. Count <code>Starting mission:</code> instead; more than one means a
+        restart loop, and only the first error is real.</span></li>
     </ol>
   </div>
 </section>
@@ -169,11 +168,11 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
         <thead><tr><th>Component</th><th>State</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td>Server</td><td style="color:var(--good)">live</td><td class="mono">Tanoa · listed as “XCSV EXILE (In Development)”</td></tr>
-          <tr><td>Database</td><td style="color:var(--good)">live</td><td class="mono">MariaDB 10.11 · extDB2 v71 · x86 only</td></tr>
+          <tr><td>Database</td><td style="color:var(--good)">live</td><td class="mono">MariaDB 10.11 · extDB3 · x64</td></tr>
           <tr><td>PBO integrity</td><td style="color:var(--good)">gated</td><td class="mono">checked every poll; blocks start on failure</td></tr>
           <tr><td>Stack orchestration</td><td style="color:var(--good)">done</td><td class="mono">one start / one clean stop</td></tr>
-          <tr><td>Headless client</td><td style="color:var(--warn)">unresolved</td><td class="mono">connects and verifies; mission never sent</td></tr>
-          <tr><td>BattlEye enforcement</td><td style="color:var(--warn)">log-only</td><td class="mono">51 rules at action 1 pending triage</td></tr>
+          <tr><td>Headless client</td><td style="color:var(--good)">live</td><td class="mono">A3XAI authorized · FuMS owner 4 heartbeat</td></tr>
+          <tr><td>BattlEye enforcement</td><td style="color:var(--warn)">partial</td><td class="mono">4 of 51 script rules enforcing; rest pending triage</td></tr>
           <tr><td>infiSTAR cloud</td><td style="color:var(--bad)">403</td><td class="mono">has never succeeded; local logging works</td></tr>
         </tbody>
       </table>
@@ -193,8 +192,8 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
         <p>Restart loop resolved, RPT under control, credentials rotated, reboot survival.</p></div>
       <div class="phase"><div class="st done">✓ done</div><h4>Stack orchestration</h4>
         <p>One button starts and stops server, database, headless client and the local model.</p></div>
-      <div class="phase"><div class="st now">▸ in flight</div><h4>Headless client</h4>
-        <p>Move AI and missions off the single server thread. Connection still unresolved.</p></div>
+      <div class="phase"><div class="st done">✓ done</div><h4>Headless client</h4>
+        <p>A3XAI and FuMS hand off to HC owner 4; continue measuring under population.</p></div>
       <div class="phase"><div class="st now">▸ in flight</div><h4>Our own addons</h4>
         <p>Faction radio, speaking traders, lore briefing, admin census, admin teleport.</p></div>
       <div class="phase"><div class="st next">next</div><h4>XM8 apps</h4>

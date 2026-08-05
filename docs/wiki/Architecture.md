@@ -14,7 +14,7 @@ source: Architecture.md
 |---|---|---|
 | `arma3server_x64.exe` | x64 | the game server, migrated to extDB3 on 2026-08-05 |
 | `mysqld` (MariaDB 10.11) | x64 | player, territory and vehicle persistence |
-| `arma3.exe -client -connect` | x64 | headless client — moves AI and missions off the server thread |
+| `arma3_x64.exe -client -connect` | x64 | headless client - moves AI and missions off the server thread |
 | `XCSV_GUARD.exe` | x64 | operations console; supervises everything above |
 | LM Studio server | x64 | local model, log triage only |
 
@@ -88,9 +88,8 @@ Hard boundaries, by design:
 
 ## Anti-cheat
 
-**BattlEye** filters are currently **action 1 (log only)** across 51 rules with
-~15,151 hits, essentially all legitimate mod activity. Flipping them on today
-would kick everyone including admins. The triage queue is ~2,367 items.
+**BattlEye** has selected enforcement live: 4 of 51 script rules are enforcing.
+The rest remain staged/log-only until their exceptions are triaged.
 
 **infiSTAR** logs locally and works; its cloud reporting has returned 403 from
 the very first log line and never once succeeded.

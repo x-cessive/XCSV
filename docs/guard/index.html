@@ -20,7 +20,7 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
       <span class="badge">UI <b>egui / eframe</b></span>
       <span class="badge">RCon <b>UDP · CRC32</b></span>
       <span class="badge">Secrets <b>DPAPI at rest</b></span>
-      <span class="badge">Doctor <b>22 assertions</b></span>
+      <span class="badge">Doctor <b>24 assertions</b></span>
       <span class="badge">Repo <b>private</b></span>
     </div>
     <div class="cta">
@@ -71,14 +71,14 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
 
 <section id="tabs">
   <div class="wrap">
-    <h2><span class="num">02 — WHAT IT DOES</span>Eight panes</h2>
+    <h2><span class="num">02 — WHAT IT DOES</span>Operator panes</h2>
     <div class="grid">
 
       <div class="card">
         <h3>Overview</h3>
-        <p>Process state, memory against the 32-bit ceiling, uptime, RPT size, and
-        automated pre-flight checks: restart-loop detection, x64-exe-with-extDB2,
-        missing <code>-filePatching</code>, extDB lock state, database and world init,
+        <p>Process state, memory against the 12 GB x64 target, uptime, RPT size, and
+        automated pre-flight checks: restart-loop detection, x64/extDB3 launch state,
+        missing <code>-filePatching</code>, database and world init, HC join evidence,
         runaway log growth, PBO integrity.</p>
       </div>
 
@@ -120,8 +120,8 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
       <div class="card">
         <h3>Restarts</h3>
         <p>Scheduled restarts with in-game warnings, issuing <code>#shutdown</code>
-        rather than <code>#restart</code> so the process actually exits and memory is
-        returned to a build that idles near half its address space.</p>
+        rather than <code>#restart</code> so the x64 process actually exits and memory
+        is returned before the next run.</p>
       </div>
 
       <div class="card">
@@ -187,15 +187,15 @@ blurb: Operations console for a live Arma 3 Exile server — PBO integrity gate,
       <li><b><code>-filePatching</code> is mandatory.</b><span>A3XAI reads
         <code>a3xai_config.sqf</code> as a loose file; without the flag it silently ends
         the mission during world init and the server loops.</span></li>
-      <li><b>extDB2 is 32-bit only.</b><span>There is no <code>extDB2_x64.dll</code> and
-        there never was. Pairing it with the x64 binary floods the RPT until the disk
-        fills — 419 MB in under an hour, and a forced reboot.</span></li>
+      <li><b>extDB3/x64 is the production path.</b><span>There is no extDB2 fallback.
+        The live server runs <code>arma3server_x64.exe</code>, extDB3, and
+        <code>-maxMem=12288</code>; GUARD verifies that launch shape.</span></li>
       <li><b><code>#shutdown</code>, not <code>#restart</code>.</b><span>The latter reloads
-        the mission inside the same process and never returns memory — pointless on a
-        large-address-aware 32-bit build idling near 2 GB against a 4 GB ceiling.</span></li>
-      <li><b>Half the errors are symptoms.</b><span><code>extDB2 is already setup &amp;
-        locked</code> and <code>Unknown Protocol</code> appear after the real failure.
-        Count <code>Starting mission:</code> instead.</span></li>
+        the mission inside the same process and never returns memory. On x64, the
+        right answer is still a clean process exit and relaunch.</span></li>
+      <li><b>Half the errors are symptoms.</b><span>Bridge/protocol noise can appear
+        after the real failure. Count <code>Starting mission:</code> and verify the
+        actual end state instead.</span></li>
       <li><b>Arma's server simulation is single-threaded.</b><span><code>-cpuCount</code>
         and <code>-exThreads</code> only affect asset loading. SQF <code>spawn</code>
         does not create a thread. More cores do not help; a headless client does.</span></li>
@@ -248,7 +248,7 @@ cargo test --release
 .\tools\deploy.ps1 -SkipTests
 .\tools\deploy.ps1 -Keep 20     # retain 20 archived builds (default 10)
 
-.\tools\doctor.ps1              # 22 executable assertions
+.\tools\doctor.ps1              # 24 executable assertions
 .\tools\doctor.ps1 -Json        # machine-readable, exit codes</code></pre>
     <p class="sub">
       <code>deploy.ps1</code> refuses to deploy if tests fail, archives the binary it

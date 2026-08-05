@@ -22,7 +22,8 @@ is the shop window; the [hub repo](https://github.com/x-cessive/XCSV) is the map
 | **[Runbook](Runbook.html)** | the server is broken and you need it fixed now |
 | **[Repositories](Repositories.html)** | where a given file lives and why |
 | **[XM8 Apps](XM8-Apps.html)** | building anything player- or admin-facing |
-| **[Roadmap](Roadmap.html)** | deciding what to work on next |`r`n| **[Memory](Memory.html)** | finding what is true without rediscovery |
+| **[Roadmap](Roadmap.html)** | deciding what to work on next |
+| **[Memory](Memory.html)** | finding what is true without rediscovery |
 | **[Lessons](Lessons.html)** | before repeating a mistake someone already paid for |
 
 ## The console
