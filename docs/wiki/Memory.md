@@ -26,12 +26,16 @@ skips common secret/config filenames.
 
 Current local RAG slice: run `D:\XCSV\tools\build-rag-index.ps1`, then query it
 with `D:\XCSV\tools\search-rag.ps1 -Query "your terms"`. It writes a local-only
-JSONL chunk index to `D:\CAGE\xcsv-rag\xcsv-rag.jsonl` and a manifest to
-`D:\CAGE\xcsv-rag\manifest.json`. The committed scripts index vault notes, wiki
-source, selected repo source/tools, addon source, and bounded recent live logs
-with trust tiers, repo names, commit hashes where available, file paths, line
-ranges, headings, and redacted snippets. The generated JSONL is not committed or
-published.
+JSONL chunk index to `D:\CAGE\xcsv-rag\xcsv-rag.jsonl`, a manifest to
+`D:\CAGE\xcsv-rag\manifest.json`, and a last-query pulse marker to
+`D:\CAGE\xcsv-rag\last-query.json`. XCSV GUARD reads the manifest and
+last-query marker for the top-bar `rag` chip: green means the local index is
+present, grey means missing, and an accent pulse means a RAG query was used in
+the last few seconds. The committed scripts index vault notes, wiki source,
+selected repo source/tools, addon source, and bounded recent live logs with
+trust tiers, repo names, commit hashes where available, file paths, line ranges,
+headings, and redacted snippets. The generated JSONL and marker files are not
+committed or published.
 
 Current server-state slice: live production is x64/extDB3. Operational evidence
 is captured by `E:\ExileRepo\tools\diagnostics\x64-baseline.ps1`, persistence is

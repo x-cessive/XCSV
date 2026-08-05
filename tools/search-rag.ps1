@@ -31,6 +31,20 @@ function Snippet([string]$Text, [string[]]$Terms) {
     $prefix + $flat.Substring($firstHit, $len) + $suffix
 }
 
+function Write-LastQuery([string]$IndexFile, [string]$Query, [int]$Matches) {
+    $dir = Split-Path -Parent $IndexFile
+    if (-not $dir) { return }
+    if (-not (Test-Path -LiteralPath $dir)) { return }
+    $path = Join-Path $dir 'last-query.json'
+    $payload = [pscustomobject]@{
+        generated_at = (Get-Date).ToString('s')
+        query        = $Query
+        matches      = $Matches
+    }
+    $encoding = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($path, ($payload | ConvertTo-Json -Compress), $encoding)
+}
+
 if (-not (Test-Path -LiteralPath $IndexFile)) {
     throw "index not found: $IndexFile. Run D:\XCSV\tools\build-rag-index.ps1 first."
 }
@@ -82,8 +96,10 @@ $results = Get-Content -LiteralPath $IndexFile |
     Select-Object -First $Top
 
 if (-not $results) {
+    Write-LastQuery -IndexFile $IndexFile -Query $Query -Matches 0
     Write-Host "No matches for: $Query"
     exit 2
 }
 
+Write-LastQuery -IndexFile $IndexFile -Query $Query -Matches @($results).Count
 $results | Format-Table -Wrap -AutoSize
