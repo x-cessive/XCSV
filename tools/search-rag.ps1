@@ -53,14 +53,19 @@ $results = Get-Content -LiteralPath $IndexFile |
         $doc = $_ | ConvertFrom-Json
         $haystack = "$($doc.repo) $($doc.rel_path) $($doc.heading) $($doc.text)".ToLowerInvariant()
         $score = 0
+        $matchedTerms = 0
         foreach ($term in $terms) {
             $matches = [regex]::Matches($haystack, [regex]::Escape($term)).Count
-            if ($matches -gt 0) { $score += $matches }
+            if ($matches -gt 0) {
+                $matchedTerms++
+                $score += [Math]::Min($matches, 3)
+            }
             if (($doc.heading + '').ToLowerInvariant().Contains($term)) { $score += 6 }
             if (($doc.rel_path + '').ToLowerInvariant().Contains($term)) { $score += 4 }
         }
         if ($tierBoost.ContainsKey($doc.tier)) { $score += $tierBoost[$doc.tier] }
-        if ($score -gt 0) {
+        $minimumTerms = if ($terms.Count -gt 1) { 2 } else { 1 }
+        if ($score -gt 0 -and $matchedTerms -ge $minimumTerms) {
             [pscustomobject]@{
                 Score = $score
                 Tier = $doc.tier
