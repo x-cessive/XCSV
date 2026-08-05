@@ -43,12 +43,17 @@ copied and packed into them.
 | `src/ai.rs` | local model client — classification only, no tools |
 | `src/metrics.rs` | performance history from infiSTAR `meta_data.log` |
 | `src/secrets.rs` | DPAPI protection for credentials at rest |
-| `tools/deploy.ps1` | build, test, archive the outgoing binary, deploy |
+| `tools/deploy.ps1` | build, test, archive the outgoing binary, deploy, update taskbar pin |
+| `tools\taskbar-pin.ps1` | remove stale GUARD taskbar shortcuts and point the live shortcut at the deployed exe |
+| `tools\capture.ps1` | screenshot subsystem for named tabs and responsive viewports |
 | `tools/doctor.ps1` | 22 executable assertions, `-Json`, exit codes |
 
 Deploy **through the script**, never by copying the exe. It refuses to deploy on
-failing tests, archives the binary it replaces, prunes to the newest N, and
-regenerates a SHA256 manifest. The live location always holds exactly one binary.
+failing tests, archives the binary it replaces, prunes to the newest N,
+regenerates SHA256/current-build manifests, updates the taskbar shortcut to the
+single live Desktop exe, and launches that exe. The live location always holds
+exactly one binary; taskbar pins must never point at `target\debug` or
+`target\release`.
 
 ## XCSV_ADDONS layout
 

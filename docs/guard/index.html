@@ -264,13 +264,16 @@ cargo test --release
 .\tools\deploy.ps1 -SkipTests
 .\tools\deploy.ps1 -Keep 20     # retain 20 archived builds (default 10)
 
+.\tools\capture.ps1 -AllTabs -Viewport small,normal,wide
+
 .\tools\doctor.ps1              # 24 executable assertions
 .\tools\doctor.ps1 -Json        # machine-readable, exit codes</code></pre>
     <p class="sub">
       <code>deploy.ps1</code> refuses to deploy if tests fail, archives the binary it
       replaces as <code>XCSV_GUARD_v&lt;version&gt;_&lt;timestamp&gt;.exe</code>, prunes to
-      the newest N, and regenerates a SHA256 manifest. <strong>The live location always
-      holds exactly one binary.</strong>
+      the newest N, writes current-release metadata, updates the taskbar shortcut
+      to the live Desktop exe, and regenerates a SHA256 manifest.
+      <strong>The live location always holds exactly one binary.</strong>
     </p>
   </div>
 </section>
