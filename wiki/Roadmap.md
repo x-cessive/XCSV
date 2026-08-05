@@ -61,5 +61,7 @@ Not until the HC is carrying AI.
 
 - FuMS active mission markers are expected; the red circle/X at Comms Alpha marks the active FuMS mission.
 - Admin teleport was hotfixed to execute server-side through `xcsvTeleportRequest` instead of client-local `setPosATL`. Source is mirrored under `E:\ExileRepo\LiveSource\...`; live backups use timestamp `20260805-100625`.
+- Scroll-wheel admin teleport was fixed after map-click TP proved healthy. The scroll addAction handlers now pass `[position, label]` into `XCSV_fnc_tpTo`, matching the map-click path. Live mission backup: `E:\arma3server\mpmissions\Exile.Tanoa.pbo.20260805-103536.pre-scroll-tp-fix.bak`.
+- GUARD's FuMS "not seen" state was a parser bug, not a FuMS outage. Live FuMS logs show server init, script transfer to HC, and HC heartbeat slot 4; `D:\XCSV_GUARD\src\mission.rs` now recognizes the current FuMS log phrases.
 - 64-bit server support is deferred to a full extDB3 migration. Current production remains 32-bit because extDB2 is 32-bit only.
 - Project memory rule tightened: every live change must update the Obsidian vault, Git-tracked source, and wiki source before completion.
