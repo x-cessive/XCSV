@@ -48,8 +48,9 @@ In order of how often it has actually been the answer here:
    ```
    No entry may begin with `\` or `/`. XCSV GUARD's **Integrity** tab does this
    for every loaded PBO and refuses to start the server if any fails.
-2. **Wrong binary.** `arma3server_x64.exe` + extDB2 = RPT flood. Must be
-   `arma3server.exe`.
+2. **Wrong database bridge.** Production is `arma3server_x64.exe` + extDB3. If
+   x64 is running, verify `@ExileServer\extDB3_x64.dll`,
+   `@ExileServer\extdb3-conf.ini`, and `@ExileServer\sql_custom\exile.ini`.
 3. **Missing `-filePatching`.** A3XAI reads `a3xai_config.sqf` as a loose file
    and silently ends the mission during world init without it.
 4. **Database reachable?** MariaDB up, credentials in `extdb-conf.ini` current.

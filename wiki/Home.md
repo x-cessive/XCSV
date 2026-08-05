@@ -25,8 +25,8 @@ More at [the project page](https://x-cessive.github.io/XCSV/guard/).
 
 ## The one-paragraph version
 
-`arma3server.exe` (**32-bit — this is not optional**) loads Exile 1.0.4a and the
-`Exile.Tanoa` mission, talks to MariaDB through extDB2 v71, and is policed by
+`arma3server_x64.exe` loads Exile 1.0.4a and the
+`Exile.Tanoa` mission, talks to MariaDB through extDB3, and is policed by
 BattlEye and infiSTAR. **XCSV GUARD**, a Rust console, supervises all of it:
 it refuses to start the server if any PBO fails an integrity check, speaks
 BattlEye RCon over UDP, watches log growth, performs a crash autopsy, and brings
@@ -35,7 +35,7 @@ the whole stack up or down with one button. Our own content lives in
 
 ## Non-negotiables
 
-- **32-bit server binary.** extDB2 has no x64 build and never did.
+- **64-bit server binary with extDB3.** Do not restore extDB2 or the old x86 launcher.
 - **`-filePatching` on.** Without it A3XAI ends the mission during world init.
 - **No Exile source in our repositories.** Override via `CfgExileCustomCode`.
 - **Nothing the players type ever reaches the language model.** The model reads

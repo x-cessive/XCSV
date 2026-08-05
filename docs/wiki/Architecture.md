@@ -12,23 +12,18 @@ source: Architecture.md
 
 | process | bitness | why it exists |
 |---|---|---|
-| `arma3server.exe` | **x86** | the game server. x64 is forbidden — see below |
+| `arma3server_x64.exe` | x64 | the game server, migrated to extDB3 on 2026-08-05 |
 | `mysqld` (MariaDB 10.11) | x64 | player, territory and vehicle persistence |
 | `arma3.exe -client -connect` | x64 | headless client — moves AI and missions off the server thread |
 | `XCSV_GUARD.exe` | x64 | operations console; supervises everything above |
 | LM Studio server | x64 | local model, log triage only |
 
-### Why the server binary must be 32-bit
+### Database bridge
 
-extDB2 ships as `extDB2.dll` only. There is no `extDB2_x64.dll`, there never
-was, and no amount of configuration produces one. Launching
-`arma3server_x64.exe` against it does not fail cleanly — it floods the RPT.
-On 2026-08-01 that wrote **419 MB in under an hour** and forced a hard reboot.
-
-The cost of x86 is a ~4 GB address ceiling that the server idles near 2 GB
-against. That is the trade, and it is why restarts return memory and
-`#shutdown` is used rather than `#restart` (the latter reloads the mission
-inside the same process and never gives memory back).
+extDB2 was 32-bit only and caused the 2026-08-01 x64 failure. Production now uses
+extDB3 with `@ExileServer\extDB3_x64.dll`, `@ExileServer\extdb3-conf.ini`, and
+`@ExileServer\sql_custom\exile.ini`. The server launcher sets `-maxMem=12288`
+as the explicit 12 GB x64 memory target.
 
 ## Threading — the fact that shapes every design decision
 
