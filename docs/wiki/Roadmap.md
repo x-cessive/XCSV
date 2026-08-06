@@ -54,7 +54,7 @@ addons, scripts, mods and packed PBOs so stale builds cannot silently duplicate.
 |---|---|
 | **Richer GUARD AI / mission tab** | add deeper per-mission drilldowns and alerts now that the first live count/ownership slice exists |
 | **Richer GUARD database console** | add structured table rendering and saved/recent query history after the grouped preset slice |
-| **BattlEye enforcement** | 4 of 51 script rules enforcing; triage remaining exceptions before raising more rules |
+| **BattlEye enforcement** | 8 of 51 script rules enforcing (slice 2 staged 2026-08-06: rules 22/26/33/36, all zero-hit); triage remaining exceptions before raising more rules |
 | **infiSTAR cloud 403** | determine whether this is account/licence/API configuration and preserve local logs meanwhile |
 
 ## Later
