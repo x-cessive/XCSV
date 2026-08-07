@@ -21,15 +21,15 @@
 
 > ## AI / AGENT START HERE
 >
-> **Before acting on any roadmap item, read [AI Start Here](wiki/AI-Start-Here.md).**
+> **Before acting on any roadmap item or creating commits, read [AI Start Here](wiki/AI-Start-Here.md) and [AI Provenance & Doc Sync](wiki/AI-Provenance-and-Doc-Sync.md).**
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, enter the contract's **READ_ONLY_BOOTSTRAP** first. Roadmap status is intent, not implementation proof. Reconcile the desktop roadmap, RAG/history, local working trees, Git history, GitHub/submodule state and relevant live evidence; then work only on the remaining delta.
 >
-> **Do not duplicate substantially equivalent functionality.** If sources disagree, reconcile the conflict before implementation.
+> **Current documentation state: `DIVERGED` until SOVRAN-1 reconciliation.** GitHub contains new planning/AI-contract work from 2026-08-07 and the desktop roadmap may contain unique operational evidence. Preserve both sides and reconcile semantically; do not overwrite either side merely to force agreement.
+>
+> **AI-authored commits require XCSV provenance trailers** so the authenticated GitHub account and the authoring AI are not confused.
 
 This repository is the **hub**. It holds the system map, documentation, wiki and submodule pointers for XCSV EXILE.
-
-> **Planning update — 2026-08-07:** GitHub carries the current XCSV Gauntlet + GUARD reliability/UX + server optimization + curated player-development programme. See the [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md), [AI / Development Tooling](wiki/AI-Tooling.md) and [Roadmap](wiki/Roadmap.md). The desktop/Obsidian roadmap remains authoritative and is pending manual reconciliation by Architect.
 
 ## 🗺️ The system
 
@@ -76,26 +76,7 @@ Primary invariant:
 
 > **Closing XCSV GUARD must never erase operational truth. Reopening it must reconstruct the same server state from authoritative sources and continue supervising it.**
 
-The plan now includes:
-
-- separate config from durable operational state
-- schema versioning/migrations and atomic persistence
-- startup reconciliation and desired-vs-observed state
-- absolute restart persistence and RCon auto-reconnect
-- Safe Mode for damaged/untrusted startup state
-- backend backplane and formal tab contracts
-- self-diagnostics and restart-survival acceptance tests
-- Replay Mode plus historical failure fixtures
-- Operator Action Journal
-- Operations Mode vs Engineering Mode UX
-- universal entity inspector
-- historical telemetry, explicit SLOs and capacity/headroom views
-- Incident Mode and Tanoa operations map
-- artifact registry, deployment diff and explicit rollback identity
-- documentation/state drift auditing
-- addon provenance and compatibility matrix
-- Change Impact Graph
-- isolated staging path for high-risk G3/G4 work
+The plan includes config/state separation, schema migration and atomic persistence, startup reconciliation, desired-vs-observed state, restart persistence, RCon recovery, Safe Mode, backend contracts, self-diagnostics, Replay Mode, action journaling, Operations/Engineering UX, historical telemetry, SLO/headroom views, Incident Mode, operations mapping, artifact identity, deployment diff/rollback, provenance/compatibility and staging for high-risk work.
 
 ### GUARD as an evidence instrument
 
@@ -124,6 +105,7 @@ Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md
 | I want to… | go to |
 |---|---|
 | Orient an AI / reconcile roadmap work | [AI Start Here](wiki/AI-Start-Here.md) |
+| Understand AI attribution and desktop/GitHub sync | [AI Provenance & Doc Sync](wiki/AI-Provenance-and-Doc-Sync.md) |
 | See tooling decisions / tracker policy | [AI / Development Tooling](wiki/AI-Tooling.md) |
 | See the full current development programme | [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) |
 | See priority/order and completed work | [Roadmap](wiki/Roadmap.md) |
@@ -137,14 +119,14 @@ Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md
 
 ## ✍️ Documentation
 
-`wiki/` is the Git-tracked wiki source. `docs/wiki/` is generated and should not be hand-maintained as the authoritative source.
+`wiki/` is the Git-tracked wiki source. `docs/wiki/` is generated and should not be hand-maintained as an authority.
 
 ```powershell
 .\tools\build-docs.ps1
 .\tools\push-wiki.ps1
 ```
 
-The desktop `ARMA3_EXILE_CODEX\ROADMAP.md` remains the authoritative full working roadmap. Architect will manually reconcile it with this GitHub planning state.
+The desktop `ARMA3_EXILE_CODEX\ROADMAP.md` remains the authoritative full working roadmap after semantic reconciliation. Until that first SOVRAN-1 reconciliation is performed, documentation state is explicitly **DIVERGED**, not synchronized. See [AI Provenance & Doc Sync](wiki/AI-Provenance-and-Doc-Sync.md).
 
 ## 🔒 Security / licensing
 
