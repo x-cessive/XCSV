@@ -1,0 +1,6 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "wiki/AI-Start-Here.md"
+  ]
+}
