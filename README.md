@@ -25,7 +25,7 @@
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, enter the contract's **READ_ONLY_BOOTSTRAP** first. Roadmap status is intent, not implementation proof. Reconcile the desktop roadmap, RAG/history, local working trees, Git history, GitHub/submodule state and relevant live evidence; then work only on the remaining delta.
 >
-> **Current documentation state: `DIVERGED` until SOVRAN-1 reconciliation.** GitHub contains new planning/AI-contract work from 2026-08-07 and the desktop roadmap may contain unique operational evidence. Preserve both sides and reconcile semantically; do not overwrite either side merely to force agreement.
+> **Current documentation state: `SYNCED` as of 2026-08-07 (work ID `XCSV-AI-001`).** The first SOVRAN-1 reconciliation is complete: GitHub's AI-contract and planning work was absorbed into the desktop roadmap as Phase 15 by append, and the desktop's operational evidence stays authoritative where this estate deliberately summarises it. Reconcile semantically on future divergence; never overwrite one side to force agreement.
 >
 > **AI-authored commits require XCSV provenance trailers** so the authenticated GitHub account and the authoring AI are not confused.
 
@@ -126,7 +126,7 @@ Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md
 .\tools\push-wiki.ps1
 ```
 
-The desktop `ARMA3_EXILE_CODEX\ROADMAP.md` remains the authoritative full working roadmap after semantic reconciliation. Until that first SOVRAN-1 reconciliation is performed, documentation state is explicitly **DIVERGED**, not synchronized. See [AI Provenance & Doc Sync](wiki/AI-Provenance-and-Doc-Sync.md).
+The desktop `ARMA3_EXILE_CODEX\ROADMAP.md` remains the authoritative full working roadmap. The first SOVRAN-1 reconciliation was performed on 2026-08-07 (`XCSV-AI-001`), so documentation state is **SYNCED**; classify it again at each bootstrap rather than assuming it stays that way. See [AI Provenance & Doc Sync](wiki/AI-Provenance-and-Doc-Sync.md).
 
 ## 🔒 Security / licensing
 

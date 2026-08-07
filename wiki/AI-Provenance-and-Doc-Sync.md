@@ -155,7 +155,9 @@ Both sides contain unique or conflicting relevant information, or the relationsh
 
 The AI cannot inspect both sides.
 
-**Current bootstrap assumption for the 2026-08-07 AI-contract work is `DIVERGED` until SOVRAN-1 proves otherwise.** GitHub has new planning/contracts from the current session, while the desktop roadmap may also contain operational details that are absent from GitHub. Do not call either side a complete replacement for the other.
+**Resolved 2026-08-07 (`XCSV-AI-001`).** The 2026-08-07 AI-contract work was assumed `DIVERGED`; the first SOVRAN-1 bootstrap confirmed that assumption was correct and then reconciled it. GitHub-only material (contract, provenance policy, tooling decision, GUARD development plan, Gauntlet) was absorbed into the desktop roadmap as Phase 15 by append; desktop-only material (measurements, RPT/PBO forensics, refuted hypotheses) stayed on the desktop and remains deliberately abstracted here. Neither side was overwritten. State is now `SYNCED`.
+
+This resolution is a snapshot, not a standing guarantee. Classify the relationship again at every bootstrap; never inherit `SYNCED` from a previous session. Do not call either side a complete replacement for the other.
 
 ## 5. First reconciliation after returning to SOVRAN-1
 

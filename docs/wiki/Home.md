@@ -14,7 +14,7 @@ source: Home.md
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, run the canonical `READ_ONLY_BOOTSTRAP` first. Reconcile roadmap intent against RAG/history, local working trees, Git history, GitHub/submodules and relevant live evidence. Work only on the remaining delta; do not duplicate equivalent functionality.
 >
-> **Current documentation state: `DIVERGED` until SOVRAN-1 reconciliation.** GitHub contains new planning/AI-contract work from 2026-08-07, while the desktop roadmap may contain unique operational evidence. Preserve both sides and reconcile semantically; do not overwrite either one to force agreement.
+> **Current documentation state: `SYNCED` as of 2026-08-07 (work ID `XCSV-AI-001`).** The first SOVRAN-1 reconciliation is complete. The AI contract, provenance policy, tooling decision and GUARD development programme were absorbed into the desktop roadmap as Phase 15 by append, with no existing section rewritten; this wiki keeps its deliberate abstraction of the desktop's measurements, RPT filenames and refuted hypotheses. That abstraction is the intended layering, not drift.
 
 A dedicated **Arma 3 Exile** server on Tanoa, and every piece of software that keeps it alive.
 

@@ -15,7 +15,7 @@ The authoritative, full-length roadmap is
 the struck-through wrong turns and the measurements. This page is the summary
 you can link to.
 
-> **2026-08-07 planning sync:** GitHub carries the current planning backlog from the XCSV GUARD / Gauntlet design sessions. The desktop/Obsidian roadmap remains authoritative and is pending manual reconciliation by Architect. Until then, any disagreement is explicit planning-state divergence, not evidence that the desktop copy has already been updated.
+> **2026-08-07 planning sync - RECONCILED.** The GUARD / Gauntlet planning backlog originated here and has now been absorbed into the authoritative desktop roadmap as **Phase 15** (work ID `XCSV-AI-001`). The desktop/Obsidian `ROADMAP.md` remains authoritative for priority, evidence and refuted hypotheses; this page remains the durable summary. Documentation state is `SYNCED`.
 
 **Guiding rule: performance before content, always.**
 
