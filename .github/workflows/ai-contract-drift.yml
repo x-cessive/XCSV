@@ -18,6 +18,11 @@ on:
       - 'tools/ai-reconcile.ps1'
       - 'tools/ai-commit.ps1'
       - 'tools/build-docs.ps1'
+      - 'tools/sync-all.ps1'
+      - 'tools/sync-policy.ps1'
+      - 'tools/check-text-safety.ps1'
+      - 'tools/tests/**'
+      - '.github/workflows/sync.yml'
       - 'docs/wiki/AI-Start-Here.md'
       - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
@@ -38,6 +43,11 @@ on:
       - 'tools/ai-reconcile.ps1'
       - 'tools/ai-commit.ps1'
       - 'tools/build-docs.ps1'
+      - 'tools/sync-all.ps1'
+      - 'tools/sync-policy.ps1'
+      - 'tools/check-text-safety.ps1'
+      - 'tools/tests/**'
+      - '.github/workflows/sync.yml'
       - 'docs/wiki/AI-Start-Here.md'
       - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
@@ -157,3 +167,50 @@ jobs:
             echo 'ai-reconcile.ps1 contains a potentially mutating command; review required.'
             exit 1
           fi
+
+      - name: Sync automation cannot absorb human or AI work (XCSV-AI-002)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f tools/sync-policy.ps1 || { echo 'MISSING: tools/sync-policy.ps1'; exit 1; }
+          test -f tools/tests/sync-policy.tests.ps1 || { echo 'MISSING: the sync policy regression suite'; exit 1; }
+          # The literal defect: broad staging of the hub root. sync.yml stages
+          # 'docs/wiki' explicitly and must keep doing so.
+          if grep -Eq 'Invoke-Git[[:space:]]+-C[[:space:]]+\$Root[[:space:]]+add[[:space:]]+-A\b' tools/sync-all.ps1; then
+            echo 'sync-all.ps1 stages the hub with `git add -A` - it can absorb uncommitted work.'
+            exit 1
+          fi
+          # sync.yml must stage the regenerated pages by explicit path. Note it
+          # also runs `git add -A` inside the throwaway wiki clone, which is
+          # correct - that directory contains nothing but copied wiki files - so
+          # this asserts the good pattern rather than banning the string.
+          grep -Fq 'git add docs/wiki' .github/workflows/sync.yml
+          grep -Fq 'BLOCKED_DIRTY_SOURCE' tools/sync-all.ps1
+          grep -Fq 'BLOCKED_DIRTY_SOURCE' tools/sync-policy.ps1
+          # Automation provenance, and only automation provenance.
+          grep -Fq 'XCSV-Agent: automation'      tools/sync-policy.ps1
+          grep -Fq 'XCSV-Agent-Role: automation' tools/sync-policy.ps1
+          grep -Fq 'XCSV-Work-ID: XCSV-AI-002'   tools/sync-policy.ps1
+
+  sync-policy:
+    name: Sync policy regression suite
+    # Windows on purpose: the code under test is Windows PowerShell 5.1
+    # automation driving a Windows scheduled task. Running it under pwsh on
+    # Linux would test a different language edition than the one that actually
+    # runs hourly on SOVRAN-1.
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Sync policy and provenance tests
+        shell: powershell
+        run: |
+          .\tools\tests\sync-policy.tests.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: No unsafe same-file text rewrites on protected paths
+        shell: powershell
+        run: |
+          .\tools\check-text-safety.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

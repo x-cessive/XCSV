@@ -68,6 +68,43 @@ rotation the console could not authenticate — the old value was still in
 `xcsv_guard.json`. Five locations had to be updated. Grep for the old value
 before declaring a rotation done.
 
+**`Get-Content | Set-Content` is not a targeted edit — it re-encodes the whole
+file.** A one-character fix to the desktop `ROADMAP.md` was written as
+`(Get-Content $p) -replace ... | Set-Content $p -Encoding utf8`. PowerShell 5.1
+decodes with the ANSI codepage and writes a BOM, so the round-trip silently
+re-encoded every non-ASCII byte in 147 KB of authoritative text: pre-existing
+double-encoded UTF-8 became triple-encoded. It was recoverable only because the
+transform happened to be invertible. Edit the specific lines, or read and write
+bytes. `tools/check-text-safety.ps1` now fails the build on this shape.
+
+**A safety check that cannot fail is worse than no check.** The first version of
+that same checker computed repo-relative paths by `Substring` against a root
+that could be an 8.3 short path (`C:\Users\ARCHIT~1\...`) while `Get-ChildItem`
+returned the long form. Every relative path came out as garbage, matched no
+protected pattern, and the check reported "clean" on a planted offender. It was
+only caught because the test planted one and demanded it be found. `Get-Item`
+expands 8.3; `Resolve-Path` does not. Always test a detector against a known
+positive.
+
+**Automation that stages broadly will eventually commit someone else's work.**
+`sync-all.ps1` ran `git add -A` on the hub every hour. It swept an AI-authored
+wiki edit into commit `9a97709` under a generic message with no provenance
+trailers. The same script's member-repo loop had always been careful — detect
+dirty, report, never touch — so the safe pattern was sitting ten lines above the
+defect. Automation may commit only what it produced itself; anything else is
+`BLOCKED_DIRTY_SOURCE`. See `tools/sync-policy.ps1`.
+
+**An environment token silently outranks the credential you configured.** `gh`
+prefers `GH_TOKEN` over its stored credential, so a fine-grained PAT in the
+environment became the active account while a keyring OAuth token carrying the
+needed `project` scope sat inactive. Every Projects write failed as "not
+accessible by personal access token", and the obvious remedy is a dead end —
+`gh` refuses to refresh a token supplied through the environment. The fix was to
+stop using the env var, not to grant a scope. `gh auth status` lists *every*
+account, not just the active one, and `gh api repos/... --jq .permissions`
+reports the **user's** repo role, not the token's grant. The only proof of a
+write is the write.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The

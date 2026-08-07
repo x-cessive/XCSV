@@ -47,6 +47,122 @@ function Invoke-GitText {
     }
 }
 
+function Get-GhAuthState {
+    <#
+        Detect a GH_TOKEN environment variable shadowing the credential gh has
+        stored, without ever reading, printing or returning either secret.
+
+        XCSV-AI-001 lost most of a session to this. gh prefers GH_TOKEN over its
+        stored credential, so a fine-grained PAT in the environment silently
+        became the active account while a keyring OAuth token with the scopes
+        the work needed sat inactive. Every Projects and issue write failed with
+        "Resource not accessible by personal access token", and the obvious
+        remedy is a dead end: gh refuses to refresh a token supplied through the
+        environment. The fix was to stop using the env var, not to grant a scope
+        - but nothing in the tooling said so.
+
+        Only presence, account names, source and scope names are inspected. The
+        token values themselves are never touched.
+    #>
+
+    $state = [pscustomobject]@{
+        gh_present       = $false
+        env_token_set    = [bool]$env:GH_TOKEN
+        active_account   = $null
+        active_source    = $null
+        stored_accounts  = @()
+        active_scopes    = @()
+        stored_scopes    = @()
+        shadowing        = 'UNKNOWN'
+        detail           = $null
+    }
+
+    $gh = Get-Command gh -ErrorAction SilentlyContinue
+    if (-not $gh) {
+        $state.shadowing = 'UNKNOWN'
+        $state.detail = 'gh CLI not found on PATH'
+        return $state
+    }
+    $state.gh_present = $true
+
+    $old = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try { $raw = (& gh auth status 2>&1 | Out-String) }
+    finally { $ErrorActionPreference = $old }
+
+    if (-not $raw) {
+        $state.detail = 'gh auth status returned nothing'
+        return $state
+    }
+
+    # Walk the per-account blocks. gh prints one "Logged in to <host> account
+    # <name> (<source>)" header followed by indented properties.
+    $current = $null
+    $accounts = New-Object System.Collections.Generic.List[object]
+
+    foreach ($line in ($raw -split "`r?`n")) {
+        if ($line -match 'Logged in to\s+\S+\s+account\s+(\S+)\s+\(([^)]+)\)') {
+            $current = [pscustomobject]@{
+                name   = $Matches[1]
+                source = $Matches[2]
+                active = $false
+                scopes = @()
+            }
+            $accounts.Add($current)
+            continue
+        }
+        if (-not $current) { continue }
+
+        if ($line -match 'Active account:\s*true') { $current.active = $true }
+
+        if ($line -match "Token scopes:\s*(.+)$") {
+            # Scope NAMES only. The token value is on a different line and is
+            # never parsed.
+            $current.scopes = @(
+                ($Matches[1] -split ',') |
+                    ForEach-Object { $_.Trim().Trim("'").Trim('"') } |
+                    Where-Object { $_ }
+            )
+        }
+    }
+
+    if ($accounts.Count -eq 0) {
+        $state.detail = 'no authenticated gh account detected'
+        return $state
+    }
+
+    $active = $accounts | Where-Object { $_.active } | Select-Object -First 1
+    if (-not $active) { $active = $accounts[0] }
+
+    $state.active_account  = $active.name
+    $state.active_source   = $active.source
+    $state.active_scopes   = @($active.scopes)
+    $state.stored_accounts = @($accounts | Where-Object { -not $_.active } | ForEach-Object { $_.name })
+    $state.stored_scopes   = @($accounts | Where-Object { -not $_.active } | ForEach-Object { $_.scopes } | Sort-Object -Unique)
+
+    $envSourced = ($active.source -match 'GH_TOKEN|GITHUB_TOKEN')
+    $inactiveWithScopes = @($accounts | Where-Object { -not $_.active -and $_.scopes.Count -gt 0 })
+
+    if ($envSourced -and $inactiveWithScopes.Count -gt 0) {
+        # The active credential comes from the environment while a stored one
+        # carries explicit scopes. Whether the stored one is strictly better
+        # cannot always be known - an env token reports no scopes at all - so
+        # report the shadowing and let the operator compare.
+        $state.shadowing = 'GH_TOKEN_SHADOWING_STORED_CREDENTIAL'
+        $state.detail = ('active credential comes from the environment; a stored credential offers scopes: {0}' -f (($state.stored_scopes) -join ', '))
+    }
+    elseif ($envSourced) {
+        $state.shadowing = 'ENV_TOKEN_ACTIVE_NO_STORED_ALTERNATIVE'
+        $state.detail = 'active credential comes from the environment; no scoped stored credential detected'
+    }
+    else {
+        $state.shadowing = 'NONE'
+        $state.detail = 'active credential is the stored one'
+    }
+
+    return $state
+}
+
 function Get-RepoState {
     param(
         [string] $Name,
@@ -139,6 +255,8 @@ if (Test-Path $Hub) {
     $submodules = Invoke-GitText -Repo $Hub -GitArgs @('submodule', 'status')
 }
 
+$ghAuth = Get-GhAuthState
+
 $result = [pscustomobject]@{
     contract_version = '1.0.0'
     mode = 'READ_ONLY_BOOTSTRAP'
@@ -160,6 +278,7 @@ $result = [pscustomobject]@{
     }
     repositories = $repos
     hub_submodules = $submodules
+    github_auth = $ghAuth
     notes = @(
         'MISMATCH means local HEAD and remote branch tip differ; it does not say which side is correct.',
         'DIRTY means inspect local changes before pull, reset, checkout, merge, rebase, or replacement.',
@@ -192,4 +311,17 @@ Write-Host ''
 Write-Host 'Hub submodules:'
 if ($submodules) { Write-Host $submodules } else { Write-Host '  UNKNOWN' }
 Write-Host ''
+Write-Host 'GitHub auth:'
+Write-Host ('  active account   {0} (source: {1})' -f $ghAuth.active_account, $ghAuth.active_source)
+Write-Host ('  GH_TOKEN set     {0}' -f $ghAuth.env_token_set)
+Write-Host ('  shadowing        {0}' -f $ghAuth.shadowing)
+if ($ghAuth.shadowing -eq 'GH_TOKEN_SHADOWING_STORED_CREDENTIAL') {
+    Write-Host '  WARNING: GH_TOKEN is overriding the credential gh has stored.'
+    Write-Host ('  stored credential scopes: {0}' -f (($ghAuth.stored_scopes) -join ', '))
+    Write-Host '  If a Projects/Issues write fails as "not accessible by personal access token",'
+    Write-Host '  clear GH_TOKEN for the process and retry before requesting any new scope.'
+    Write-Host '  gh cannot refresh a token supplied through the environment.'
+}
+Write-Host ''
+Write-Host 'No token values were read or displayed.'
 Write-Host 'No changes were made.'
