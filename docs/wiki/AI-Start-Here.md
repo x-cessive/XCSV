@@ -40,11 +40,12 @@ Do not implement, repair, deploy, commit, pull over dirty work, repack PBOs, cha
 5. Inspect the relevant local working tree before trusting GitHub: current branch, `git status`, current commit, uncommitted changes and relevant target files.
 6. Compare the local commit to the remote branch without assuming GitHub is newer or authoritative for live state.
 7. Inspect recent relevant commits and existing implementation before proposing new code.
-8. If the claim is operational, inspect the relevant live evidence: deployed artifact, RPT/HC RPT, database query, process state, GUARD state, BattlEye/infiSTAR logs or other source of truth.
-9. Classify the requested/next roadmap item using the reconciliation states below.
-10. Identify only the **remaining delta**.
-11. Select the Gauntlet risk level.
-12. Report a concise **XCSV BOOTSTRAP REPORT** before implementation.
+8. Inspect relevant open GitHub issues/project items before creating a new execution record.
+9. If the claim is operational, inspect the relevant live evidence: deployed artifact, RPT/HC RPT, database query, process state, GUARD state, BattlEye/infiSTAR logs or other source of truth.
+10. Classify the requested/next roadmap item using the reconciliation states below.
+11. Identify only the **remaining delta**.
+12. Select the Gauntlet risk level.
+13. Report a concise **XCSV BOOTSTRAP REPORT** before implementation.
 
 ## Authority hierarchy
 
@@ -56,10 +57,11 @@ Different sources answer different questions. Do not flatten them into one truth
 | Local working tree | what code/files actually exist on this machine now |
 | Local git history | what has been committed locally |
 | GitHub remote | what has been published/pushed |
+| GitHub Issues / Project | active execution record, ownership, current workflow state |
 | Hub submodule pointers | which member-repo commits the hub currently references |
 | Live server/deployed artifacts | what is actually deployed/running |
 | Runtime evidence | whether the deployed behavior actually worked |
-| Wiki/README/site | durable explanation and public/operator navigation; not proof by itself |
+| Wiki/README/site | durable explanation and navigation; not proof by itself |
 
 If these disagree, **the disagreement is the finding**. Do not silently choose the most convenient source.
 
@@ -127,6 +129,7 @@ Roadmap: <what it says>
 RAG/history: <relevant prior result/refuted hypotheses>
 Local repo: <branch / clean-dirty / commit>
 GitHub: <same commit / mismatch / unknown>
+Issue/Project: <existing execution record / none / conflict>
 Live evidence: <verified / unavailable / not required>
 Classification: VERIFIED_DONE | PRESENT_UNVERIFIED | PARTIAL | PLANNED_ONLY | STALE_OR_CONFLICTED | BLOCKED
 Remaining delta: <smallest actual missing work>
@@ -160,15 +163,16 @@ Worker may not self-certify. Keep **EVIDENCED / INFERRED / UNKNOWN** distinct. R
 
 To avoid double work, XCSV uses **GitHub Issues + GitHub Projects** as the execution tracker. The roadmap remains the priority/decision memory; an issue is the active execution record.
 
-Do not introduce Trello, Jira, Asana, Monday, Wrike, Kanban Tool or another board as a second task authority unless Architect explicitly changes this rule.
+Do not introduce Trello, Jira, Asana, Monday, Wrike, Kanban Tool, Linear or another board as a second task authority unless Architect explicitly changes this rule.
 
 For material roadmap work:
 
 1. Give the item a stable ID when it becomes active, e.g. `GUARD-REL-002`.
-2. Use one GitHub issue as the execution record.
-3. Use sub-issues for genuinely separable work, not every tiny code edit.
-4. Link commits/PRs to the issue or stable ID.
-5. Do not mark Done until verification and durable-sync requirements are satisfied.
+2. Search existing issues before creating one.
+3. Use one GitHub issue as the execution record.
+4. Use sub-issues for genuinely separable work, not every tiny code edit.
+5. Link commits/PRs to the issue or stable ID.
+6. Do not mark Done until verification and durable-sync requirements are satisfied.
 
 Recommended GitHub Project workflow:
 
@@ -186,7 +190,84 @@ Useful fields:
 - Verification state
 - Target date only when real
 
-GitHub Projects supports table, board and roadmap views; keep the same issue as the underlying work item rather than duplicating cards.
+Keep the same GitHub issue as the underlying work item rather than duplicating cards in another tracker.
+
+## First-run GitHub Projects setup
+
+This setup is authorized as part of XCSV's GitHub-native execution workflow, but it must happen only after local repository reconciliation so no dirty local work is overwritten.
+
+On the first real SOVRAN-1 bootstrap:
+
+1. Confirm GitHub CLI authentication:
+
+```powershell
+gh auth status
+```
+
+2. Ensure the token has GitHub Projects scope:
+
+```powershell
+gh auth refresh -s project
+```
+
+3. List existing projects before creating anything:
+
+```powershell
+gh project list --owner x-cessive
+```
+
+4. If an equivalent XCSV execution project already exists, use it. **Do not create a duplicate.** If none exists, create one:
+
+```powershell
+gh project create --owner x-cessive --title "XCSV Development"
+```
+
+5. Record the returned project number. Add fields only if equivalent fields do not already exist:
+
+```powershell
+gh project field-create <PROJECT_NUMBER> --owner x-cessive --name "Roadmap ID" --data-type TEXT
+gh project field-create <PROJECT_NUMBER> --owner x-cessive --name "Owning Repo" --data-type SINGLE_SELECT --single-select-options "XCSV,XCSV_GUARD,XCSV_ADDONS,Exile,Cross-repo"
+gh project field-create <PROJECT_NUMBER> --owner x-cessive --name "Reconciliation" --data-type SINGLE_SELECT --single-select-options "VERIFIED_DONE,PRESENT_UNVERIFIED,PARTIAL,PLANNED_ONLY,STALE_OR_CONFLICTED,BLOCKED"
+gh project field-create <PROJECT_NUMBER> --owner x-cessive --name "Gauntlet" --data-type SINGLE_SELECT --single-select-options "G0,G1,G2,G3,G4"
+gh project field-create <PROJECT_NUMBER> --owner x-cessive --name "Verification" --data-type SINGLE_SELECT --single-select-options "NOT_REQUIRED,NOT_STARTED,IN_PROGRESS,PASS,BLOCKED"
+```
+
+6. Add the bootstrap issue to the project:
+
+```powershell
+gh project item-add <PROJECT_NUMBER> --owner x-cessive --url https://github.com/x-cessive/XCSV/issues/1
+```
+
+7. Pin the bootstrap issue in the hub repo:
+
+```powershell
+gh issue pin 1 --repo x-cessive/XCSV
+```
+
+8. Configure useful project views in the GitHub UI if needed: table for reconciliation/detail, board for workflow, roadmap only for items with real dates. Do not invent deadlines merely to populate a roadmap view.
+
+9. Before creating any future issue, search first:
+
+```powershell
+gh issue list --repo x-cessive/XCSV --state all --search "<roadmap id or target terms>"
+```
+
+## Optional GitHub MCP enhancement
+
+The normal XCSV workflow does **not** require MCP: local git, GitHub CLI, the canonical contract and `ai-reconcile.ps1` are sufficient.
+
+However, the official GitHub MCP Server is a useful optional enhancement for Claude/other MCP-capable development agents because it can expose remote repository, issue, PR and workflow context directly to the agent.
+
+Rules:
+
+- use GitHub's official MCP server only
+- prefer OAuth where supported
+- never commit PATs/tokens into `.mcp.json`, `CLAUDE.md`, repo config or shell scripts
+- scope credentials to the minimum needed
+- MCP remote state does not outrank the local working tree or live server
+- if MCP is unavailable, the workflow must still work through `git` / `gh`
+
+If Claude Code on SOVRAN-1 supports the official remote GitHub MCP flow and Architect wants it enabled, Claude should first inspect existing MCP configuration with `/mcp` / Claude's MCP commands and **avoid adding a duplicate server**. Authentication remains local/user-scoped rather than committed with a secret.
 
 ## Completion transaction
 
@@ -213,15 +294,15 @@ If the desktop roadmap cannot be updated in the current environment, say so expl
 
 ### Claude Code
 
-The XCSV hub contains `CLAUDE.md`, which imports this contract automatically. Member repositories must route Claude back to this contract. Claude Code project instructions are Git-tracked; do not rewrite global `%USERPROFILE%\.claude` settings unless Architect explicitly asks.
+The XCSV hub contains `CLAUDE.md`, which imports this contract automatically. Member repositories route Claude back to this contract. Claude Code project instructions are Git-tracked; do not rewrite global `%USERPROFILE%\.claude` settings unless Architect explicitly asks.
 
 ### OpenCode
 
-The hub `AGENTS.md` points here and `opencode.json` includes this file as project instructions. OpenCode uses `AGENTS.md` as its primary project rule source.
+The hub `AGENTS.md` points here and `opencode.json` includes this file as project instructions. Member repos also contain `AGENTS.md` routers.
 
 ### Antigravity
 
-The hub includes `.agents/rules/00-xcsv-ai-entrypoint.md`. Workspace rules should be **Always On**. If Antigravity has not activated that committed workspace rule, set it to Always On once; do not create a competing copy of this contract.
+The repos include `.agents/rules/00-xcsv-ai-entrypoint.md`. Workspace rules should be **Always On**. If Antigravity has not activated the committed workspace rule, set it to Always On once; do not create a competing copy of this contract.
 
 ### Development-local LLMs
 
@@ -234,8 +315,11 @@ When Architect returns to SOVRAN-1/XCSV and starts Claude Code:
 1. Start Claude from the relevant XCSV repo.
 2. Say **"read the GitHub"**.
 3. Claude should discover its repo-local adapter, read this contract, locate the desktop roadmap and run `D:\XCSV\tools\ai-reconcile.ps1`.
-4. If a member repo adapter or local checkout is missing, Claude should report exactly what is missing and repair only the Git-tracked project setup after checking for local uncommitted work.
-5. Do not run `/init` blindly over existing instruction files. Existing XCSV instruction files are deliberate and should be extended, not replaced.
+4. Claude should inspect Issue `XCSV-AI-001` / hub Issue #1 and existing GitHub Projects state.
+5. If the GitHub Project is not yet configured, follow **First-run GitHub Projects setup** above rather than inventing another tracker.
+6. If a member repo adapter or local checkout is missing, Claude should report exactly what is missing and repair only the Git-tracked project setup after checking for local uncommitted work.
+7. Do not run `/init` blindly over existing instruction files. Existing XCSV instruction files are deliberate and should be extended, not replaced.
+8. Return the `XCSV BOOTSTRAP REPORT` before implementation.
 
 No additional global Claude configuration is required for the normal XCSV workflow.
 
