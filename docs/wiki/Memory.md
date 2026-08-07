@@ -4,7 +4,7 @@ section: docs
 title: Memory
 heading: Memory
 blurb: Where project truth is recorded, and the RAG plan.
-order: 9
+order: 10
 source: Memory.md
 ---
 

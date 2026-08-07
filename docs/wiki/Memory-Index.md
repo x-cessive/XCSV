@@ -4,7 +4,7 @@ section: docs
 title: Memory Index
 heading: Memory Index
 blurb: Heading-level map of vault and wiki memory.
-order: 10
+order: 11
 source: Memory-Index.md
 ---
 
