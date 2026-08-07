@@ -4,7 +4,7 @@ section: docs
 title: Roadmap
 heading: Roadmap
 blurb: Done, in flight, next, and deliberately parked.
-order: 6
+order: 7
 source: Roadmap.md
 ---
 
@@ -45,7 +45,7 @@ you can link to.
 
 ## 2026-08-07 development programme
 
-Detailed design: [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan).
+Detailed design: [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html).
 
 ### A. XCSV Gauntlet
 
@@ -247,7 +247,7 @@ not unrestricted production authority through GUARD controls. Runtime local mode
 
 ## Related
 
-- [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan)
+- [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)
 - [XM8 Apps](XM8-Apps.html)
 - [Architecture](Architecture.html)
 - [Lessons](Lessons.html)

@@ -4,7 +4,7 @@ section: docs
 title: Overview
 heading: Overview
 blurb: What XCSV EXILE is, and where to start.
-order: 1
+order: 2
 source: Home.md
 ---
 
@@ -18,7 +18,7 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 
 | page | when you need it |
 |---|---|
-| **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
+| **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
 | **[Roadmap](Roadmap.html)** | current order, completed work and planning priorities |
 | **[Architecture](Architecture.html)** | understanding what talks to what |
 | **[Runbook](Runbook.html)** | the server is broken and you need the operating procedure |

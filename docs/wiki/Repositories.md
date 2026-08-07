@@ -4,7 +4,7 @@ section: docs
 title: Repositories
 heading: Repositories
 blurb: Four repos, one system: what lives where, and why.
-order: 4
+order: 5
 source: Repositories.md
 ---
 
