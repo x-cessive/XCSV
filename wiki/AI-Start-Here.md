@@ -186,6 +186,10 @@ Keep the same GitHub issue as the underlying work item rather than duplicating c
 
 ## First-run GitHub Projects setup
 
+> **Completed 2026-08-07 (`XCSV-AI-001`). The live execution project is [XCSV Development](https://github.com/users/x-cessive/projects/1) (`PVT_kwHOAVMLy84Bfp03`, project number 1), and hub Issue #1 is in it and pinned.** Do not run the creation step below again. The procedure is retained as the reproducible reference for reconciling fields and adding future items.
+>
+> **Auth trap - read before concluding Projects access is missing.** `gh auth status` can list more than one credential. On SOVRAN-1 a fine-grained PAT in the `GH_TOKEN` environment variable is the *active* account and has no Projects capability, while an *inactive* keyring OAuth token already carries `gist, project, read:org, repo`. `gh auth refresh` cannot refresh an env-supplied token, so refreshing looks impossible. Clearing `GH_TOKEN` for the process falls through to the keyring token and Projects works. Check for a shadowed credential before requesting a scope grant, and never treat `gh api repos/... --jq .permissions` as proof of token write capability - that reports the *user's* repo role, not the token's grant. The only proof of a write is the write.
+
 This setup is authorized as part of XCSV's GitHub-native execution workflow, but it must happen only after local repository reconciliation so no dirty local work is overwritten.
 
 On the first real SOVRAN-1 bootstrap:
