@@ -25,6 +25,14 @@ every repository that makes up XCSV EXILE.
 
 If you are looking for something specific, start here.
 
+> **Planning update — 2026-08-07:** the GitHub documentation now carries the
+> current XCSV Gauntlet + GUARD reliability/UX + server optimization + curated
+> player-development programme. See the
+> [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) and
+> [Roadmap](wiki/Roadmap.md). The desktop/Obsidian roadmap remains authoritative
+> and is pending manual reconciliation by Architect; any disagreement until then
+> is explicit planning-state divergence.
+
 <div align="center">
 
 [![XCSV GUARD](https://x-cessive.github.io/XCSV/assets/shots/overview.png)](https://x-cessive.github.io/XCSV/guard/)
@@ -38,18 +46,18 @@ If you are looking for something specific, start here.
 
 | repo | what it is | visibility |
 |---|---|---|
-| **[XCSV](https://github.com/x-cessive/XCSV)** *(you are here)* | Hub. System map, [site](https://x-cessive.github.io/XCSV/), [documentation](https://x-cessive.github.io/XCSV/wiki/Home.html), submodules. | public |
-| 🛡️ **[XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD)** | Operations console. Rust + egui. PBO integrity gate, BattlEye RCon, crash autopsy, live metrics, whole-stack start/stop. | private |
+| **[XCSV](https://github.com/x-cessive/XCSV)** *(you are here)* | Hub. System map, [site](https://x-cessive.github.io/XCSV/), documentation, roadmap and development plan. | public |
+| 🛡️ **[XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD)** | Operations console. Rust + egui. Integrity, RCon, metrics, AI/mission intelligence, database views, notifications, stack supervision and release identity. | private |
 | 🧩 **[XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS)** | Our own addons and mission scripts. Written from scratch — contains no Exile source. | private |
-| 📦 **[Exile](https://github.com/x-cessive/Exile)** | Catalogue of third-party addons and scripts, plus the custom PBO packer and BattlEye tooling. | public |
+| 📦 **[Exile](https://github.com/x-cessive/Exile)** | Catalogue of third-party addons/scripts plus live-source mirrors, PBO tooling and BattlEye tooling. | public |
 
 ```
                          ┌──────────────────────────┐
-                         │       XCSV GUARD         │  Rust console
-                         │  integrity · RCon · AI   │  one button starts
-                         │  metrics · restarts      │  and stops all of it
+                         │       XCSV GUARD         │
+                         │ integrity · RCon · AI    │
+                         │ metrics · DB · restarts  │
                          └────────────┬─────────────┘
-                                      │ supervises
+                                      │ supervises / observes
         ┌───────────────┬─────────────┼──────────────┬───────────────┐
         │               │             │              │               │
    ┌────▼────┐   ┌──────▼──────┐ ┌────▼─────┐  ┌─────▼─────┐  ┌──────▼──────┐
@@ -57,15 +65,14 @@ If you are looking for something specific, start here.
    │  10.11  │   │    (x64)    │ │  client  │  │  (local)  │  │    RCon     │
    └─────────┘   └──────┬──────┘ └──────────┘  └───────────┘  └─────────────┘
      extDB3             │           AI + missions   triage only    UDP/CRC32
-                        │           off the main    never in the
-        ┌───────────────┴───────────────┐   thread  critical path
+                        │           off main sim    never critical
+        ┌───────────────┴───────────────┐
         │                               │
    ┌────▼─────────┐            ┌────────▼────────┐
    │ @ExileServer │            │  Exile.Tanoa    │
    │ server PBOs  │            │  mission PBO    │
-   │ XCSV_ADDONS  │            │  XCSV_ADDONS    │
-   └──────────────┘            │  XM8 apps       │
-                               └─────────────────┘
+   │ XCSV_ADDONS  │            │  XM8 apps       │
+   └──────────────┘            └─────────────────┘
 ```
 
 ## 🚦 Operational status
@@ -82,38 +89,77 @@ system rather than a finished product.
 | Anti-cheat | BattlEye + infiSTAR |
 | Headless client | live; A3XAI authorized and FuMS heartbeat on owner 4 |
 
+## 🧭 Development direction
+
+The next programme deliberately connects development method, operations tooling,
+performance engineering and player experience rather than treating them as
+separate projects.
+
+### XCSV Gauntlet
+
+Create one canonical, versioned development protocol for Claude Code, OpenCode,
+Antigravity and development-local LLMs:
+
+`TARGET LOCK -> RECON -> DECOMPOSE -> WORKERS -> ADVERSARIAL CRITICS -> INTEGRATION -> MEASUREMENT -> EVIDENCE -> VERDICT`
+
+Gauntlet depth scales with risk. Workers may not self-certify. Confidence is not
+proof. **EVIDENCED / INFERRED / UNKNOWN** remain separate. Deterministic checks
+should migrate into executable assertions rather than relying on every AI to
+remember prose perfectly.
+
+### GUARD reliability before cosmetic polish
+
+The primary invariant is:
+
+> **Closing XCSV GUARD must never erase operational truth. Reopening it must reconstruct the same server state from authoritative sources and continue supervising it.**
+
+Planned work includes startup reconciliation, process reattachment, persistent
+absolute restart deadlines, RCon auto-reconnect, explicit backend health,
+per-tab contracts, tab test harnesses, GUARD self-diagnostics, graceful backend
+recovery, and only then a grouped/task-oriented shell redesign.
+
+GUARD state will be classified as **durable**, **reconstructable**, or
+**ephemeral** so old live values are never mistaken for current truth.
+
+### GUARD as evidence/experiment instrument
+
+Planned extensions include local historical telemetry, explicit operating
+phases, before/after experiment support, subsystem performance budgets,
+structured DB/operator objects, Incident Mode, a Tanoa operations map,
+estate-wide artifact identity and deterministic documentation/state-drift checks.
+
+### Curated player systems
+
+The existing addon estate is already large. Prioritize integration and
+progression over indiscriminate addon accumulation: Territory Manager,
+contracts/jobs, bounties, meaningful faction-standing integration, Chronicle,
+asynchronous community tools, choreographed events and selective objective
+systems such as capture points. Keep Zombies/Vcom parked until measured HC/server
+headroom supports reconsideration.
+
+Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md)**.
+
 ## ⚠️ Five things that are easy to get catastrophically wrong
 
-Each of these cost real hours. They are encoded as automated checks in XCSV
-GUARD so they cannot cost them twice.
+Each of these cost real hours. They are encoded as automated checks or durable
+rules so they cannot cost them twice.
 
-1. **A PBO with a leading `\` on every entry path still passes a checksum
-   verify.** Arma resolves `<prefix>` + `\path`, finds nothing, and the server
-   core silently never loads — producing a restart loop whose visible symptoms
-   are all *database* errors. This once produced **219 mission starts in eight
-   minutes**. Verifying is not enough; you have to read the entry table.
-2. **extDB2 was 32-bit only.** There was no `extDB2_x64.dll`. Production now
-   runs extDB3 with `arma3server_x64.exe`; do not restore the old x86 path as a
-   fallback.
-3. **`-filePatching` is mandatory.** A3XAI reads its config as a loose file.
-   Without the flag it silently ends the mission during world init and the
-   server loops.
-4. **Arma's server simulation is single-threaded.** `spawn` does not create a
-   thread — every scheduled script shares roughly 3 ms per frame. More cores do
-   not help. A headless client does.
-5. **`extDB2 is already setup & locked` is a symptom, not a cause.** So is
-   `Unknown Protocol`. Count `Starting mission:` instead; more than one means a
-   restart loop and the first error is the only real one.
+1. **A PBO with a leading `\` on every entry path still passes a checksum verify.** Read the entry table.
+2. **extDB2 was 32-bit only.** Production is x64 + extDB3; do not restore the old x86 path as a fallback.
+3. **`-filePatching` is mandatory** for the current A3XAI configuration path.
+4. **Arma's server simulation is heavily constrained by main-thread simulation/scheduled SQF.** More features must be measured, not assumed free.
+5. **`extDB2 is already setup & locked` / `Unknown Protocol` can be symptoms of a restart loop rather than root causes.** Count mission starts and find the first causal error.
 
 ## 🧭 Where things are
 
 | I want to… | go to |
 |---|---|
+| See the full current development programme | [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) |
+| See priority/order and completed work | [Roadmap](wiki/Roadmap.md) |
 | Understand the architecture | [Docs → Architecture](https://x-cessive.github.io/XCSV/wiki/Architecture.html) |
 | Diagnose a server that will not start | [Docs → Runbook](https://x-cessive.github.io/XCSV/wiki/Runbook.html) |
 | Build an XM8 app | [Docs → XM8 Apps](https://x-cessive.github.io/XCSV/wiki/XM8-Apps.html) |
 | Avoid a mistake already paid for | [Docs → Lessons](https://x-cessive.github.io/XCSV/wiki/Lessons.html) |
-| See what is being built next | [Docs → Roadmap](https://x-cessive.github.io/XCSV/wiki/Roadmap.html) |
 | Read about the operations console | [XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD) |
 | Read about our own addons | [XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS) |
 | Find a third-party addon or script | [Exile](https://github.com/x-cessive/Exile) |
@@ -122,55 +168,42 @@ GUARD so they cannot cost them twice.
 ## 📥 Cloning
 
 Submodules point at private repositories. Clone with `--recurse-submodules` if
-you have access; without it you get the hub, the site and the wiki, which is
-most of what is useful anyway.
+you have access; without it you get the hub, the site and the wiki.
 
 ```bash
 git clone --recurse-submodules https://github.com/x-cessive/XCSV.git
 cd XCSV
-git submodule update --remote --merge     # refresh pointers to each repo's tip
+git submodule update --remote --merge
 ```
 
 ## ✍️ Working on the documentation
 
-`wiki/` is the **single source of truth**, written in GitHub-wiki flavour so the
-same files serve both the site and the wiki. Everything else is generated.
+`wiki/` is the Git-tracked wiki source. Site copies under `docs/wiki/` are generated.
 
 ```powershell
-.\tools\build-docs.ps1     # wiki\*.md  ->  docs\wiki\*.md  (front matter, .html links)
-.\tools\push-wiki.ps1      # wiki\*.md  ->  the GitHub wiki
+.\tools\build-docs.ps1
+.\tools\push-wiki.ps1
 ```
 
-Never hand-edit `docs/wiki/` — it is overwritten. `build-docs.ps1` refuses to
-finish if a page would render as raw markdown, which is what a stray BOM ahead
-of the front matter causes, silently and with no error anywhere.
+Never hand-edit generated `docs/wiki/` as the authoritative source.
 
-> **The GitHub wiki needs one manual click to exist.** GitHub does not create
-> `XCSV.wiki.git` until the first page is saved in the web UI, and there is no
-> API for it. Open [the wiki](https://github.com/x-cessive/XCSV/wiki), click
-> *Create the first page*, save anything, then run `push-wiki.ps1` — it
-> overwrites the placeholder with all seven pages. Until then the same content
-> is live on [the site](https://x-cessive.github.io/XCSV/wiki/Home.html).
+The desktop/Obsidian `ARMA3_EXILE_CODEX\ROADMAP.md` remains the authoritative
+full working roadmap. The 2026-08-07 GitHub planning update intentionally notes
+that Architect will manually reconcile the desktop documentation later.
 
 ## 🔒 What is deliberately not here
 
-No RCon password, no Telegram bot token, no database credentials, no infiSTAR
-key, no player data. Credentials live in gitignored config beside their binaries
-and are DPAPI-protected at rest. If you find any of the above in this repository,
-that is a bug — open an issue.
+No RCon password, Telegram bot token, database credentials, infiSTAR key or
+player data. Credentials live in gitignored configuration and are protected at
+rest. If a secret appears here, that is a defect.
 
 ## ⚖️ Licensing
 
-Exile Mod is **CC BY-NC-ND 4.0**, which forbids distributing modified Exile. It
-does not forbid writing independent addons that *call* Exile, which is what
-everything in `XCSV_ADDONS` is. Where Exile's behaviour needs changing we
-override the function through `CfgExileCustomCode`; Exile's own PBOs ship
-unmodified. **No Exile source is ever pasted into our repositories.**
-
-One consequence worth knowing: `CfgExileCustomCode` allows exactly **one**
-registration per function. Two addons wanting the same one must be merged by
-hand. A lost merge is why `Exile_Scavenge` was silently dead on this server for
-weeks.
+Exile Mod is **CC BY-NC-ND 4.0**. XCSV_ADDONS contains independent code rather
+than modified Exile source. Where behavior must change, use sanctioned override
+mechanisms and preserve licensing boundaries. `CfgExileCustomCode` has one
+winning registration per function, so competing overrides must be merged rather
+than silently replacing one another.
 
 Our own code is personal tooling for one server, offered as-is, with no warranty
 of any kind.
