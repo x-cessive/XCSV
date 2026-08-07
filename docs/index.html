@@ -22,12 +22,42 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
       <span class="badge">Console <b>Rust + egui</b></span>
     </div>
     <div class="cta">
-      <a class="btn primary" href="{{ site.baseurl }}/guard/">Meet XCSV GUARD</a>
+      <a class="btn primary" href="{{ site.baseurl }}/wiki/AI-Start-Here.html">AI / Agent Start Here</a>
+      <a class="btn" href="{{ site.baseurl }}/guard/">Meet XCSV GUARD</a>
       <a class="btn" href="{{ site.baseurl }}/wiki/Home.html">Read the docs</a>
       <a class="btn" href="https://github.com/x-cessive/XCSV">Hub repository</a>
     </div>
   </div>
 </div>
+
+<section id="ai-start" style="padding-top:52px">
+  <div class="wrap">
+    <h2><span class="num">00 — AI / AGENT GATE</span>Reconcile before building</h2>
+    <p class="sub">
+      Any AI working on XCSV starts with the
+      <a href="{{ site.baseurl }}/wiki/AI-Start-Here.html"><strong>XCSV AI operating contract</strong></a>.
+      If Architect says <strong>“read the GitHub”</strong> or <strong>“read the roadmap”</strong>, the agent first performs a read-only reconciliation of roadmap intent, RAG/history, local working trees, commits, GitHub/submodules and relevant live evidence.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <h3>Roadmap ≠ implementation proof</h3>
+        <p>The roadmap owns priority and intent. Local source, git, GitHub, deployed artifacts and runtime evidence each prove different parts of reality.</p>
+      </div>
+      <div class="card">
+        <h3>Find the delta</h3>
+        <p>Classify work as done, unverified, partial, planned, conflicted or blocked. Never build substantially equivalent functionality twice.</p>
+      </div>
+      <div class="card">
+        <h3>Then run the Gauntlet</h3>
+        <p>Reconciliation comes first; Target Lock and the risk-scaled worker/critic Gauntlet happen only after the remaining work is known.</p>
+      </div>
+      <div class="card">
+        <h3>One execution tracker</h3>
+        <p>GitHub Issues + Projects track active execution. The roadmap remains durable decision memory, avoiding a second Trello/Jira-style source of task truth.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="console" style="padding-top:52px">
   <div class="wrap">
@@ -172,8 +202,8 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
           <tr><td>PBO integrity</td><td style="color:var(--good)">gated</td><td class="mono">checked every poll; blocks start on failure</td></tr>
           <tr><td>Stack orchestration</td><td style="color:var(--good)">done</td><td class="mono">one start / one clean stop</td></tr>
           <tr><td>Headless client</td><td style="color:var(--good)">live</td><td class="mono">A3XAI authorized · FuMS owner 4 heartbeat</td></tr>
-          <tr><td>BattlEye enforcement</td><td style="color:var(--warn)">partial</td><td class="mono">4 of 51 script rules enforcing; rest pending triage</td></tr>
-          <tr><td>infiSTAR cloud</td><td style="color:var(--bad)">403</td><td class="mono">has never succeeded; local logging works</td></tr>
+          <tr><td>BattlEye enforcement</td><td style="color:var(--warn)">partial</td><td class="mono">staged enforcement; remaining rules require measured triage</td></tr>
+          <tr><td>infiSTAR cloud</td><td style="color:var(--bad)">403</td><td class="mono">hosted upload unresolved; local logging remains authoritative</td></tr>
         </tbody>
       </table>
     </div>
@@ -184,26 +214,23 @@ blurb: XCSV EXILE — a dedicated Arma 3 Exile server on Tanoa, its Rust operati
   <div class="wrap">
     <h2><span class="num">05 — ROADMAP</span>What comes next</h2>
     <p class="sub">
-      Performance before content, always. The full roadmap lives in the
-      <a href="{{ site.baseurl }}/wiki/Roadmap.html">documentation</a>.
+      Performance before content. Reconcile before implementation. The full roadmap lives in the
+      <a href="{{ site.baseurl }}/wiki/Roadmap.html">documentation</a> and the full engineering programme is in the
+      <a href="{{ site.baseurl }}/wiki/XCSV-GUARD-Development-Plan.html">GUARD Development Plan</a>.
     </p>
     <div class="phases">
-      <div class="phase"><div class="st done">✓ done</div><h4>Stabilise</h4>
-        <p>Restart loop resolved, RPT under control, credentials rotated, reboot survival.</p></div>
-      <div class="phase"><div class="st done">✓ done</div><h4>Stack orchestration</h4>
-        <p>One button starts and stops server, database, headless client and the local model.</p></div>
-      <div class="phase"><div class="st done">✓ done</div><h4>Headless client</h4>
-        <p>A3XAI and FuMS hand off to HC owner 4; continue measuring under population.</p></div>
-      <div class="phase"><div class="st now">▸ in flight</div><h4>Our own addons</h4>
-        <p>Faction radio, speaking traders, lore briefing, admin census, admin teleport.</p></div>
-      <div class="phase"><div class="st next">next</div><h4>XM8 apps</h4>
-        <p>Territory browser and a real scoreboard first; sixteen more catalogued.</p></div>
-      <div class="phase"><div class="st next">next</div><h4>Virtual Garage</h4>
-        <p>The strategic fix for world object counts, not a cleanup script.</p></div>
-      <div class="phase"><div class="st next">next</div><h4>Player chat &amp; lore</h4>
-        <p>In-world voice for the island — with the AI strictly isolated from players.</p></div>
-      <div class="phase"><div class="st next">later</div><h4>Self-maintenance</h4>
-        <p>Executable assertions, a local model on triage duty, and fewer repeated mistakes.</p></div>
+      <div class="phase"><div class="st now">▸ now</div><h4>AI reconciliation contract</h4>
+        <p>One canonical AI entrypoint, delta-first roadmap reconciliation, risk-scaled Gauntlet, and GitHub-native execution tracking.</p></div>
+      <div class="phase"><div class="st next">next</div><h4>GUARD restart safety</h4>
+        <p>Durable/reconstructable state, startup reconciliation, absolute restart deadlines, RCon recovery and Safe Mode.</p></div>
+      <div class="phase"><div class="st next">next</div><h4>Backend contracts</h4>
+        <p>Backplane/services, explicit tab health states, self-diagnostics, replay fixtures and operator action history.</p></div>
+      <div class="phase"><div class="st next">next</div><h4>Operator UX</h4>
+        <p>Operations/Engineering modes, attention-first Overview, universal entity inspection, Incident Mode and operations map.</p></div>
+      <div class="phase"><div class="st next">next</div><h4>Evidence &amp; deployment</h4>
+        <p>Historical telemetry, SLO/headroom, experiments, artifact registry, deployment diff, rollback and state-drift detection.</p></div>
+      <div class="phase"><div class="st next">later</div><h4>Curated player systems</h4>
+        <p>Territory management, contracts/jobs, bounties, faction standing, Chronicle/community systems and choreographed events.</p></div>
     </div>
   </div>
 </section>

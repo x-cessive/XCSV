@@ -4,7 +4,7 @@ section: docs
 title: Runbook
 heading: Runbook
 blurb: The server is broken and you need it back.
-order: 3
+order: 6
 source: Runbook.md
 ---
 
