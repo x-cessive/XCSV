@@ -25,6 +25,7 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 | page | when you need it |
 |---|---|
 | **[AI Start Here](AI-Start-Here.html)** | mandatory AI navigation, reconciliation, delta-first workflow and GitHub work-tracking contract |
+| **[AI / Development Tooling](AI-Tooling.html)** | selected/rejected workflow tools, GitHub-native tracking decision, optional MCP and recommended CI/security helpers |
 | **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
 | **[Roadmap](Roadmap.html)** | current order, completed work and planning priorities |
 | **[Architecture](Architecture.html)** | understanding what talks to what |
@@ -33,6 +34,12 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 | **[XM8 Apps](XM8-Apps.html)** | player/admin-facing app work |
 | **[Memory](Memory.html)** | project memory / retrieval workflow |
 | **[Lessons](Lessons.html)** | failures, refuted hypotheses and rules bought with real incidents |
+
+## Workflow/tooling decision
+
+XCSV uses **GitHub Issues + GitHub Projects** as the primary execution tracker so tasks, commits, PRs and sub-issues remain attached to the source instead of being copied into a second board. The official GitHub MCP Server is an optional enhancement after the baseline `git`/`gh` workflow is verified. Linear remains the only serious external future candidate, and only if GitHub Projects proves to have a measurable limitation.
+
+See [AI / Development Tooling](AI-Tooling.html) for the full decision record.
 
 ## Current GUARD programme
 
