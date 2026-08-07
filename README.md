@@ -19,6 +19,14 @@
 
 ---
 
+> ## AI / AGENT START HERE
+>
+> **Before acting on any roadmap item, read [AI Start Here](wiki/AI-Start-Here.md).**
+>
+> If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, enter the contract's **READ_ONLY_BOOTSTRAP** first. Roadmap status is intent, not implementation proof. Reconcile the desktop roadmap, RAG/history, local working trees, Git history, GitHub/submodule state and relevant live evidence; then work only on the remaining delta.
+>
+> **Do not duplicate substantially equivalent functionality.** If sources disagree, reconcile the conflict before implementation.
+
 This repository is the **hub**. It holds the system map, documentation, wiki and submodule pointers for XCSV EXILE.
 
 > **Planning update — 2026-08-07:** GitHub carries the current XCSV Gauntlet + GUARD reliability/UX + server optimization + curated player-development programme. See the [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) and [Roadmap](wiki/Roadmap.md). The desktop/Obsidian roadmap remains authoritative and is pending manual reconciliation by Architect.
@@ -107,6 +115,7 @@ Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md
 
 | I want to… | go to |
 |---|---|
+| Orient an AI / reconcile roadmap work | [AI Start Here](wiki/AI-Start-Here.md) |
 | See the full current development programme | [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) |
 | See priority/order and completed work | [Roadmap](wiki/Roadmap.md) |
 | Understand architecture | [Architecture](wiki/Architecture.md) |
