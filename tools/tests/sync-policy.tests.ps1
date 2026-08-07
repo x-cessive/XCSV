@@ -327,11 +327,32 @@ function New-SafetyFixture {
     return $dir
 }
 
+function Invoke-Child {
+    <#
+        Run a child PowerShell and capture stdout+stderr without letting the
+        stderr write become a terminating error.
+
+        PowerShell 5.1 turns any native stderr write into a terminating error
+        while $ErrorActionPreference is 'Stop'. sync-all.ps1 and push-wiki.ps1
+        both carry comments about it; this suite hit it anyway the moment a
+        child script was expected to fail on purpose. Demote, capture, and judge
+        on the exit code and the text.
+    #>
+    param([string[]] $ArgumentList)
+
+    $old = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $out = & powershell -NoProfile -ExecutionPolicy Bypass @ArgumentList 2>&1 | Out-String
+        return [pscustomobject]@{ ExitCode = $LASTEXITCODE; Output = $out }
+    }
+    finally { $ErrorActionPreference = $old }
+}
+
 function Invoke-SafetyCheck {
     param([string] $Root)
     $checker = Join-Path $ToolsDir 'check-text-safety.ps1'
-    $out = & powershell -NoProfile -ExecutionPolicy Bypass -File $checker -Root $Root 2>&1 | Out-String
-    [pscustomobject]@{ ExitCode = $LASTEXITCODE; Output = $out }
+    Invoke-Child -ArgumentList @('-File', $checker, '-Root', $Root)
 }
 
 Test-Case 'planted same-file round-trip on a protected path is DETECTED' {
@@ -379,6 +400,59 @@ Test-Case 'the live XCSV hub is clean' {
     $root = Split-Path -Parent $ToolsDir
     $r = Invoke-SafetyCheck -Root $root
     if ($r.ExitCode -ne 0) { throw ("hub has an unsafe rewrite:`n" + $r.Output) }
+}
+
+# --- wiki publishing guard --------------------------------------------------
+
+Write-Host ''
+Write-Host 'XCSV-AI-002 wiki publish guard' -ForegroundColor Cyan
+
+# A sandbox run of sync-all.ps1 during this very work item pushed a throwaway
+# test edit onto the live GitHub wiki, because push-wiki.ps1 targets a fixed
+# production URL while -Root is a free parameter. These cases hold that door
+# shut.
+
+Test-Case 'publishing from a foreign checkout is refused' {
+    $dir = Join-Path ([System.IO.Path]::GetTempPath()) ("xcsv-wiki-" + [guid]::NewGuid().ToString('N'))
+    New-Item -ItemType Directory -Path (Join-Path $dir 'wiki') -Force | Out-Null
+    try {
+        & git -C $dir init --quiet 2>&1 | Out-Null
+        & git -C $dir remote add origin 'https://github.com/someone-else/OtherRepo.git' 2>&1 | Out-Null
+        Set-Content -LiteralPath (Join-Path $dir 'wiki\Home.md') -Value 'not the real wiki'
+
+        $script = Join-Path $ToolsDir 'push-wiki.ps1'
+        $r = Invoke-Child -ArgumentList @('-Command', "& '$script' -Root '$dir' -WhatIf")
+
+        if ($r.Output -notmatch 'refusing to publish') {
+            throw ("expected a refusal, got:`n" + $r.Output)
+        }
+        if ($r.Output -match 'wiki published') {
+            throw 'a foreign checkout reached the publish step'
+        }
+    }
+    finally {
+        Get-ChildItem -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue |
+            ForEach-Object { try { $_.Attributes = 'Normal' } catch {} }
+        Remove-Item -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+Test-Case 'the real hub is still allowed to publish' {
+    # The guard must not be so strict that it blocks the legitimate caller -
+    # that would just get it disabled. -WhatIf stops before any commit or push.
+    $root = Split-Path -Parent $ToolsDir
+    $script = Join-Path $ToolsDir 'push-wiki.ps1'
+    $r = Invoke-Child -ArgumentList @('-Command', "& '$script' -Root '$root' -WhatIf")
+    if ($r.Output -match 'refusing to publish') {
+        throw ("the real hub must not be refused:`n" + $r.Output)
+    }
+}
+
+Test-Case 'guard normalises repo identity and offers an explicit override' {
+    $text = [System.IO.File]::ReadAllText((Join-Path $ToolsDir 'push-wiki.ps1'))
+    foreach ($needle in @('.wiki.git', 'AllowForeignRoot', 'refusing to publish')) {
+        if (-not $text.Contains($needle)) { throw "guard is missing: $needle" }
+    }
 }
 
 # --- verdict ---------------------------------------------------------------

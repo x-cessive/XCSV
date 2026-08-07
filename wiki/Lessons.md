@@ -86,6 +86,15 @@ dirty, report, never touch — so the safe pattern was sitting ten lines above t
 defect. Automation may commit only what it produced itself; anything else is
 `BLOCKED_DIRTY_SOURCE`. See `tools/sync-policy.ps1`.
 
+**A test that runs real automation runs its real side effects.** Proving the
+repaired `sync-all.ps1` end-to-end in a sandbox clone also ran `push-wiki.ps1`,
+which takes `-Root` as a parameter but publishes to a *hardcoded* production URL.
+A throwaway test edit landed on the live GitHub wiki and had to be repaired by
+re-mirroring from the hub. Any script that writes to a fixed production target
+must verify that its input actually is the source that target belongs to;
+`push-wiki.ps1` now compares the checkout's `origin` against the wiki repo and
+refuses otherwise.
+
 **An environment token silently outranks the credential you configured.** `gh`
 prefers `GH_TOKEN` over its stored credential, so a fine-grained PAT in the
 environment became the active account while a keyring OAuth token carrying the

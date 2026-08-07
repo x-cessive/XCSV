@@ -17,7 +17,10 @@
 param(
     [string] $Root  = (Split-Path $PSScriptRoot -Parent),
     [string] $Wiki  = 'https://github.com/x-cessive/XCSV.wiki.git',
-    [switch] $WhatIf
+    [switch] $WhatIf,
+    # Deliberate override for publishing from a checkout whose origin is not the
+    # wiki's own repository. Requires an explicit decision; never a default.
+    [switch] $AllowForeignRoot
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,6 +43,34 @@ function Invoke-Git {
 
 $src = Join-Path $Root 'wiki'
 if (-not (Test-Path $src)) { throw "no wiki source at $src" }
+
+# $Wiki is a fixed production URL and $Root is a parameter, so without this
+# check `push-wiki.ps1 -Root <anywhere>` publishes that anywhere to the live
+# wiki. During XCSV-AI-002 a sandbox run of sync-all.ps1 did exactly that: it
+# pushed a throwaway test edit onto the real GitHub wiki, and it had to be
+# repaired by re-mirroring from the hub. Publishing to production must follow
+# from the checkout, not from a default.
+function Get-RepoIdentity([string] $Url) {
+    if (-not $Url) { return $null }
+    ($Url.Trim() -replace '\.wiki\.git$', '' -replace '\.git$', '' -replace '/+$', '' -replace '^git@github\.com:', 'https://github.com/').ToLowerInvariant()
+}
+
+$originUrl = & git -C $Root remote get-url origin 2>$null
+$originId  = Get-RepoIdentity $originUrl
+$wikiId    = Get-RepoIdentity $Wiki
+
+if (-not $AllowForeignRoot -and $originId -ne $wikiId) {
+    throw @"
+refusing to publish: this checkout is not the wiki's own repository.
+
+  -Root   $Root
+  origin  $(if ($originUrl) { $originUrl } else { '<none>' })
+  wiki    $Wiki
+
+Publishing would push this checkout's wiki/ content onto the live GitHub wiki.
+Run it from the real hub, or pass -AllowForeignRoot if that is genuinely intended.
+"@
+}
 
 $tmp = Join-Path $env:TEMP ("xcsv_wiki_" + [guid]::NewGuid().ToString('N').Substring(0, 8))
 
