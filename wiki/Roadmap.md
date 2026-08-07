@@ -73,9 +73,24 @@ Classify state as:
 
 - separate `xcsv_guard.json` configuration from operational durable state
 - prefer a small GUARD-local SQLite store for history/state
-- add config/state schema versions and explicit migrations
-- write critical config/state atomically with known-good fallback
-- never silently default a corrupt state into apparently healthy operation
+- ~~add config/state schema versions and explicit migrations~~ — **done for
+  configuration**, `GUARD-STATE-001` (2026-08-07)
+- ~~write critical config/state atomically with known-good fallback~~ —
+  **done for configuration**, `GUARD-STATE-001`
+- ~~never silently default a corrupt state into apparently healthy operation~~ —
+  **done for configuration**, `GUARD-STATE-001`
+
+`GUARD-STATE-001` covered the **configuration** half: `config_schema_version`
+read from raw JSON before deserialization, ordered `v(n) -> v(n+1)` migrations
+over the document, atomic save (validate → temp → `sync_all` → promote
+known-good → rename), and distinguishable load outcomes with an interlock that
+refuses *automatic* saves over a corrupt or newer-schema file. See
+`XCSV_GUARD/src/config_store.rs`.
+
+Still open in C: the operational-state store itself. It was deliberately not
+built — GUARD persists no operational state today, so nothing yet forces SQLite.
+Build it when the first real consumer arrives (restart deadlines are the likely
+first, from section B).
 
 ### D. Startup reconciliation + desired/observed state
 
