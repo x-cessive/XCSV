@@ -116,7 +116,27 @@ jobs:
           grep -Fq 'AI / AGENT ROADMAP GATE' wiki/Roadmap.md
           grep -Fq 'AI / AGENT START HERE' README.md
           grep -Fq 'AI / AGENT START HERE' wiki/Home.md
-          grep -Fq 'DIVERGED' wiki/Home.md
+
+      - name: Documentation state is declared
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Assert that wiki/Home.md DECLARES a documentation reconciliation
+          # state, not that it holds one specific value. The original gate
+          # grepped for 'DIVERGED' literally, which froze a transient
+          # pre-reconciliation assumption into a permanent invariant: actually
+          # performing the reconciliation the contract mandates would turn the
+          # build red. A gate must not make correct work fail.
+          if ! grep -Eq 'documentation state: `?(SYNCED|DESKTOP_AHEAD|GITHUB_AHEAD|DIVERGED|UNKNOWN)`?' wiki/Home.md; then
+            echo 'wiki/Home.md does not declare a documentation state.'
+            echo 'Expected one of: SYNCED, DESKTOP_AHEAD, GITHUB_AHEAD, DIVERGED, UNKNOWN.'
+            exit 1
+          fi
+          # The five states must stay defined in the policy that owns them.
+          for s in SYNCED DESKTOP_AHEAD GITHUB_AHEAD DIVERGED UNKNOWN; do
+            grep -Fq "$s" wiki/AI-Provenance-and-Doc-Sync.md || {
+              echo "STATE DRIFT: $s missing from wiki/AI-Provenance-and-Doc-Sync.md"; exit 1; }
+          done
 
       - name: Site generator publishes AI pages
         shell: bash
