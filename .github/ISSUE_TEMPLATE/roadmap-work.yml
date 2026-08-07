@@ -1,0 +1,97 @@
+name: XCSV roadmap work
+
+description: Track one material roadmap item after reconciliation.
+title: "[ROADMAP] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before creating active work, read `wiki/AI-Start-Here.md` and reconcile the roadmap item against local source, Git history, GitHub and relevant runtime evidence. Do not create an issue merely to duplicate work that already exists.
+
+  - type: input
+    id: roadmap_id
+    attributes:
+      label: Roadmap ID
+      description: Stable ID such as GUARD-REL-002. Create one when material work becomes active.
+      placeholder: GUARD-REL-002
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repo
+    attributes:
+      label: Owning repository
+      options:
+        - XCSV
+        - XCSV_GUARD
+        - XCSV_ADDONS
+        - Exile
+        - Cross-repo
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reconciliation
+    attributes:
+      label: Reconciliation state
+      description: Classification from the canonical AI contract.
+      options:
+        - VERIFIED_DONE
+        - PRESENT_UNVERIFIED
+        - PARTIAL
+        - PLANNED_ONLY
+        - STALE_OR_CONFLICTED
+        - BLOCKED
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gauntlet
+    attributes:
+      label: Gauntlet level
+      options:
+        - G0
+        - G1
+        - G2
+        - G3
+        - G4
+    validations:
+      required: true
+
+  - type: textarea
+    id: roadmap
+    attributes:
+      label: Roadmap intent
+      description: What the authoritative roadmap says the outcome should be.
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing
+    attributes:
+      label: Existing implementation/evidence
+      description: Existing source, commits, tests, runtime proof and refuted hypotheses already found.
+    validations:
+      required: true
+
+  - type: textarea
+    id: delta
+    attributes:
+      label: Remaining delta
+      description: The smallest actual missing work. Do not restate the whole feature if most of it exists.
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification required for Done
+      description: Tests, runtime evidence, deployment proof, read-back or other evidence required before closure.
+    validations:
+      required: true
+
+  - type: textarea
+    id: conflicts
+    attributes:
+      label: Conflicts / UNKNOWN
+      description: Material disagreements between roadmap, local source, GitHub, submodules, docs or live state.
