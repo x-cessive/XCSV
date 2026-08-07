@@ -18,7 +18,7 @@
 param(
     [string] $Hub = 'D:\XCSV',
     [string] $Guard = 'D:\XCSV_GUARD',
-    [string] $Addons = 'D:\XCSV_ADDONS',
+    [string] $Addons = 'E:\XCSV_ADDONS',
     [string] $Catalogue = 'E:\ExileRepo',
     [string] $Roadmap = 'C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX\ROADMAP.md',
     [switch] $Json
@@ -29,13 +29,16 @@ $ErrorActionPreference = 'Stop'
 function Invoke-GitText {
     param(
         [string] $Repo,
-        [string[]] $Args
+        # Must not be named $Args: that collides with the PowerShell automatic
+        # variable, arrives empty, and silently degrades every probe to a bare
+        # "git -C <path>" usage error.
+        [string[]] $GitArgs
     )
 
     $old = $ErrorActionPreference
     $ErrorActionPreference = 'SilentlyContinue'
     try {
-        $out = & git -C $Repo @Args 2>$null
+        $out = & git -C $Repo @GitArgs 2>$null
         if ($LASTEXITCODE -ne 0) { return $null }
         return (($out | Out-String).Trim())
     }
@@ -65,7 +68,7 @@ function Get-RepoState {
         }
     }
 
-    $inside = Invoke-GitText -Repo $Path -Args @('rev-parse', '--is-inside-work-tree')
+    $inside = Invoke-GitText -Repo $Path -GitArgs @('rev-parse', '--is-inside-work-tree')
     if ($inside -ne 'true') {
         return [pscustomobject]@{
             name = $Name
@@ -81,15 +84,15 @@ function Get-RepoState {
         }
     }
 
-    $branch = Invoke-GitText -Repo $Path -Args @('branch', '--show-current')
-    $localSha = Invoke-GitText -Repo $Path -Args @('rev-parse', 'HEAD')
-    $status = Invoke-GitText -Repo $Path -Args @('status', '--porcelain')
-    $upstream = Invoke-GitText -Repo $Path -Args @('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}')
-    $origin = Invoke-GitText -Repo $Path -Args @('remote', 'get-url', 'origin')
+    $branch = Invoke-GitText -Repo $Path -GitArgs @('branch', '--show-current')
+    $localSha = Invoke-GitText -Repo $Path -GitArgs @('rev-parse', 'HEAD')
+    $status = Invoke-GitText -Repo $Path -GitArgs @('status', '--porcelain')
+    $upstream = Invoke-GitText -Repo $Path -GitArgs @('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}')
+    $origin = Invoke-GitText -Repo $Path -GitArgs @('remote', 'get-url', 'origin')
 
     $remoteSha = $null
     if ($origin -and $branch) {
-        $line = Invoke-GitText -Repo $Path -Args @('ls-remote', '--heads', 'origin', "refs/heads/$branch")
+        $line = Invoke-GitText -Repo $Path -GitArgs @('ls-remote', '--heads', 'origin', "refs/heads/$branch")
         if ($line) {
             $remoteSha = ($line -split '\s+')[0]
         }
@@ -133,7 +136,7 @@ $buildDocsPath = Join-Path $Hub 'tools\build-docs.ps1'
 
 $submodules = $null
 if (Test-Path $Hub) {
-    $submodules = Invoke-GitText -Repo $Hub -Args @('submodule', 'status')
+    $submodules = Invoke-GitText -Repo $Hub -GitArgs @('submodule', 'status')
 }
 
 $result = [pscustomobject]@{
