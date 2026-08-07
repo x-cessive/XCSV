@@ -1,5 +1,15 @@
 # Roadmap
 
+> ## AI / AGENT ROADMAP GATE - READ BEFORE ACTING
+>
+> **Mandatory: read [AI Start Here](AI-Start-Here) before implementing any roadmap item.**
+>
+> When Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, **"resume XCSV"**, or equivalent, enter `READ_ONLY_BOOTSTRAP` first.
+>
+> **Roadmap status is intent, not implementation proof.** Reconcile the target against the authoritative desktop roadmap, RAG/history, local working trees, local commits, GitHub remote/submodule pointers and relevant live/runtime evidence. Classify it as `VERIFIED_DONE`, `PRESENT_UNVERIFIED`, `PARTIAL`, `PLANNED_ONLY`, `STALE_OR_CONFLICTED`, or `BLOCKED`. Then identify the **smallest remaining delta**.
+>
+> **Never build substantially equivalent functionality twice.** If implementation already exists, verify/extend/repair/document that path instead of creating a parallel subsystem unless Architect explicitly authorizes replacement.
+
 The authoritative, full-length roadmap is
 `ARMA3_EXILE_CODEX\ROADMAP.md` in the Obsidian vault - it carries the reasoning,
 the struck-through wrong turns and the measurements. This page is the summary
@@ -237,8 +247,11 @@ not unrestricted production authority through GUARD controls. Runtime local mode
 
 > **A production failure should surprise XCSV once; afterward it becomes evidence, a fixture or an executable check.**
 
+> **Never begin from what the roadmap says needs building. Begin by proving what remains to be built.**
+
 ## Related
 
+- [AI Start Here](AI-Start-Here)
 - [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan)
 - [XM8 Apps](XM8-Apps)
 - [Architecture](Architecture)
