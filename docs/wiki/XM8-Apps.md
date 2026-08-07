@@ -62,6 +62,10 @@ vehicle leaves that vehicle driverless at speed.
 > first time you teleport, and if it flags you, add the UID rather than weakening
 > the detection.
 
+### App20 — Player Inspector *(admin only)*
+
+`xcsv/fn_playerInspector.sqf`, `xcsv_chatter/network/fn_inspectorRequest.sqf`, slide `XM8SlideXcsvInspector`. Admin types a name fragment, the server resolves account details (UID, respect, kills, deaths, K/D, locker, connections) and live territory flag membership, answered as structured text to the requesting admin session. Built-in `ExileClient_gui_xm8_slide_extraApps_onOpen.sqf` grid override extends app slots to App20+. Read-only, parameter-bound query.
+
 ### Also shipped, not XM8
 
 `XCSV: World census` — an admin scroll action that buckets and maps every

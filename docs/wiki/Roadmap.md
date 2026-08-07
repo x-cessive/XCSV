@@ -28,6 +28,8 @@ running at 22 FPS makes it worse, not better.
 | **2.6 - RAG pulse in GUARD** | local RAG search now writes `D:\CAGE\xcsv-rag\last-query.json`; GUARD top bar shows a `rag` chip and pulses after searches |
 | **2.7 - GUARD database views** | Database tab now has grouped read-only presets for overview, players, territories, vehicles, and economy, using extDB3 config |
 | **2.8 - GUARD release/capture subsystem** | `deploy.ps1` now owns build numbering, current-release manifests, live Desktop deployment and taskbar shortcut cleanup; `capture.ps1` can capture named tabs across responsive viewports |
+| **4.7 - Out-of-band alerts & noise filter** | disconnect notifications, configurable scheduled restart alerts, and central benign RPT error filtering (`is_known_benign`) added to GUARD |
+| **10.1.2 - Player Inspector (App20)** | admin XM8 App20 for account details (UID, respect, K/D, locker, session) + territory flag membership, plus custom `extraApps_onOpen` grid override |
 | **7.5 - Stack orchestration** | one button starts database -> integrity gate -> server -> headless client -> local model, and one stops them cleanly in reverse |
 | **8 - Mistake prevention** | `CLAUDE.md` at each project root, `doctor.ps1` with 22 executable assertions, this wiki, the [Lessons](Lessons.html) page |
 
