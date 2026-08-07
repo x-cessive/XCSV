@@ -8,6 +8,12 @@ order: 2
 source: Home.md
 ---
 
+> ## AI / AGENT START HERE
+>
+> **Read [AI Start Here](AI-Start-Here.html) before acting on the roadmap.**
+>
+> If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, run the canonical `READ_ONLY_BOOTSTRAP` first. Reconcile roadmap intent against RAG/history, local working trees, Git history, GitHub/submodules and relevant live evidence. Work only on the remaining delta; do not duplicate equivalent functionality.
+
 A dedicated **Arma 3 Exile** server on Tanoa, and every piece of software that keeps it alive.
 
 This wiki is the operator/development map. The [site](https://x-cessive.github.io/XCSV/) is the public-facing view; the [hub repo](https://github.com/x-cessive/XCSV) is the repository map.
@@ -18,6 +24,7 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 
 | page | when you need it |
 |---|---|
+| **[AI Start Here](AI-Start-Here.html)** | mandatory AI navigation, reconciliation, delta-first workflow and GitHub work-tracking contract |
 | **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
 | **[Roadmap](Roadmap.html)** | current order, completed work and planning priorities |
 | **[Architecture](Architecture.html)** | understanding what talks to what |
