@@ -5,6 +5,12 @@ The authoritative, full-length roadmap is
 the struck-through wrong turns and the measurements. This page is the summary
 you can link to.
 
+> **2026-08-07 planning sync:** GitHub now carries the current planning backlog from the
+> XCSV GUARD / Gauntlet design session. The desktop/Obsidian roadmap remains authoritative
+> and is pending manual reconciliation by Architect. Until that happens, any disagreement
+> between this page and the desktop roadmap is an explicit planning-state divergence, not
+> evidence that the desktop copy has already been updated.
+
 **Guiding rule: performance before content, always.** Adding content to a server
 running at 22 FPS makes it worse, not better.
 
@@ -23,58 +29,302 @@ running at 22 FPS makes it worse, not better.
 | **4.7 - Out-of-band alerts & noise filter** | disconnect notifications, configurable scheduled restart alerts, and central benign RPT error filtering (`is_known_benign`) added to GUARD |
 | **10.1.2 - Player Inspector (App20)** | admin XM8 App20 for account details (UID, respect, K/D, locker, session) + territory flag membership, plus custom `extraApps_onOpen` grid override |
 | **7.5 - Stack orchestration** | one button starts database -> integrity gate -> server -> headless client -> local model, and one stops them cleanly in reverse |
-| **8 - Mistake prevention** | `CLAUDE.md` at each project root, `doctor.ps1` with 22 executable assertions, this wiki, the [Lessons](Lessons) page |
+| **8 - Mistake prevention** | `CLAUDE.md` at each project root, `doctor.ps1` with executable assertions, this wiki, the [Lessons](Lessons) page |
 
-Also fixed along the way: the invisible safezone ring (160 errors -> 0), a dead
-`Exile_Scavenge` caused by a lost `CfgExileCustomCode` merge, four database query
-defects, and a launcher landmine.
+Also fixed along the way: the invisible safezone ring, a dead `Exile_Scavenge`
+caused by a lost `CfgExileCustomCode` merge, database query defects, launcher
+landmines, and several supervision/verification gaps.
 
 ## In flight
 
-**GUARD operator views.** The GUARD refactor is committed and running. AI/FuMS live-log detection and read-only database probing exist. The first richer AI slice now parses A3XAI source counts, server-vs-HC ownership, FuMS active mission names, completed mission count, and FuMS object transfer totals. The Database tab now has grouped read-only operator presets across players, territories, vehicles, and economy.
+**GUARD operator views.** The GUARD refactor is committed and running. AI/FuMS live-log detection and read-only database probing exist. The first richer AI slice parses A3XAI source counts, server-vs-HC ownership, FuMS active mission names, completed mission count, and FuMS object transfer totals. The Database tab has grouped read-only operator presets across players, territories, vehicles, and economy.
 
 **Headless-client hardening.** HC joins and A3XAI/FuMS handoff are verified after the 2026-08-05 mission header fix. Keep watching owner 4 heartbeat and AI ownership under real player load.
 
 **infiSTAR cloud.** Local infiSTAR logs work, but hosted panel uploads still return 403. Treat local logs as the audit trail until that account/API issue is solved.
 
-**Version control for every artifact.** GUARD has the first slice: crate version
-+ local build number, `archive\CURRENT.json`, SHA256, source commit, single live
-Desktop exe, and taskbar shortcut ownership. Next apply the same pattern to
-addons, scripts, mods and packed PBOs so stale builds cannot silently duplicate.
+**Version control for every artifact.** GUARD has the first slice: crate version + local build number, `archive\CURRENT.json`, SHA256, source commit, single live Desktop exe, and taskbar shortcut ownership. Next apply the same pattern to addons, scripts, mods and packed PBOs so stale builds cannot silently duplicate.
 
-## Next
+## 2026-08-07 planning programme
+
+The next major development programme is no longer just a list of isolated GUARD tabs or addons. It is a coordinated refoundation across **AI development workflow, GUARD reliability, operator UX, server instrumentation, performance engineering, deployment identity, and curated player systems**. Detailed design notes live in [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan).
+
+### A. XCSV Gauntlet Protocol
+
+Build one canonical, versioned development protocol and expose it through thin adapters for Claude Code, OpenCode, Antigravity, and development-local LLMs. Do not maintain independent drifting copies of the same philosophy.
+
+Core flow:
+
+`TARGET LOCK -> RECON -> DECOMPOSE -> WORKERS -> ADVERSARIAL CRITICS -> INTEGRATION -> MEASUREMENT -> EVIDENCE -> VERDICT`
+
+Risk-scaled depth:
+
+- **G0** documentation / trivial local work
+- **G1** isolated implementation: worker + critic
+- **G2** cross-component work: specialists + critic + integration review
+- **G3** production-affecting Arma/Exile change: recon + specialists + security/performance review + rollback + runtime evidence
+- **G4** architecture, persistence, database mutation, BattlEye/security or deployment infrastructure: full Gauntlet and independent verification
+
+Rules:
+
+- worker may not self-certify
+- confidence is not proof
+- separate **EVIDENCED / INFERRED / UNKNOWN**
+- loop only on concrete failure or unresolved requirement
+- failed experiments and refuted hypotheses become durable project knowledge
+- anything deterministic/checkable should migrate into executable assertions rather than relying on prompt memory
+
+### B. GUARD Reliability + UX refoundation
+
+Primary invariant:
+
+> **Closing XCSV GUARD must never erase operational truth. Reopening it must reconstruct the same server state from authoritative sources and continue supervising it without launching duplicates, resetting schedules, fabricating health, or generating false incidents.**
+
+State must be classified explicitly:
+
+1. **Durable state** - settings, UI preferences, absolute restart deadline, warnings already issued, saved DB queries/history, acknowledged incidents, operator context.
+2. **Reconstructable state** - server/HC/model/MariaDB process state, PIDs, memory, RCon, players, RPT, PBO integrity, missions, AI ownership, DB contents, RAG state. Re-probe; do not persist as truth.
+3. **Ephemeral state** - animation/interpolation/transient UI details. Discard safely.
+
+Planned reliability work:
+
+- startup reconciliation phase before declaring GUARD ready
+- attach/reconcile with already-running server/HC/model/database
+- make closing GUARD distinct from **Stop Everything**
+- persist **absolute restart deadlines** rather than process-local `Instant` schedules
+- persist warning/restart intent enough to avoid duplicate warnings and schedule reset after relaunch
+- auto-connect and auto-reconnect RCon with bounded backoff
+- recover from MariaDB, RCon, HC, model, infiSTAR-log and RPT-rollover failures without restarting GUARD
+- remove dependence on a live `Child` handle as the sole source of server identity; treat OS/process discovery as an authoritative recovery path
+- no false crash incident when GUARD itself restarts while the server remains healthy
+- no duplicate server process launch during reconciliation
+
+### C. GUARD backend/backplane
+
+Introduce a stable service/backplane layer so tabs render backend contracts rather than individually knowing how RCon, logs, DB and process discovery work.
+
+Conceptual flow:
+
+`Collectors -> Evidence/Observations -> Derived State/Services -> UI`
+
+Candidate services:
+
+- Process / Stack Service
+- RCon / Player Service
+- Telemetry Service
+- Mission / AI Service
+- Database Service
+- Integrity / Artifact Service
+- Notification Service
+- Docs / RAG Service
+
+Every observation should eventually be able to carry source, timestamp, freshness/age, severity, raw-evidence reference and proof state.
+
+### D. Standard tab contract
+
+Every GUARD tab must define:
+
+- required data
+- authoritative source(s)
+- freshness expectation
+- healthy/degraded/stale/offline/error behavior
+- permitted actions
+- proof that an action reached its backend
+
+Standard visual states:
+
+**LOADING / HEALTHY / DEGRADED / STALE / OFFLINE / ERROR**
+
+A tab must never silently show blank data or convert UNKNOWN into zero.
+
+### E. GUARD self-test + tab contract harness
+
+Build mocked/tab-level contract scenarios and separate live integration checks. Add a GUARD diagnostics screen that proves GUARD itself is correctly wired before GUARD claims the server is healthy.
+
+Examples:
+
+- Players/RCon
+- Players/infiSTAR
+- Database/MariaDB
+- AI/server RPT
+- AI/HC RPT
+- Metrics/sysinfo
+- Metrics/infiSTAR
+- Integrity/PBO scanner
+- Docs/wiki
+- RAG
+- Notifications
+
+Formal restart-survival test:
+
+1. server + HC + MariaDB + model running
+2. RCon connected
+3. restart deadline established
+4. close GUARD
+5. leave GUARD closed
+6. reopen GUARD
+7. prove same server PID rediscovered, HC/model/DB rediscovered, RCon reconnects, current RPT/missions/players rebuild, deadline remains unchanged, warnings are not duplicated, PBOs are rescanned, operator UI context returns, no false crash is recorded, and no duplicate server launches
+
+### F. GUARD UI/UX direction
+
+Do reliability work before cosmetic polish, then refactor the shell around operator tasks.
+
+Proposed navigation groups:
+
+- **OPERATE:** Overview, Players, Restarts
+- **INTELLIGENCE:** AI / Missions, Metrics, future map
+- **DIAGNOSTICS:** Integrity, Server Log, Consoles, infiSTAR
+- **ADMIN / DATA:** Database, RCon
+- **KNOWLEDGE:** Docs / RAG
+- **SYSTEM:** Settings / Diagnostics
+
+Overview should answer in seconds:
+
+1. Is the server healthy?
+2. Are players online?
+3. What needs attention?
+4. What happens next?
+
+Planned overview structure:
+
+- global stack health strip: server / HC / DB / RCon / model / RAG / integrity
+- core KPIs: FPS / players / memory / world load
+- **Needs Attention** area containing only actionable warnings/errors
+- active missions and AI ownership
+- joins/departures
+- restart deadline
+- recent operational timeline
+
+Global status chips should be clickable and route to the owning tab. Consider a `Ctrl+K` command/search palette as GUARD grows.
+
+Destructive operations should follow a consistent consequence-based confirmation model: immediate for low-risk actions, one confirmation for medium-risk actions, explicit target/consequence confirmation for permanent bans, force-stop, Stop Everything and any future DB write path.
+
+### G. GUARD evidence/history/experiments
+
+Add a local GUARD telemetry/history store separate from the Exile gameplay database. Purpose: reconstruct incidents and compare before/after changes.
+
+Desired historical questions:
+
+- what was FPS before a crash?
+- what changed before degradation began?
+- what were AI group counts and ownership?
+- what was object count and RPT growth?
+- which PBO/build was deployed?
+- was HC handoff healthy?
+
+Operational phases should be understood explicitly: **BOOTING / POPULATING / SETTLING / STEADY STATE / DEGRADED / RESTARTING**. Performance comparisons should not be accepted while the world is still changing.
+
+Turn changes into experiments:
+
+`Hypothesis -> Baseline -> Bounded Change -> Gauntlet -> Runtime Observation -> Result -> Durable Memory`
+
+Integrate Bohemia profiling/slow-frame capture as an explicit maintenance tool rather than guessing from FPS alone.
+
+### H. Performance budgets
+
+Define subsystem budgets instead of adding features until aggregate cost becomes invisible.
+
+Track at least:
+
+- **AI:** A3XAI / DMS / FuMS / Occupation group counts, server-owned vs HC-owned
+- **World:** vehicles, constructions, loot, mission objects, bodies, containers, temporary objects
+- **Scheduler:** recurring tasks, frequency, origin, approximate runtime
+- **Network:** high-frequency messages/remote execution/public variables
+- **Database:** query frequency, latency, rows touched, index expectations
+
+Do not add HC2 merely because it exists as an option. First measure HC saturation, group ownership and server-side AI headroom; add HC2 only when evidence says it is the correct scaling move.
+
+### I. Database/operator-object evolution
+
+Move the GUARD Database tab from raw text output toward structured columns, sortable/searchable tables, saved views and recent query history.
+
+Longer term, introduce operator objects:
+
+- **Player** - account, current character, connections, deaths, territories, vehicles, market state, moderation history
+- **Territory** - owner, members, rights, level, protection/decay status, constructions, containers, vehicles
+- **Vehicle** - owner, location, damage, fuel, territory, last update, persistence state
+
+Player Inspector should become a central GUARD concept, not only an in-game XM8 app.
+
+### J. Incident Mode + operations map
+
+Create a chronological Incident Mode that links process exits, FPS/RPT anomalies, mission/HC state, PBO identity, recent deployment state and relevant logs.
+
+Create a read-only Tanoa operations map showing eligible data such as active missions, AI concentration/ownership, helicopter crashes, loot/world events, travelling trader, territories and other server event markers where source data exists.
+
+### K. Artifact Registry + state drift
+
+Extend GUARD release identity to every operational artifact:
+
+- mission PBO
+- server PBOs
+- custom addons
+- scripts
+- BattlEye filters
+- extDB query files
+- deployment bundles
+
+Desired fields: artifact ID, version, source commit, build timestamp, SHA256, deployed SHA256 and status.
+
+Build a deterministic **Documentation / State Drift Auditor** comparing roadmap Done/Next state, XM8 shipped/backlog state, README counts, submodule revisions, release manifests and eventually deployed hashes. Current documentation drift proves this is needed.
+
+### L. Curated player development
+
+Do not respond to a large existing addon estate by blindly adding more mods. Prefer integration, progression and coherence.
+
+High-value backlog:
+
+1. Territory Manager
+2. Contract / Job Board: salvage, delivery, recovery, smuggling, reconnaissance, bounties, trader resupply, supply recovery, faction work
+3. Bounty system
+4. Turn existing faction standing into selective gameplay consequences: contracts, trader access, cosmetics, information, discounts, radio responses; avoid crude combat buffs
+5. Server Chronicle of meaningful persistent world events
+6. asynchronous message board/community features
+7. choreographed rotating world events connecting existing storms, FuMS/DMS, crashes, traders and faction radio
+8. investigate ZCP/Capture Points before another heavy AI framework
+
+Keep Zombies and Vcom parked until HC/AI performance evidence changes the decision.
+
+## Near-term sequence
+
+1. XCSV Gauntlet Protocol architecture
+2. Canonical AI rule distribution + drift detection
+3. GUARD state ownership model
+4. startup reconciliation and process reattachment
+5. persistent absolute restart scheduling
+6. RCon auto-reconnect
+7. GUARD backend health registry/backplane
+8. tab backend contracts and tests
+9. GUARD self-diagnostics
+10. shell/navigation redesign
+11. Overview command-center redesign
+12. structured database/browser work
+13. historical telemetry + experiment framework
+14. Incident Mode
+15. live mission/AI operations map
+16. estate-wide Artifact Registry
+17. curated player systems / progression
+
+## Existing near-term items retained
 
 | | |
 |---|---|
-| **Richer GUARD AI / mission tab** | add deeper per-mission drilldowns and alerts now that the first live count/ownership slice exists |
-| **Richer GUARD database console** | add structured table rendering and saved/recent query history after the grouped preset slice |
-| **BattlEye enforcement** | 8 of 51 script rules enforcing (slice 2 staged 2026-08-06: rules 22/26/33/36, all zero-hit); triage remaining exceptions before raising more rules |
-| **infiSTAR cloud 403** | determine whether this is account/licence/API configuration and preserve local logs meanwhile |
+| **Richer GUARD AI / mission tab** | deeper per-mission drilldowns and alerts, now under the broader tab-contract/backplane work |
+| **Richer GUARD database console** | structured tables and saved/recent query history, now part of the operator-object/data-browser direction |
+| **BattlEye enforcement** | 8 of 51 script rules enforcing; triage remaining exceptions before raising more rules |
+| **infiSTAR cloud 403** | determine whether account/licence/API configuration is responsible and preserve local logs meanwhile |
 
 ## Later
 
-Player chat with the AI strictly isolated; lore and world voice; content addons;
-a second headless client; CI on the repos; deeper RAG/search over the estate.
+Player chat with AI only if strictly isolated and non-load-bearing; lore/world voice; second headless client only when measured need exists; CI on repos; deeper RAG/search over the estate.
 
 ## Deliberately parked
 
-**Zombies, VcomAI.** Both are large simulation costs on a single-threaded server.
-Not until the HC is carrying AI.
+**Zombies, VcomAI.** Both are large simulation costs on a single-threaded server. Not until measured HC/server headroom supports the decision.
 
 ## Related
 
-- [XM8 Apps](XM8-Apps) - [Architecture](Architecture) - [Lessons](Lessons)
-
-## 2026-08-05 Notes
-
-- FuMS active mission markers are expected; the red circle/X at Comms Alpha marks the active FuMS mission.
-- Admin teleport was hotfixed to execute server-side through `xcsvTeleportRequest` instead of client-local `setPosATL`. Source is mirrored under `E:\ExileRepo\LiveSource\...`; live backups use timestamp `20260805-100625`.
-- Scroll-wheel admin teleport was fixed after map-click TP proved healthy. The scroll addAction handlers now pass `[position, label]` into `XCSV_fnc_tpTo`, matching the map-click path. Live mission backup: `E:\arma3server\mpmissions\Exile.Tanoa.pbo.20260805-103536.pre-scroll-tp-fix.bak`.
-- Admin teleport safety was tightened after rough named coordinates could land in water and one TP killed the admin. Named scroll targets now use verified mission marker/trader coordinates, and the server resolves requests through `BIS_fnc_findSafePos`, rejects unsafe water/off-map/no-ground destinations, zeroes velocity, and temporarily disables damage during placement. Live backups use timestamp `20260805-105842`.
-- GUARD's FuMS "not seen" state was a parser bug, not a FuMS outage. Live FuMS logs show server init, script transfer to HC, and HC heartbeat slot 4; `D:\XCSV_GUARD\src\mission.rs` now recognizes the current FuMS log phrases.
-- 64-bit server support is live. Production was migrated on 2026-08-05 to `arma3server_x64.exe` plus extDB3, with `-maxMem=12288`. The reproducible builder is `E:\ExileRepo\tools\extdb3\build-extdb3-stage.ps1`; latest validation reached database protocol initialization, world initialization, and "Server is up and running".
-- Project memory rule tightened: every live change must update the Obsidian vault, Git-tracked source, and wiki source before completion.
-- HC header fix deployed: `description.ext::Header::maxPlayers` is now 101 to account for 100 player roles plus the `HeadlessClient_F` role. Validation after restart: server RPT `arma3server_x64_2026-08-05_12-40-42.rpt`, HC RPT `arma3_x64_2026-08-05_12-43-41.rpt`, A3XAI authorization granted, FuMS owner id 4, and GUARD doctor `24 passed, 1 warned, 0 failed`.
-- RAG pulse and richer AI intel pushed: XCSV `45dfbf0`, XCSV_GUARD `e650565`, ExileRepo `17bae79`. GUARD tests: 85 passed, 1 ignored; release build succeeded. Debug build was blocked only because the currently running `XCSV_GUARD.exe` locked `target\debug\XCSV_GUARD.exe`.
-- GUARD Database console first rich slice pushed: XCSV_GUARD `93ffd17`. The tab now has grouped read-only presets for overview, players, territories, vehicles, and economy; it reads extDB3 `Database=` config and keeps the SELECT/SHOW-only gate. Validation: 87 tests passed, 1 ignored; release build succeeded; live extDB3 probes passed for world counts, real accounts, territories, vehicle owners, and money summary.
-- GUARD screenshot/release subsystem started: named-tab screenshots no longer rely on clicking through the nav, deploys now allocate local build numbers, write current-release metadata, and update the taskbar shortcut to the single live Desktop exe while removing stale GUARD shortcuts.
+- [XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan)
+- [XM8 Apps](XM8-Apps)
+- [Architecture](Architecture)
+- [Lessons](Lessons)
