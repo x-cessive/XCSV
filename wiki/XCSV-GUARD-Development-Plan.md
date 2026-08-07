@@ -47,6 +47,69 @@ Non-negotiable rules:
 
 ## 2. GUARD state ownership
 
+> **Implemented 2026-08-07 (`GUARD-STATE-002`).** The classification below is no
+> longer only a plan: it exists as a machine-checked registry in
+> `XCSV_GUARD/src/state_model.rs`, which is the **canonical home** for the
+> detailed model. This page keeps the concepts and the decisions; it does not
+> duplicate the 58-entry table. A test parses `app/state.rs` and fails when a
+> field is added to `GuardApp` without an ownership class, so the registry
+> cannot quietly fall behind the struct.
+
+### What the classification found
+
+All 58 `GuardApp` fields are classified. The split is roughly 12 durable, 24
+reconstructable, 34 ephemeral — deliberately more reconstructable than durable,
+and a test asserts that stays true. Most of what a live console holds is other
+people's truth; if durable ever outnumbers reconstructable, something is being
+remembered that should have been re-proved.
+
+**The finding: the scheduled-restart deadline cannot survive a restart, and
+silently moves.** `supervisor.rs` holds `next_restart: Option<Instant>` and
+computes it as `Instant::now() + interval`. `Instant` is monotonic-since-boot —
+unserialisable, and meaningless across a process or machine restart. Because the
+field starts `None` every process start, **every GUARD restart pushes the
+server's scheduled restart out by up to four hours**, and `warned.clear()` means
+a countdown players already saw can be broadcast again. Nothing logs it.
+
+That is why the plan says restart-safe **absolute** deadlines: the type is wrong,
+not just the persistence. Fixing it is step 5 work, not a config change.
+
+### Enforcement, not documentation
+
+The registry is typed, and the invariants are rejections rather than advice:
+
+- durable state must name `GuardItself` as authority and declare where it
+  persists — external truth that GUARD "remembers" is a lie waiting to happen
+- reconstructable state must name an external authority and **cannot** be
+  persisted as authoritative; `HistoryOnly` is allowed so trends survive, but a
+  restored reading can never be read back as current
+- ephemeral state cannot claim any persistence
+- startup policy must match the class: `LoadValidateReconcile` / `ProbeFromUnknown`
+  / `Reset`
+
+`Observed<T>` carries the freshness rule in the type: it starts `Unknown`, and
+`fresh_value()` returns `None` for anything stale or unprobed. A caller that
+wants a last-known reading must use `any_value()`, which hands back the timestamp
+too — so a screen can say "3 minutes ago" but cannot imply "now".
+
+### Configuration stays configuration
+
+`xcsv_guard.json` remains owned by `GUARD-STATE-001`. A test asserts that
+*only* the config and its schema version declare `Persistence::ConfigFile`, so
+operational state cannot drift into the config file and two components cannot
+both claim the schema version.
+
+### Operational store: `STORE_INTERFACE_ONLY`
+
+Two concrete durable operational consumers are now proven — the absolute
+deadline and the warnings already issued — plus small operator context. That
+justifies declaring the contract step 5 consumes. It does **not** justify SQLite
+for one timestamp and a `Vec<u32>`. When the first slice lands it should reuse
+`GUARD-STATE-001`'s already-validated atomic writer rather than introduce a new
+storage engine. Revisit when a consumer needs querying or history, not before.
+
+---
+
 Closing GUARD must never erase operational truth.
 
 ### Durable
