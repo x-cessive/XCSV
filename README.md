@@ -29,7 +29,7 @@
 
 This repository is the **hub**. It holds the system map, documentation, wiki and submodule pointers for XCSV EXILE.
 
-> **Planning update — 2026-08-07:** GitHub carries the current XCSV Gauntlet + GUARD reliability/UX + server optimization + curated player-development programme. See the [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) and [Roadmap](wiki/Roadmap.md). The desktop/Obsidian roadmap remains authoritative and is pending manual reconciliation by Architect.
+> **Planning update — 2026-08-07:** GitHub carries the current XCSV Gauntlet + GUARD reliability/UX + server optimization + curated player-development programme. See the [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md), [AI / Development Tooling](wiki/AI-Tooling.md) and [Roadmap](wiki/Roadmap.md). The desktop/Obsidian roadmap remains authoritative and is pending manual reconciliation by Architect.
 
 ## 🗺️ The system
 
@@ -61,6 +61,14 @@ One canonical, versioned protocol for Claude Code, OpenCode, Antigravity and dev
 `TARGET LOCK -> RECON -> DECOMPOSE -> WORKERS -> ADVERSARIAL CRITICS -> INTEGRATION -> MEASUREMENT -> EVIDENCE -> VERDICT`
 
 Gauntlet depth scales with risk. Workers may not self-certify. **EVIDENCED / INFERRED / UNKNOWN** remain separate. Deterministic rules should migrate into executable checks.
+
+### GitHub-native execution tracking
+
+XCSV uses **GitHub Issues + GitHub Projects** as the primary execution tracker. The roadmap remains durable priority/decision memory; issues and project state track active execution. This avoids duplicating work into a second Trello/Jira-style task database.
+
+The official GitHub MCP Server is an optional enhancement after the baseline `git` / `gh` workflow is verified. Linear is the only serious future external candidate and should be reconsidered only if GitHub Projects develops a measurable limitation.
+
+Full tooling decision record: **[AI / Development Tooling](wiki/AI-Tooling.md)**.
 
 ### GUARD reliability first
 
@@ -116,6 +124,7 @@ Full design: **[XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md
 | I want to… | go to |
 |---|---|
 | Orient an AI / reconcile roadmap work | [AI Start Here](wiki/AI-Start-Here.md) |
+| See tooling decisions / tracker policy | [AI / Development Tooling](wiki/AI-Tooling.md) |
 | See the full current development programme | [XCSV GUARD Development Plan](wiki/XCSV-GUARD-Development-Plan.md) |
 | See priority/order and completed work | [Roadmap](wiki/Roadmap.md) |
 | Understand architecture | [Architecture](wiki/Architecture.md) |
