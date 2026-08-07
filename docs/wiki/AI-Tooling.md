@@ -4,7 +4,7 @@ section: docs
 title: AI / Development Tooling
 heading: AI / Development Tooling
 blurb: Selected, optional and rejected workflow tools, with the reason for each decision.
-order: 2
+order: 3
 source: AI-Tooling.md
 ---
 

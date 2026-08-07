@@ -4,7 +4,7 @@ section: docs
 title: GUARD Development Plan
 heading: GUARD Development Plan
 blurb: Gauntlet, reliability, UX, evidence, deployment and player-system programme.
-order: 9
+order: 10
 source: XCSV-GUARD-Development-Plan.md
 ---
 

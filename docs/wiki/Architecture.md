@@ -4,7 +4,7 @@ section: docs
 title: Architecture
 heading: Architecture
 blurb: Processes, threading, content layers, and the override seam.
-order: 4
+order: 5
 source: Architecture.md
 ---
 
