@@ -5,33 +5,41 @@ on:
     branches: [main]
     paths:
       - 'AI-START-HERE.md'
+      - 'AI-PROVENANCE.md'
       - 'CLAUDE.md'
       - 'AGENTS.md'
       - 'opencode.json'
       - '.agents/rules/**'
       - 'wiki/AI-Start-Here.md'
+      - 'wiki/AI-Provenance-and-Doc-Sync.md'
       - 'wiki/AI-Tooling.md'
       - 'wiki/Roadmap.md'
       - 'wiki/Home.md'
       - 'tools/ai-reconcile.ps1'
+      - 'tools/ai-commit.ps1'
       - 'tools/build-docs.ps1'
       - 'docs/wiki/AI-Start-Here.md'
+      - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
       - '.github/workflows/ai-contract-drift.yml'
   pull_request:
     paths:
       - 'AI-START-HERE.md'
+      - 'AI-PROVENANCE.md'
       - 'CLAUDE.md'
       - 'AGENTS.md'
       - 'opencode.json'
       - '.agents/rules/**'
       - 'wiki/AI-Start-Here.md'
+      - 'wiki/AI-Provenance-and-Doc-Sync.md'
       - 'wiki/AI-Tooling.md'
       - 'wiki/Roadmap.md'
       - 'wiki/Home.md'
       - 'tools/ai-reconcile.ps1'
+      - 'tools/ai-commit.ps1'
       - 'tools/build-docs.ps1'
       - 'docs/wiki/AI-Start-Here.md'
+      - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
       - '.github/workflows/ai-contract-drift.yml'
   workflow_dispatch:
@@ -53,13 +61,16 @@ jobs:
           set -euo pipefail
           required=(
             'AI-START-HERE.md'
+            'AI-PROVENANCE.md'
             'CLAUDE.md'
             'AGENTS.md'
             'opencode.json'
             '.agents/rules/00-xcsv-ai-entrypoint.md'
             'wiki/AI-Start-Here.md'
+            'wiki/AI-Provenance-and-Doc-Sync.md'
             'wiki/AI-Tooling.md'
             'tools/ai-reconcile.ps1'
+            'tools/ai-commit.ps1'
             'tools/build-docs.ps1'
             'docs/wiki/AI-Start-Here.md'
           )
@@ -75,6 +86,19 @@ jobs:
           for f in AI-START-HERE.md CLAUDE.md AGENTS.md .agents/rules/00-xcsv-ai-entrypoint.md wiki/AI-Start-Here.md docs/wiki/AI-Start-Here.md; do
             grep -Fq "$version" "$f" || { echo "CONTRACT VERSION DRIFT: $f"; exit 1; }
           done
+
+      - name: Provenance policy exists and adapters route to it
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'XCSV-AI-PROVENANCE: 1.0.0' wiki/AI-Provenance-and-Doc-Sync.md
+          grep -Fq 'AI-Provenance-and-Doc-Sync.md' AI-START-HERE.md
+          grep -Fq 'AI-Provenance-and-Doc-Sync.md' CLAUDE.md
+          grep -Fq 'AI-Provenance-and-Doc-Sync.md' AGENTS.md
+          grep -Fq 'AI-Provenance-and-Doc-Sync.md' opencode.json
+          grep -Fq 'AI-Provenance-and-Doc-Sync.md' .agents/rules/00-xcsv-ai-entrypoint.md
+          grep -Fq 'XCSV-Agent:' tools/ai-commit.ps1
+          grep -Fq 'XCSV-Work-ID:' tools/ai-commit.ps1
 
       - name: Native adapters route to canonical contract
         shell: bash
@@ -92,12 +116,14 @@ jobs:
           grep -Fq 'AI / AGENT ROADMAP GATE' wiki/Roadmap.md
           grep -Fq 'AI / AGENT START HERE' README.md
           grep -Fq 'AI / AGENT START HERE' wiki/Home.md
+          grep -Fq 'DIVERGED' wiki/Home.md
 
       - name: Site generator publishes AI pages
         shell: bash
         run: |
           set -euo pipefail
           grep -Fq "'AI-Start-Here'" tools/build-docs.ps1
+          grep -Fq "'AI-Provenance-and-Doc-Sync'" tools/build-docs.ps1
           grep -Fq "'AI-Tooling'" tools/build-docs.ps1
           grep -Fq "'XCSV-GUARD-Development-Plan'" tools/build-docs.ps1
 
