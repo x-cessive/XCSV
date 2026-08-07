@@ -10,21 +10,22 @@ source: Home.md
 
 > ## AI / AGENT START HERE
 >
-> **Read [AI Start Here](AI-Start-Here.html) before acting on the roadmap.**
+> **Read [AI Start Here](AI-Start-Here.html) and [AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync.html) before acting on the roadmap or creating commits.**
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, run the canonical `READ_ONLY_BOOTSTRAP` first. Reconcile roadmap intent against RAG/history, local working trees, Git history, GitHub/submodules and relevant live evidence. Work only on the remaining delta; do not duplicate equivalent functionality.
+>
+> **Current documentation state: `DIVERGED` until SOVRAN-1 reconciliation.** GitHub contains new planning/AI-contract work from 2026-08-07, while the desktop roadmap may contain unique operational evidence. Preserve both sides and reconcile semantically; do not overwrite either one to force agreement.
 
 A dedicated **Arma 3 Exile** server on Tanoa, and every piece of software that keeps it alive.
 
 This wiki is the operator/development map. The [site](https://x-cessive.github.io/XCSV/) is the public-facing view; the [hub repo](https://github.com/x-cessive/XCSV) is the repository map.
-
-> **Planning state — 2026-08-07:** GitHub carries the current Gauntlet + GUARD reliability/UX + server optimization + deployment/provenance + curated player-development backlog. The desktop `ARMA3_EXILE_CODEX\ROADMAP.md` remains authoritative and will be reconciled manually by Architect.
 
 ## Start here
 
 | page | when you need it |
 |---|---|
 | **[AI Start Here](AI-Start-Here.html)** | mandatory AI navigation, reconciliation, delta-first workflow and GitHub work-tracking contract |
+| **[AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync.html)** | AI commit attribution, issue work receipts, and safe desktop/GitHub documentation reconciliation |
 | **[AI / Development Tooling](AI-Tooling.html)** | selected/rejected workflow tools, GitHub-native tracking decision, optional MCP and recommended CI/security helpers |
 | **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
 | **[Roadmap](Roadmap.html)** | current order, completed work and planning priorities |
