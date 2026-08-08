@@ -1,0 +1,63 @@
+{
+  "project": "XCSV",
+  "lane": "XCSV_AI_CONTINUITY",
+  "hermes_profile": "xcsvcontinuity",
+  "openclaw_profile": "xcsvcontinuity",
+  "state_root": "D:\\CAGE\\xcsv-ai-continuity",
+  "current_handoff": "D:\\CAGE\\xcsv-ai-continuity\\state\\CURRENT_HANDOFF.json",
+  "engineering_workers": [
+    {
+      "id": "codex-cli",
+      "kind": "Codex",
+      "status": "observed_running_version_codex-cli_0.146.0",
+      "authority": "GOVERNED",
+      "may_modify_code": true
+    },
+    {
+      "id": "claude-cli",
+      "kind": "Claude",
+      "status": "observed_running_version_2.1.226",
+      "authority": "GOVERNED",
+      "may_modify_code": true
+    },
+    {
+      "id": "opencode-cli",
+      "kind": "OpenCode",
+      "status": "installed_version_1.18.15_not_authority_tested",
+      "authority": "GOVERNED",
+      "may_modify_code": false
+    }
+  ],
+  "continuity_workers": [
+    {
+      "id": "hermes-xcsvcontinuity",
+      "kind": "Hermes",
+      "status": "profile_created_no_api_keys",
+      "authority": "READ_ONLY",
+      "may_modify_code": false
+    },
+    {
+      "id": "openclaw-xcsvcontinuity",
+      "kind": "OpenClaw",
+      "status": "profile_initialized_collision_side_effect_restored",
+      "authority": "READ_ONLY",
+      "may_modify_code": false
+    }
+  ],
+  "local_fallback": [
+    {
+      "id": "ollama-local",
+      "kind": "Ollama",
+      "status": "process_observed_models_llama3.2_1b_qwen3_4b_4k_qwen3_4b_instruct",
+      "authority": "READ_ONLY",
+      "may_modify_code": false
+    }
+  ],
+  "restricted_actions": [
+    "destructive database mutation",
+    "database backfill without explicit Architect authorization",
+    "SOVRAN state write",
+    "default Hermes profile use for XCSV baton",
+    "default OpenClaw profile use for XCSV baton"
+  ]
+}

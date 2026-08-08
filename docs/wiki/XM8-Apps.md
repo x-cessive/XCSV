@@ -4,7 +4,7 @@ section: docs
 title: XM8 Apps
 heading: XM8 Apps
 blurb: How XM8 apps register, what is shipped, what is next.
-order: 8
+order: 9
 source: XM8-Apps.md
 ---
 

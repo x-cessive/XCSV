@@ -32,16 +32,17 @@ $pages = [ordered]@{
     'AI-Start-Here'                    = @{ Order = 1;  Title = 'AI Start Here'; Blurb = 'Mandatory reconciliation and navigation contract for AI-assisted XCSV work.' }
     'AI-Provenance-and-Doc-Sync'       = @{ Order = 2;  Title = 'AI Provenance & Doc Sync'; Blurb = 'AI commit attribution and safe desktop/GitHub documentation reconciliation.' }
     'AI-Tooling'                       = @{ Order = 3;  Title = 'AI / Development Tooling'; Blurb = 'Selected, optional and rejected workflow tools, with the reason for each decision.' }
-    'Home'                             = @{ Order = 4;  Title = 'Overview'; Blurb = 'What XCSV EXILE is, and where to start.' }
-    'Architecture'                     = @{ Order = 5;  Title = 'Architecture'; Blurb = 'Processes, threading, content layers, and the override seam.' }
-    'Runbook'                          = @{ Order = 6;  Title = 'Runbook'; Blurb = 'The server is broken and you need it back.' }
-    'Repositories'                     = @{ Order = 7;  Title = 'Repositories'; Blurb = 'Four repos, one system: what lives where, and why.' }
-    'XM8-Apps'                         = @{ Order = 8;  Title = 'XM8 Apps'; Blurb = 'How XM8 apps register, what is shipped, what is next.' }
-    'Roadmap'                          = @{ Order = 9;  Title = 'Roadmap'; Blurb = 'Done, in flight, next, and deliberately parked.' }
-    'XCSV-GUARD-Development-Plan'      = @{ Order = 10; Title = 'GUARD Development Plan'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
-    'Memory'                           = @{ Order = 11; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
-    'Memory-Index'                     = @{ Order = 12; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
-    'Lessons'                          = @{ Order = 13; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'AI-Continuity'                    = @{ Order = 4;  Title = 'AI Continuity'; Blurb = 'Isolated Hermes/OpenClaw baton and failover workflow for XCSV.' }
+    'Home'                             = @{ Order = 5;  Title = 'Overview'; Blurb = 'What XCSV EXILE is, and where to start.' }
+    'Architecture'                     = @{ Order = 6;  Title = 'Architecture'; Blurb = 'Processes, threading, content layers, and the override seam.' }
+    'Runbook'                          = @{ Order = 7;  Title = 'Runbook'; Blurb = 'The server is broken and you need it back.' }
+    'Repositories'                     = @{ Order = 8;  Title = 'Repositories'; Blurb = 'Four repos, one system: what lives where, and why.' }
+    'XM8-Apps'                         = @{ Order = 9;  Title = 'XM8 Apps'; Blurb = 'How XM8 apps register, what is shipped, what is next.' }
+    'Roadmap'                          = @{ Order = 10; Title = 'Roadmap'; Blurb = 'Done, in flight, next, and deliberately parked.' }
+    'XCSV-GUARD-Development-Plan'      = @{ Order = 11; Title = 'GUARD Development Plan'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
+    'Memory'                           = @{ Order = 12; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
+    'Memory-Index'                     = @{ Order = 13; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
+    'Lessons'                          = @{ Order = 14; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }

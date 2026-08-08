@@ -4,6 +4,7 @@
 - [Architecture](Architecture)
 - [Runbook](Runbook)
 - [Repositories](Repositories)
+- [AI Continuity](AI-Continuity)
 - [XM8 Apps](XM8-Apps)
 - [Roadmap](Roadmap)
 - [Lessons](Lessons)

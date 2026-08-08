@@ -4,12 +4,24 @@ section: docs
 title: Lessons
 heading: Lessons
 blurb: Mistakes actually made here, and the rule each one produced.
-order: 13
+order: 14
 source: Lessons.md
 ---
 
 Mistakes that were actually made here, and the rule each one produced. Read this
 before repeating one someone already paid for.
+
+## Profile creation can mutate shared state
+
+Creating an isolated profile is not automatically side-effect-free. On
+2026-08-08, `openclaw --profile xcsvcontinuity config file` initialized the XCSV
+profile but also migrated the default OpenClaw `exec-approvals.json` into the new
+profile and archived the default file as `.migrated`.
+
+Rule: before using a tool profile as an isolation boundary, inspect or hash the
+default/shared state, run the profile command, then re-check shared state. If the
+tool migrates shared files, restore them immediately and classify the profile
+path as collision-sensitive until proven otherwise.
 
 The headline finding, after auditing a full day of them: **seven of eight errors
 were verification gaps, not knowledge gaps.** The fix is almost never "know
