@@ -134,6 +134,33 @@ asserted escaped JSON does not contain `\a`; correctly escaped `\\a` *contains*
 `\a`, so it could never pass. It failed against correct code and looked like a
 bug in the code. When a brand-new test fails, suspect the test first.
 
+**A guard built from a nearby predicate inherits that predicate's exclusions.**
+A diagnostic refused to answer when the config was "degraded", reusing an
+existing `is_degraded()`. But `Unavailable` — a first run — is deliberately *not*
+degraded, while still meaning every value came from the defaults. So the guard
+written to stop a check reporting on a machine it knew nothing about did exactly
+that, in its most common case. Ask what the guard needs to be true, and write
+*that* predicate; do not borrow one that answers a neighbouring question. Make
+the match exhaustive so a new variant must be classified rather than inheriting
+a permissive default.
+
+**A verdict that cannot name its source cannot be told apart from a
+coincidence.** A candidate build's PASS was read as verifying the operator's
+machine. It had loaded a three-day-old config sitting beside the build output,
+and passed only because that stale file happened to carry the same path. Any
+check whose input is resolved at runtime should report *which* input it used,
+next to the verdict.
+
+**The same encoding trap, twice, in the tool that was written to catch
+mistakes.** A mutation harness round-tripped source through
+`Get-Content -Raw` / `Set-Content -Encoding utf8`, which decodes ANSI and writes
+a BOM: two files silently gained a BOM and mangled em-dashes. This page already
+carried that lesson. Worse, the rewritten harness's own mojibake self-check was
+mangled the same way, because PowerShell 5.1 reads a BOM-less `.ps1` as ANSI, so
+a non-ASCII literal inside the checker is itself corrupt — build such patterns
+from char codes. A harness must prove its restore is byte-identical, including
+encoding, rather than printing that it restored.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The
