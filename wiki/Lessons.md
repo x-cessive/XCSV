@@ -210,6 +210,14 @@ a redraw to a minimized window at all. Only re-running the original kill-while-
 minimized trial showed that. A fix for a runtime defect is a hypothesis until the
 runtime says otherwise.
 
+**Throttle the notification, not the detector.** GUARD-PERF-001 produced a real
+Telegram flood once minimized-supervision gaps repeated in the same incident:
+407s, then smaller 39-82s class gaps. The repair was incident coalescing at the
+notification boundary, not weakening the detector. Count every missed
+supervision window, preserve largest/total gap evidence, send one recovery after
+a proven healthy interval, and keep the architectural defect open until
+supervision leaves the render callback.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The

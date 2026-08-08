@@ -43,6 +43,9 @@ you can link to.
 - HC hardening and real-load ownership observation
 - BattlEye staged enforcement
 - infiSTAR cloud 403 diagnosis while local logs remain authoritative
+- GUARD-PERF-001 architecture: notification flood is mitigated in build
+  `guard-0.7.1+12`, but critical supervision still must move off the
+  egui/render callback
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme
