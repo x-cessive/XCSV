@@ -51,6 +51,16 @@ false.
 
 ## Tooling traps that produce silent no-ops
 
+**Do not debug GUARD by minimizing and restoring the operator windows.** On
+2026-08-08 the working desktop convention became Orca pinned left, XCSV GUARD
+pinned right. Use `D:\XCSV\tools\ai-desktop-capture.ps1 -Layout -Shot` to set
+that layout and capture the whole desktop. Use `-GuardTab RCon -Shot` or another
+tab name when the task needs a specific GUARD tab. If the capture needs more
+width for accurate scaling, use `-WideGuardForShot`; temporary enlargement is
+allowed only if the tool restores Orca left / GUARD right before it exits. The
+script also writes `guard-tree.txt` and `orca-tree.txt` beside the screenshot so
+agents without image-reading capability still have text evidence.
+
 **PowerShell `.Replace()` with `\r\n` on an LF file does nothing** — and returns
 success. Two INI edits "succeeded" and changed nothing, then a meaningless test
 "verified" them. Use `awk`, and verify by printing the section back.

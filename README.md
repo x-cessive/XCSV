@@ -28,6 +28,13 @@
 > **Current documentation state: `SYNCED` as of 2026-08-07 (work ID `XCSV-AI-001`).** The first SOVRAN-1 reconciliation is complete: GitHub's AI-contract and planning work was absorbed into the desktop roadmap as Phase 15 by append, and the desktop's operational evidence stays authoritative where this estate deliberately summarises it. Reconcile semantically on future divergence; never overwrite one side to force agreement.
 >
 > **AI-authored commits require XCSV provenance trailers** so the authenticated GitHub account and the authoring AI are not confused.
+>
+> **GUARD UI/behavior changes also require media refresh:** update the GitHub-facing
+> screenshots and GIFs across the XCSV repos with `D:\XCSV_GUARD\tools\capture.ps1`
+> before calling the work complete. For live debugging, keep Orca pinned left and
+> XCSV GUARD pinned right with `D:\XCSV\tools\ai-desktop-capture.ps1 -Layout -Shot`;
+> use `-WideGuardForShot` only for temporary wider captures, and restore the
+> right-pinned layout afterward.
 
 This repository is the **hub**. It holds the system map, documentation, wiki and submodule pointers for XCSV EXILE.
 

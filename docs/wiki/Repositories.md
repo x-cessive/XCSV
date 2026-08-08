@@ -63,6 +63,15 @@ single live Desktop exe, and launches that exe. The live location always holds
 exactly one binary; taskbar pins must never point at `target\debug` or
 `target\release`.
 
+Any GUARD behavior or UI change must also refresh the GitHub-facing screenshots
+and GIFs across the XCSV repos before the work is called complete. Use
+`D:\XCSV_GUARD\tools\capture.ps1` for publishable tab captures and animated
+assets, then update the hub/site outputs and relevant repo READMEs/wiki
+references. For live debugging captures, use
+`D:\XCSV\tools\ai-desktop-capture.ps1 -Layout -Shot` so Orca stays pinned left
+and XCSV GUARD stays pinned right; `-WideGuardForShot` may temporarily enlarge
+GUARD only when the tool restores the right-pinned layout afterward.
+
 ## XCSV_ADDONS layout
 
 | path | side | notes |

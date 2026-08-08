@@ -30,3 +30,29 @@ After applicable changes to vault notes, wiki/docs, Git-tracked source, live ser
 Use `D:\XCSV\tools\search-rag.ps1 -Query "terms"` before broad filesystem searches for project history. The local JSONL index under `D:\CAGE\xcsv-rag\` must not be committed or published.
 
 Record operational evidence in `C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX\ROADMAP.md` when that local authority is available, and mirror durable shared knowledge into `D:\XCSV\wiki\` without collapsing unique desktop evidence into the shorter GitHub summary.
+
+## Live desktop debugging layout
+
+When debugging XCSV GUARD through the desktop, do not minimize or reshuffle the
+operator windows. Pin Orca to the left half of the primary screen and XCSV GUARD
+to the right half:
+
+```powershell
+D:\XCSV\tools\ai-desktop-capture.ps1 -Layout -Shot
+```
+
+Use `-GuardTab <tab>` to navigate GUARD by name before capturing, for example
+`-GuardTab RCon -Shot`. If a capture needs more width for accurate scaling, use
+`-WideGuardForShot`; the tool may temporarily enlarge GUARD but must restore Orca
+left / GUARD right before it exits. The tool writes full-desktop screenshots and
+text state to `D:\CAGE\xcsv-desktop-shots`; the text files are the fallback
+evidence for agents that cannot read images. Do not commit those local
+screenshots.
+
+## GUARD screenshots and GIFs
+
+Any change to XCSV GUARD behavior or UI must refresh the GitHub-facing screenshots
+and GIFs across the XCSV repos before the work is called complete. Use the
+GUARD capture tooling (`D:\XCSV_GUARD\tools\capture.ps1`) for publishable tab
+captures and animated assets, then update the hub/site outputs and the relevant
+repo READMEs/wiki references. Treat stale images as stale documentation.
