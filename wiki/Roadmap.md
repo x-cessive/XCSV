@@ -51,6 +51,9 @@ you can link to.
   validates, plugins load, and unavailable optional skills are pruned, but
   automatic failover authority remains `PARTIAL` until Hermes runtime invocation
   and stronger OpenClaw profile collision tests are proven.
+- GUARD-RCON-001: GUARD RCon credential drift was proven and the live encrypted
+  config was repaired hash-only against the active BattlEye config. Shutdown
+  semantics remain separate and unproven.
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme

@@ -89,6 +89,12 @@ rotation the console could not authenticate — the old value was still in
 `xcsv_guard.json`. Five locations had to be updated. Grep for the old value
 before declaring a rotation done.
 
+**Credential repair evidence must be hash-only.** On 2026-08-08 GUARD's
+encrypted RCon credential was stale while BattlEye accepted a different active
+secret. The repair compared DPAPI-decrypted GUARD config and BattlEye config by
+SHA256 only, updated `rcon_password_enc`, left plaintext empty, and restarted
+GUARD. Do not print RCon secrets or DPAPI blobs in logs or receipts.
+
 **`Get-Content | Set-Content` is not a targeted edit — it re-encodes the whole
 file.** A one-character fix to the desktop `ROADMAP.md` was written as
 `(Get-Content $p) -replace ... | Set-Content $p -Encoding utf8`. PowerShell 5.1
