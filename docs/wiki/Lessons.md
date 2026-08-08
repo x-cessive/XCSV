@@ -114,6 +114,34 @@ account, not just the active one, and `gh api repos/... --jq .permissions`
 reports the **user's** repo role, not the token's grant. The only proof of a
 write is the write.
 
+**A health check that asserts presence proves nothing about compatibility.**
+`doctor.ps1` confirmed `extdb3-conf.ini` existed, and stayed green for two days
+while GUARD could not parse a word of it — the Database tab was blank the whole
+time (GUARD-DB-001). The file being there was true and entirely beside the point.
+Check the capability you actually depend on, and check it in the **deployed
+artifact**: a green `cargo test` proves the repository is correct, not that the
+exe the operator launches is.
+
+**An unrecognised CLI flag on a GUI binary launches the GUI.** A preflight flag
+added for the check above would, on any older build, fall through to
+`eframe::run_native` — opening a second GUARD from a health check, and two
+instances have already cost roughly half the server's frame rate. Verify the
+target supports the flag before invoking it; do not assume an unknown argument is
+inert.
+
+**`$ErrorActionPreference = 'Stop'` plus `native.exe 2>&1` aborts the script.**
+PowerShell 5.1 wraps a native executable's stderr in a `NativeCommandError`, so a
+mutation-testing harness died after writing its first mutation and before
+reverting it, leaving the source file quietly modified. The "restored" message
+never printed, and nothing else complained. Route native output through a file,
+and confirm a restore by reading the file back rather than by the absence of an
+error.
+
+**An assertion can be incoherent rather than wrong-about-the-code.** A test
+asserted escaped JSON does not contain `\a`; correctly escaped `\\a` *contains*
+`\a`, so it could never pass. It failed against correct code and looked like a
+bug in the code. When a brand-new test fails, suspect the test first.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The
