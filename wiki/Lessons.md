@@ -175,6 +175,29 @@ a non-ASCII literal inside the checker is itself corrupt — build such patterns
 from char codes. A harness must prove its restore is byte-identical, including
 encoding, rather than printing that it restored.
 
+**A zero that looks like data can be a broken write path.** The roadmap recorded
+"0 territories, 0 constructions, 0 containers" as the server's population, and a
+later review explicitly reasoned it was "real data, not a defect". Those were the
+exact three tables whose INSERT templates the extDB2→extDB3 conversion had
+broken; vehicles, whose template needed no conversion, persisted fine. A count
+that is plausible is not evidence. Before believing an empty table, prove
+something can be written to it.
+
+**A migration that converts 125 of 129 cases looks like it worked.** The
+conversion handled every plain-`?` statement and silently mis-handled all four
+using the older `$CUSTOM_n$` syntax. Post-migration validation counted sections
+and checked for forbidden strings — it never checked that each statement's
+declared input count matched its own placeholders. When converting a template
+language, assert the invariant the target enforces, not the shape of the output.
+
+**Verify a fix by re-running the experiment that established the defect.** A
+background thread was added to wake GUARD's event loop so a minimized console
+would keep supervising. It was reasonable, it compiled, its tests passed — and
+deployed to the live server it changed nothing, because Windows does not deliver
+a redraw to a minimized window at all. Only re-running the original kill-while-
+minimized trial showed that. A fix for a runtime defect is a hypothesis until the
+runtime says otherwise.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The
