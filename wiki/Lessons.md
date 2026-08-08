@@ -218,6 +218,16 @@ supervision window, preserve largest/total gap evidence, send one recovery after
 a proven healthy interval, and keep the architectural defect open until
 supervision leaves the render callback.
 
+**A runtime recovery test also needs a reliable failure injector.** The
+GUARD-PERF-001 supervision-worker build moved supervision off egui and stayed
+active while minimized, but the decisive kill-while-minimized acceptance could
+not complete because the current `arma3server_x64` process could not be stopped
+from the medium-integrity agent session. Process kill, window close, and a
+temporary highest-privilege scheduled task were denied; BattlEye RCon logged in
+with the active config but did not stop the process, and GUARD's encrypted RCon
+secret did not match the active BattlEye secret. Record that as
+`BLOCKED_RUNTIME_STOP`, not as a pass or fail of the supervision worker.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The
