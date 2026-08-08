@@ -95,6 +95,13 @@ secret. The repair compared DPAPI-decrypted GUARD config and BattlEye config by
 SHA256 only, updated `rcon_password_enc`, left plaintext empty, and restarted
 GUARD. Do not print RCon secrets or DPAPI blobs in logs or receipts.
 
+**A diagnostic kill switch still needs OS authority.** GUARD build 14 added a
+narrow `--diagnostic-stop-managed-server <pid>` path that refused ambiguous
+targets and proved PID 7956 was the configured `arma3server_x64.exe`, but
+`taskkill` still returned Access Denied under the medium token. A safe target
+selector is not the same as permission to terminate the target. Record the exact
+Windows endpoint that failed, then stop retrying the same permission path.
+
 **`Get-Content | Set-Content` is not a targeted edit — it re-encodes the whole
 file.** A one-character fix to the desktop `ROADMAP.md` was written as
 `(Get-Content $p) -replace ... | Set-Content $p -Encoding utf8`. PowerShell 5.1

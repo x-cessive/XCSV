@@ -1,0 +1,98 @@
+{
+    "generated_at":  "2026-08-08T19:22:49",
+    "exe":  "C:\\Users\\Architect\\Desktop\\XCSV_GUARD.exe",
+    "output_dir":  "D:\\XCSV\\docs\\assets\\shots",
+    "captures":  [
+                     {
+                         "tab":  "Overview",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\overview-normal.png"
+                     },
+                     {
+                         "tab":  "Integrity",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\integrity-normal.png"
+                     },
+                     {
+                         "tab":  "AI",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\ai-normal.png"
+                     },
+                     {
+                         "tab":  "Metrics",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\metrics-normal.png"
+                     },
+                     {
+                         "tab":  "Players",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\players-normal.png"
+                     },
+                     {
+                         "tab":  "Database",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\database-normal.png"
+                     },
+                     {
+                         "tab":  "RCon",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\rcon-normal.png"
+                     },
+                     {
+                         "tab":  "InfiSTAR",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\infistar-normal.png"
+                     },
+                     {
+                         "tab":  "ServerLog",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\serverlog-normal.png"
+                     },
+                     {
+                         "tab":  "Consoles",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\consoles-normal.png"
+                     },
+                     {
+                         "tab":  "Restarts",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\restarts-normal.png"
+                     },
+                     {
+                         "tab":  "Docs",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\docs-normal.png"
+                     },
+                     {
+                         "tab":  "Settings",
+                         "viewport":  "normal",
+                         "width":  1360,
+                         "height":  860,
+                         "path":  "D:\\XCSV\\docs\\assets\\shots\\settings-normal.png"
+                     }
+                 ]
+}

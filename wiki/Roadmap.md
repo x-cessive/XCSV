@@ -54,6 +54,12 @@ you can link to.
 - GUARD-RCON-001: GUARD RCon credential drift was proven and the live encrypted
   config was repaired hash-only against the active BattlEye config. Shutdown
   semantics remain separate and unproven.
+- GUARD-PERF-001: build `guard-0.7.1+14` adds a guarded
+  `--diagnostic-stop-managed-server` CLI path that validates exact PID,
+  single-server count and configured executable path before termination. It
+  proved correct target selection for PID 7956 but still hit Windows
+  `Access is denied`; elevated scheduled-task creation/change is
+  `BLOCKED_PERMISSION`, so minimized real-process recovery remains unclosed.
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme
