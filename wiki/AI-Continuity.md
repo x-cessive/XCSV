@@ -63,7 +63,8 @@ Do not store XCSV baton state in Hermes default state, Hermes
 
 ## Current Status
 
-Status is `PARTIAL`.
+Status is `PARTIAL` for OpenClaw automation and `HANDOFF_READY` for the XCSV
+baton.
 
 Hermes profile isolation is established. OpenClaw profile isolation exists, but
 initializing `openclaw --profile xcsvcontinuity config file` unexpectedly
@@ -72,3 +73,26 @@ profile and archived the default file as `.migrated`. The default file was
 restored from the archive. Treat OpenClaw profile initialization as
 collision-sensitive until this behavior is fully understood and covered by a
 stronger collision test.
+
+## 2026-08-08 EXILE-DB-001 Checkpoint
+
+Active extDB3 SQL_CUSTOM file is proven as
+`E:\arma3server\@ExileServer\sql_custom\exile.ini`. Proof: launcher runs from
+`E:\arma3server` with `-servermod=@ExileServer`; RPT loaded
+`E:\arma3server\@ExileServer\extDB3_x64.dll`; extDB3 logs are written under
+`@ExileServer\logs`; local runbooks and extDB3 staging tools identify
+`@ExileServer\sql_custom\exile.ini` as the live SQL_CUSTOM file. The
+`@ExileServer\extDB\sql_custom\exile.ini` copy is a byte-identical compatibility
+mirror.
+
+EXILE-DB-001 repaired four `$CUSTOM_1$` query templates:
+`insertConstruction`, `insertContainer`, `updateContainer`, and
+`createTerritory`. The repair uses `NULLIF(?, 'NULL')`; `updateContainer` and
+`createTerritory` require non-sequential `SQL1_INPUTS` so the former
+`$CUSTOM_1$` argument remains bound to the nullable column.
+
+OpenClaw remains collision-sensitive. The XCSV profile reports zero sessions at
+`C:\Users\Architect\.openclaw-xcsvcontinuity\agents\main\sessions\sessions.json`,
+but its approval file copied shared authorization material from the default
+profile. Manual failover via the XCSV baton is the allowed continuity path until
+OpenClaw profile initialization is fully characterized.

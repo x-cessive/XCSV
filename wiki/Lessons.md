@@ -251,3 +251,7 @@ Anything set by one thread should be cleared by the one that finishes the job.
 ## Related
 
 - [Runbook](Runbook) · [Architecture](Architecture)
+
+## 2026-08-08 EXILE-DB-001
+
+**A nullable placeholder is not automatically SQL NULL.** In the extDB3 SQL_CUSTOM path, binding literal `NULL` through `?` stored `0` for a nullable integer and the string `NULL` for a nullable varchar. The working pattern was SQL-side normalization: `NULLIF(?, 'NULL')`. When the old `$CUSTOM_n$` argument was located between ordinary placeholders, the `SQL1_INPUTS` list also had to stay non-sequential so money, ids, build rights, and nullable fields did not shift.
