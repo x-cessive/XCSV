@@ -151,6 +151,20 @@ and passed only because that stale file happened to carry the same path. Any
 check whose input is resolved at runtime should report *which* input it used,
 next to the verdict.
 
+**`$null.StartsWith(..)` throws, and `$null -ne ''` is True.** A doctor branch
+tested `$cfgState.StartsWith('Ok')` before any null check, guarded by
+`-ne ''` — which does not catch `$null` in PowerShell. The throw was swallowed by
+the enclosing `catch`, so a genuine FAIL was silently downgraded to "could not
+run the check". Normalise a value once where it enters, and test emptiness with
+`[string]::IsNullOrEmpty`. A defensive `catch` around a whole block will convert
+your own logic errors into inconclusive results rather than surfacing them.
+
+**Anything git reads is a file too.** After fixing the harness below, a commit
+message written with `Out-File -Encoding utf8` put a UTF-8 BOM into the commit
+*subject line* — the same trap a third time, now in the provenance record itself.
+Use `[System.IO.File]::WriteAllText` with a BOM-less encoder for commit messages,
+not just source.
+
 **The same encoding trap, twice, in the tool that was written to catch
 mistakes.** A mutation harness round-tripped source through
 `Get-Content -Raw` / `Set-Content -Encoding utf8`, which decodes ANSI and writes
