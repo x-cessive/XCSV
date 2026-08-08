@@ -15,6 +15,13 @@ default/shared state, run the profile command, then re-check shared state. If th
 tool migrates shared files, restore them immediately and classify the profile
 path as collision-sensitive until proven otherwise.
 
+On the same day, `openclaw --profile xcsvcontinuity doctor --fix
+--non-interactive --yes` repaired the isolated profile enough for
+`config validate`, `sessions list`, `plugins list`, and `skills list` to run.
+That does not make it an automatic failover authority. A profile is only a
+candidate for automation after before/after hash checks prove the default
+profile was not mutated by the real commands it will run.
+
 The headline finding, after auditing a full day of them: **seven of eight errors
 were verification gaps, not knowledge gaps.** The fix is almost never "know
 more". It is "check before asserting".

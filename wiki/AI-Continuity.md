@@ -63,16 +63,40 @@ Do not store XCSV baton state in Hermes default state, Hermes
 
 ## Current Status
 
-Status is `PARTIAL` for OpenClaw automation and `HANDOFF_READY` for the XCSV
-baton.
+Status is `PARTIAL` for automated failover and `HANDOFF_READY_MANUAL_FAILOVER`
+for the XCSV baton.
 
-Hermes profile isolation is established. OpenClaw profile isolation exists, but
-initializing `openclaw --profile xcsvcontinuity config file` unexpectedly
-migrated default `C:\Users\Architect\.openclaw\exec-approvals.json` into the new
-profile and archived the default file as `.migrated`. The default file was
-restored from the archive. Treat OpenClaw profile initialization as
-collision-sensitive until this behavior is fully understood and covered by a
-stronger collision test.
+Fresh checks on 2026-08-08 proved the existing continuity lane is usable for a
+manual baton and read-only sidecar critics:
+
+- `D:\XCSV\tools\xcsv-continuity.ps1 hydrate` reads the active XCSV baton.
+- `D:\XCSV\tools\xcsv-continuity.ps1 verify-isolation` returns
+  `PASS_BASIC_ISOLATION`.
+- `D:\XCSV\tools\xcsv-continuity.ps1 failure-test` returns
+  `PASS_FAILURE_DOES_NOT_MUTATE_HANDOFF`.
+- `openclaw --profile xcsvcontinuity config validate` reports the isolated
+  config valid.
+- `openclaw --profile xcsvcontinuity sessions list --json` reports zero
+  sessions under
+  `C:\Users\Architect\.openclaw-xcsvcontinuity\agents\main\sessions\sessions.json`.
+- `openclaw --profile xcsvcontinuity plugins list --json --enabled` loads 32
+  enabled bundled plugins with no registry diagnostics.
+- `openclaw --profile xcsvcontinuity skills list --json --eligible` succeeds;
+  unavailable optional skills were disabled by
+  `openclaw --profile xcsvcontinuity doctor --fix --non-interactive --yes`.
+- The default and profile OpenClaw approval files remain distinct by SHA256
+  after repair.
+- `ollama run qwen3-4b-instruct "Reply exactly: XCSV local fallback OK"`
+  returned the requested phrase.
+
+Do not upgrade this to automatic failover authority yet. Hermes profile
+isolation is file-proven, but no `hermes` executable is currently on `PATH` and
+the `xcsvcontinuity` profile has no API keys. OpenClaw profile initialization
+previously migrated the default
+`C:\Users\Architect\.openclaw\exec-approvals.json` into the new profile and
+archived the default file as `.migrated`; the default file was restored. Treat
+OpenClaw as collision-sensitive and read-only until profile operations are
+covered by a stronger before/after hash test that wraps real OpenClaw commands.
 
 ## 2026-08-08 EXILE-DB-001 Checkpoint
 

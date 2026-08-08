@@ -54,6 +54,11 @@ you can link to.
 - GUARD-PERF-001 architecture: notification flood is mitigated in build
   `guard-0.7.1+12`, but critical supervision still must move off the
   egui/render callback
+- AI continuity lane: Hermes/OpenClaw/Ollama are available for manual baton and
+  read-only critic workflows. OpenClaw `xcsvcontinuity` profile config now
+  validates, plugins load, and unavailable optional skills are pruned, but
+  automatic failover authority remains `PARTIAL` until Hermes runtime invocation
+  and stronger OpenClaw profile collision tests are proven.
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme

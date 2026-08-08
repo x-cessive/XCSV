@@ -32,14 +32,14 @@
     {
       "id": "hermes-xcsvcontinuity",
       "kind": "Hermes",
-      "status": "profile_created_no_api_keys",
+      "status": "profile_exists_no_cli_on_path_no_api_keys",
       "authority": "READ_ONLY",
       "may_modify_code": false
     },
     {
       "id": "openclaw-xcsvcontinuity",
       "kind": "OpenClaw",
-      "status": "profile_initialized_collision_side_effect_restored",
+      "status": "profile_repaired_config_valid_plugins_loaded_skills_pruned_collision_sensitive",
       "authority": "READ_ONLY",
       "may_modify_code": false
     }
@@ -48,7 +48,7 @@
     {
       "id": "ollama-local",
       "kind": "Ollama",
-      "status": "process_observed_models_llama3.2_1b_qwen3_4b_4k_qwen3_4b_instruct",
+      "status": "models_observed_qwen3_4b_instruct_reply_verified_read_only",
       "authority": "READ_ONLY",
       "may_modify_code": false
     }
