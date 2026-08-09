@@ -289,6 +289,14 @@ Record the runtime pass and the critic tooling block separately; close the
 issue only after an independent critic returns a verdict or Architect waives the
 requirement.
 
+**Safe refusal is not the same as complete operator control.** Closing
+GUARD-PERF-001 proved minimized background recovery with an owned server child
+handle. It also exposed a separate adopted-process gap: after GUARD itself
+restarts, it may observe a still-running configured `arma3server_x64.exe` but
+correctly refuse `StopStack` because it does not own that process handle.
+Track that as GUARD-ADOPT-001. Do not regress to broad taskkill-by-image; model
+`OBSERVED`, `OWNED_CHILD`, and `ADOPTED` authority explicitly.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The

@@ -43,9 +43,9 @@ you can link to.
 - HC hardening and real-load ownership observation
 - BattlEye staged enforcement
 - infiSTAR cloud 403 diagnosis while local logs remain authoritative
-- GUARD-PERF-001 architecture: notification flood is mitigated in build
-  `guard-0.7.1+12`, but critical supervision still must move off the
-  egui/render callback
+- GUARD-PERF-001 is closed in build `guard-0.7.1+16`: notification flood was
+  mitigated earlier, supervision moved off the egui/render callback, and
+  minimized real-process recovery was independently accepted.
 - AI continuity lane: Hermes/OpenClaw/Ollama are available for manual baton and
   read-only critic workflows. OpenClaw `xcsvcontinuity` profile config now
   validates, plugins load, and unavailable optional skills are pruned, but
@@ -67,9 +67,22 @@ you can link to.
   a CIM fallback. Build 16 proved the critical runtime path: GUARD minimized,
   real server PID `37804` terminated, replacement server PID `41016` launched
   by GUARD without GUI restoration, ports returned, mission/extDB/server-up
-  markers appeared, and exactly one HC PID `5788` connected. Final status
-  remains `PARTIAL`, not closed, because the required independent critic
-  stalled in an Orca approval loop and returned no verdict.
+  markers appeared, and exactly one HC PID `5788` connected. A separate
+  independent review returned `PASS_VERIFIED`; GitHub issue #9 is closed with
+  project state `VERIFIED_DONE` / `PASS`.
+- GUARD-ADOPT-001: follow-up issue #13 tracks the separate, safer-than-before
+  but still operationally important gap where a restarted GUARD can observe an
+  already-running configured `arma3server_x64.exe` but lacks an owned child
+  handle and therefore refuses manual stop/restart control rather than broad
+  killing by image name. Required direction is an explicit
+  `OBSERVED`/`OWNED_CHILD`/`ADOPTED` authority model with executable identity,
+  ambiguity and PID-reuse protections.
+- EXILE-DB-001 remains closed for the SQL/extDB3 repair, but 2026-08-09
+  reconciliation found no proof yet of real player-driven construction,
+  container and territory persistence through restart/reload after the repair.
+  Live read-only counts were `construction=0`, `container=0`, `territory=0`.
+  Treat the remaining delta as bounded verification, not as evidence of SQL
+  regression.
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme
