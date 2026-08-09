@@ -62,6 +62,20 @@ you can link to.
   `MANUAL_ONLY` (failed closed rather than copy provider auth across the boundary);
   `gemini-cli` is `UNAVAILABLE` pending re-auth. See
   [AI Continuity](AI-Continuity) and receipt `XCSV-ORCH-001-gauntlet-20260809`.
+- `XCSV-ORCH-002` (2026-08-09) canonicalizes the orchestration subsystem. Source is
+  now the **private** repo `x-cessive/XCSV_ORCH` at `D:\XCSV_ORCH`, with the runtime
+  as a hash-verified deployment target rather than a second master; `deploy.ps1`
+  refuses any destination that would mint a second continuity state root or cross the
+  project boundary. Hermes is `RUNNABLE_VERIFIED` under its own `HERMES_HOME` — the
+  profile flag alone was writing XCSV sessions into the shared `state.db`. OpenClaw
+  now genuinely routes a worker over a local Ollama provider configured per its
+  official docs, with no credential copied from the default agentDir; full unattended
+  auto-routing is still not claimed. Qwen Code installed but `AUTH_REQUIRED`; Gemini
+  reclassified `AUTH_REQUIRED` (provider tier rejection, not a missing login).
+  An independent critic caught a `-dirty` unreproducible deploy, which drove three
+  repairs: provenance reporting, extra/deleted-file drift detection, and a run gate
+  that refuses to route claims against a drifted runtime. See receipt
+  `XCSV-ORCH-002-canonicalization-20260809`.
 - GUARD-RCON-001: GUARD RCon credential drift was proven and the live encrypted
   config was repaired hash-only against the active BattlEye config. Shutdown
   semantics remain separate and unproven.

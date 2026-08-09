@@ -1,4 +1,4 @@
-{
+﻿{
   "project": "XCSV",
   "lane": "XCSV_AI_CONTINUITY",
   "authority_version": "2026-08-09.1",
@@ -46,10 +46,13 @@
     {
       "id": "hermes-xcsvcontinuity",
       "kind": "Hermes",
-      "status": "PROFILE_EXISTS_NO_CLI_ON_PATH_NO_API_KEYS",
+      "status": "RUNNABLE_VERIFIED_isolated_hermes_home_no_api_keys_local_ollama_only",
       "authority": "READ_ONLY",
       "may_modify_code": false,
-      "note": "Hermes is installed at C:\\Users\\Architect\\AppData\\Local\\hermes (Python agent, uv-managed) with profiles field-business / sovran-command-deck / xcsvcontinuity. The xcsvcontinuity profile is clean but empty: no config.yaml, no sessions, no API keys. The durable baton is currently carried by the XCSV continuity tooling, not by a running Hermes agent."
+      "hermes_home": "D:\\CAGE\\xcsv-ai-continuity\\hermes-home",
+      "hermes_exe": "C:\\Users\\Architect\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\hermes.exe",
+      "launcher": "xcsv-hermes.ps1 (canonical source: XCSV_ORCH/src)",
+      "note": "Runnable as of 2026-08-09. hermes.exe was never missing, only absent from PATH; XCSV calls it by absolute path with no machine PATH mutation. CRITICAL: HERMES_PROFILE alone does NOT isolate state - Hermes resolves state.db from HERMES_HOME, so a profile-only run wrote XCSV sessions into the SHARED root state.db that backs session history/resume/kanban. XCSV therefore has its own HERMES_HOME and the launcher refuses the shared one. Verified: XCSV one-shot returned ALIVE while the shared root state.db SHA256 was unchanged. Provider is local Ollama only - no cloud credentials, nothing copied from the default or sovran-command-deck profiles."
     },
     {
       "id": "openclaw-xcsvcontinuity",

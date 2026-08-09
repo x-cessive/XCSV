@@ -56,12 +56,29 @@ Test-Case 'worker policy keeps OpenClaw read-only and collision-sensitive' {
     Assert-True ($openclaw.status -match 'collision_sensitive|collision-sensitive') 'OpenClaw status must retain collision-sensitive boundary'
 }
 
-Test-Case 'Hermes is not claimed runtime-ready without a CLI/API proof' {
+Test-Case 'Hermes is not claimed runtime-ready without isolation proof' {
+    # Hermes became genuinely runnable on 2026-08-09 (XCSV-ORCH-002), so this guard
+    # no longer forbids the claim - it now demands the evidence that makes the claim
+    # safe. HERMES_PROFILE alone does NOT isolate state: Hermes resolves state.db
+    # from HERMES_HOME, and a profile-only run wrote XCSV sessions into the shared
+    # root state.db. Any RUNNABLE claim must therefore name an XCSV-owned HERMES_HOME.
     $policy = Read-Json (Join-Path $Root 'continuity\worker-policy.json')
     $hermes = @($policy.continuity_workers | Where-Object { $_.id -eq 'hermes-xcsvcontinuity' })[0]
     Assert-True ($null -ne $hermes) 'hermes-xcsvcontinuity worker missing'
     Assert-True ($hermes.authority -eq 'READ_ONLY') 'Hermes continuity worker must remain READ_ONLY'
-    Assert-True ($hermes.status -match 'no_cli|no_api|profile_exists') 'Hermes status must not overclaim runtime readiness'
+
+    if ($hermes.status -match 'RUNNABLE') {
+        Assert-True ($hermes.PSObject.Properties.Name -contains 'hermes_home') `
+            'a RUNNABLE Hermes claim must record the XCSV-owned hermes_home'
+        Assert-True ($hermes.hermes_home -notmatch 'AppData\\Local\\hermes$') `
+            'Hermes must not run against the shared Hermes home; its state.db is shared with the default and sovran-command-deck profiles'
+        Assert-True ($hermes.hermes_home -match '^D:\\CAGE\\xcsv-ai-continuity') `
+            'XCSV Hermes home must live under the XCSV runtime state root'
+    }
+    else {
+        Assert-True ($hermes.status -match 'no_cli|no_api|profile_exists') `
+            'Hermes status must not overclaim runtime readiness'
+    }
 }
 
 Test-Case 'local LLM fallback remains read-only' {

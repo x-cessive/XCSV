@@ -69,6 +69,42 @@ files.
 Do not store XCSV baton state in Hermes default state, Hermes
 `sovran-command-deck`, OpenClaw default state, or any SOVRAN project directory.
 
+## Canonical source (2026-08-09, XCSV-ORCH-002)
+
+The orchestration code is no longer a single untracked directory. Canonical source
+is the **private** repository `x-cessive/XCSV_ORCH`, checked out at `D:\XCSV_ORCH`.
+
+```
+D:\XCSV_ORCH                      canonical source (private, remote-backed)
+      |  tools\deploy.ps1         validated deployment + SHA256 manifest
+      v
+D:\CAGE\xcsv-ai-continuity\tools  runtime
+D:\CAGE\xcsv-ai-continuity\state  runtime state - never tracked, never deployed over
+```
+
+The runtime is a *deployment target*, not a second master. `deploy.ps1 -Verify`
+proves runtime == manifest == canonical source; `-DryRun` shows the plan; the
+previous version is archived before every change.
+
+**Status is `DRIFT_RISK`, not `SINGLE_SOURCE`.** An independent critic made the
+point and it was accepted: two independently writable copies that match at time T
+are two copies. What is actually guaranteed is a *deploy-time verified copy* whose
+divergence is detectable. A dirty-source deploy is refused outright (bytes that
+exist in no commit must not reach the runtime), and every Gauntlet run verifies the
+runtime before routing a claim — but a file edited mid-run still executes
+unverified. Closing that would need an immutable runtime or load-time integrity
+checking.
+
+Two guards are proven by test, not merely written:
+
+- Deploying to a directory without `state\CURRENT_HANDOFF.json` is **refused**,
+  because the runtime scripts derive their state root from their own location and
+  a stray deploy would mint a second continuity state root.
+- Deploying against a baton whose `PROJECT` is not `XCSV` is **refused** at the
+  boundary (verified with a `PROJECT=SOVRAN` baton).
+
+Never hand-edit the runtime. Change canonical source, then deploy.
+
 ## Gauntlet Loop (XCSV AI workforce)
 
 The Gauntlet Loop routes one bounded claim to a primary worker, then to critics
@@ -208,6 +244,47 @@ state root under `D:\XCSV`. The reconciliation was therefore changed from
 Handoff was proven without transcript: a fresh `codex-cli` process given only
 `CURRENT_HANDOFF.json` correctly restated the work item, the next exact action,
 and a prohibition it was under.
+
+## 2026-08-09 XCSV-ORCH-002 — Hermes runnable, OpenClaw routing
+
+### Hermes is now runnable for XCSV
+
+`hermes.exe` was never missing — it lives in the install venv at
+`...\hermes-agent\venv\Scripts\hermes.exe` and is simply not on `PATH`. XCSV calls
+it by absolute path through `src\xcsv-hermes.ps1` rather than mutating machine PATH.
+
+**`HERMES_PROFILE` alone does not isolate Hermes state.** A one-shot run with only
+`HERMES_PROFILE=xcsvcontinuity` still wrote to the *shared* root `state.db`, which
+backs session history, resume and kanban. Hermes resolves that path from
+`HERMES_HOME`, and its own source warns this causes "cross-profile data corruption".
+
+XCSV therefore has its own `HERMES_HOME` at
+`D:\CAGE\xcsv-ai-continuity\hermes-home`, and the launcher **refuses** to run
+against the shared home. Verified: an XCSV Hermes one-shot returned `ALIVE` while
+the shared root `state.db` SHA256 was **unchanged**.
+
+The provider is local Ollama, so this lane needs no cloud credentials and nothing
+was copied from the default or `sovran-command-deck` profiles.
+
+### OpenClaw did route a worker
+
+Following OpenClaw's official Ollama provider documentation, the XCSV profile was
+given its own local provider (`baseUrl http://127.0.0.1:11434`, **no** `/v1` — the
+docs warn `/v1` breaks tool calling). The agent auth store was unblocked with
+`OLLAMA_API_KEY=ollama-local`, the non-secret loopback marker the docs specify.
+
+`openclaw --profile xcsvcontinuity agent --local --model ollama/qwen3-4b-instruct:latest`
+returned `ALIVE` and wrote its session into the XCSV profile's own sessions
+directory. **No credential was copied from the default agentDir.**
+
+This is a genuine routed turn, so the `openclaw-ollama` lane is `READY`. It is
+still **not** `FULL_AUTO_ROUTING_VERIFIED`: routing one turn is not the same as
+OpenClaw selecting and dispatching workers for a whole Work ID unattended, and
+those two claims are deliberately kept apart.
+
+Note `openclaw-ollama` shares the provider independence key `Ollama (local)` with
+the direct Ollama workers. Routing the same underlying model through OpenClaw does
+not buy a second independent opinion, and the router enforces that.
 
 ### OpenClaw: failed closed, deliberately
 

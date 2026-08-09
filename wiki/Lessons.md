@@ -379,3 +379,43 @@ reasonable.
 provider auth from the default agentDir — the exact action that caused the
 original contamination. Automatic routing was refused and the working manual
 path retained, rather than weakening the XCSV/SOVRAN boundary to claim a feature.
+
+## 2026-08-09 XCSV-ORCH-002 (canonicalization)
+
+**Path isolation is not state isolation — check where the database actually lives.**
+`HERMES_PROFILE=xcsvcontinuity` resolved the right *config* while still writing
+session state to the shared root `state.db`, because Hermes derives that path from
+`HERMES_HOME`. The profile looked isolated and was not. When a tool has both a
+"profile" and a "home", the home is usually the real boundary.
+
+**A `.gitignore` pattern broad enough to catch secrets will also catch your
+security tooling.** `*secret*` silently excluded `tools/secret-scan.ps1` from the
+first commit — the scanner would have been the one file missing from the repo.
+Check what your ignore rules *excluded*, not just that the commit looked clean.
+
+**Self-test the scanner before trusting a CLEAN verdict.** A secret scanner that
+never fires is indistinguishable from one that works. Ours was run against
+synthetic tokens first: it detected four classes, exited non-zero, and printed no
+values. Only then was CLEAN meaningful.
+
+**PowerShell unrolls single-element arrays on return.** A worker returning exactly
+one evidence item collapsed `evidence` from an array to a bare string, and `.Count`
+then failed under StrictMode. The leading-comma idiom (`return ,[string[]]@(...)`)
+is required at every function boundary that yields a collection.
+
+**Write the regression test for the harness bug, not just the product bug.** The
+suite that locks in the `cmd.exe` argv truncation defect immediately caught two
+*new* self-inflicted defects — the array unrolling, and a status-vocabulary change
+(`AVAILABLE` -> `READY`) that had quietly made every implementation worker
+unroutable. Neither would have surfaced until a live run.
+
+**Don't buy independence with a relabel.** Pointing the newly installed Qwen CLI at
+local Ollama would have produced a "Qwen" critic that was really the same model
+already voting. Workers now carry a `provider_independence_key` separate from their
+display name, and `openclaw-ollama` deliberately shares a key with the direct
+Ollama lanes.
+
+**Distinguish "it routed once" from "it routes".** OpenClaw genuinely dispatched a
+worker and returned a real answer, which earns the lane a READY status — but not
+`FULL_AUTO_ROUTING_VERIFIED`. One routed turn is not unattended dispatch of a whole
+Work ID, and collapsing those two claims is how a demo becomes a false capability.
