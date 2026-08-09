@@ -419,3 +419,45 @@ Ollama lanes.
 worker and returned a real answer, which earns the lane a READY status — but not
 `FULL_AUTO_ROUTING_VERIFIED`. One routed turn is not unattended dispatch of a whole
 Work ID, and collapsing those two claims is how a demo becomes a false capability.
+
+## 2026-08-09 XCSV-ORCH-003 (runtime integrity)
+
+**Verifying a file and then running it by path is not the same as running verified
+bytes.** The fix that actually closes time-of-check/time-of-use is to read the bytes
+once, hash *those bytes*, and execute *those bytes* — `[scriptblock]::Create()` over
+an in-memory string. Any design that hashes a path and then re-opens that path has a
+window, however small.
+
+**Content-addressed releases move the state-root problem, they don't remove it.**
+Running code from `releases\<commit>\` meant every module deriving `$Root` from
+`Split-Path $PSScriptRoot` would have minted a state root per release. The state root
+now resolves explicitly and a test asserts no release directory contains `state\`,
+`handoffs\`, `runs\` or a baton.
+
+**A scriptblock built from a string has no `$PSScriptRoot`.** Modules loaded through
+the verified loader must not use it. The pattern that works is to bootstrap the
+integrity module only when its functions are genuinely absent, so a module behaves
+whether it was dot-sourced by path or loaded as verified bytes.
+
+**`Set-Content -Encoding utf8` writes a BOM, and a BOM is an invalid JSON primitive.**
+This bit twice in one session: once when the release manifest was hashed as raw bytes
+and parsed from those same bytes, and again in the tests that decoded raw bytes
+directly. Write manifests with `UTF8Encoding($false)` and strip a BOM defensively on
+read — do not assume the writer behaved.
+
+**Gate the narrowest choke point, not just the front doors.** Gating the Gauntlet
+controller and the Hermes launcher still left other paths to `Invoke-XcsvWorker`. The
+gate belongs where dispatch actually happens, so no entrypoint can route around it.
+
+**Write the test that proves the gate lets normal work through.** Blocking on modified
+code is only half the property; the suite also asserts that mutating the baton and
+appending to a log do *not* block execution. A gate that blocks everything is not a
+safety feature, it is an outage.
+
+**Session death is only a failure if state lives in the transcript.** Claude hit a
+session limit after pushing the final source fix but before finishing acceptance.
+Codex recovered the exact state from GitHub, `CURRENT_HANDOFF.json`, `CURRENT.json`,
+release manifests, OpenClaw sessions, and runtime evidence. The work resumed from the
+OpenClaw proof instead of restarting. That proves the baton model for a
+human-directed cross-provider handoff, while still leaving automatic OpenClaw failover
+unclaimed.

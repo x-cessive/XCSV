@@ -61,6 +61,93 @@ files.
 Do not store XCSV baton state in Hermes default state, Hermes
 `sovran-command-deck`, OpenClaw default state, or any SOVRAN project directory.
 
+## Runtime integrity (2026-08-09, XCSV-ORCH-003)
+
+Orchestration code no longer runs from a mutable directory. It runs from a
+**content-addressed release**, and the chain below is enforced at load time:
+
+```
+canonical commit -> releases\<commit>\manifest.json (per-file SHA256)
+                 -> CURRENT.json (release id + manifest SHA256)
+                 -> load-time verification
+                 -> execution
+```
+
+Any break is `INTEGRITY_BLOCKED`. There is no self-repair, no silent redeploy, and
+no fallback to unverified local code.
+
+```
+D:\CAGE\xcsv-ai-continuity\
+  CURRENT.json            pointer: release id + manifest hash
+  releases\<commit>\      IMMUTABLE deployed code + manifest
+  state\CURRENT_HANDOFF.json   the single live baton - never per-release
+  handoffs\ runs\ logs\ receipts\ hermes-home\   MUTABLE runtime state
+```
+
+**TOCTOU is closed for loaded modules, not merely narrowed.**
+`Import-XcsvVerifiedModule` reads a module's bytes once, hashes *those bytes*, and
+executes *those same bytes* as a scriptblock. There is no second filesystem read
+between the check and the use, so nothing can be swapped in between.
+
+**The state root is resolved explicitly, never from `$PSScriptRoot`.** Code now runs
+from `releases\<id>\`, so deriving state from script location would have created a
+separate continuity state root under every release — the exact defect earlier guards
+exist to prevent. A test asserts no release directory contains `state\`, `handoffs\`,
+`runs\`, `hermes-home\` or a baton.
+
+Every dispatch path is gated: the Gauntlet controller, the Hermes launcher, and
+`Invoke-XcsvWorker` itself — the narrowest choke point through which orchestration
+can cause a worker to run.
+
+**Root of trust, stated plainly.** The chain terminates at `CURRENT.json` plus the
+integrity module. An attacker who can write to the runtime root could rewrite the
+pointer, manifest and code together. Defeating that needs code signing or an
+OS-enforced immutable store, neither of which is in place. What this *does* defeat:
+accidental edits, partial deploys, stale pointers, unreproducible releases, and any
+single-artifact tampering.
+
+Operations:
+
+```powershell
+tools\release.ps1            # build + promote a release from a clean commit
+tools\release.ps1 -Verify    # prove the whole chain
+tools\release.ps1 -List      # releases, with the current one marked
+tools\release.ps1 -Rollback <release-id>
+```
+
+### XCSV-ORCH-003 acceptance status
+
+Final runtime identity after Codex takeover:
+
+| Field | Value |
+| --- | --- |
+| Source HEAD | `8cb52165912fd2dcd2890397c351b477ee63c2ce` |
+| Release ID | `8cb52165912f` |
+| Manifest SHA256 | `98FF21064F382F8FE370334D7369BAC3C11B70A0D47865897CCABAD0987E05E6` |
+| Integrity suite | `19/19 PASS` |
+| Regression suite | `16/16 PASS` |
+| Continuity guard | `5/5 PASS` |
+
+Claude reached session limit after pushing `8cb5216`, with OpenClaw proof still
+unresolved. Codex recovered from GitHub, the durable baton, runtime release state,
+OpenClaw sessions, and local evidence without restarting the work. This is a
+human-directed cross-provider/session handoff: **verified**. It is not evidence of
+automatic OpenClaw failover.
+
+OpenClaw gating proof:
+
+| Case | Result |
+| --- | --- |
+| Corrupt runtime before dispatch | `INTEGRITY_BLOCKED`; no OpenClaw route |
+| Restored verified runtime | OpenClaw `xcsvcontinuity` local Ollama session returned `ALIVE` |
+| Scope | `OPENCLAW_AUTO_ROUTING_VERIFIED_LOCAL_LANE` |
+| Whole Work-ID routing | `FULL_WORK_ID_ROUTING_UNPROVEN` |
+
+Final critic status: Claude CLI was unavailable due session limit. OpenCode/DeepSeek
+performed a narrow read-only inspection and confirmed source/runtime hash and
+provenance facts, but timed out before emitting the required verdict JSON. Treat the
+final independent critic as `PARTIAL_TIMEOUT`, not as a clean certification.
+
 ## Canonical source (2026-08-09, XCSV-ORCH-002)
 
 The orchestration code is no longer a single untracked directory. Canonical source

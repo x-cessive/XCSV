@@ -76,6 +76,23 @@ you can link to.
   repairs: provenance reporting, extra/deleted-file drift detection, and a run gate
   that refuses to route claims against a drifted runtime. See receipt
   `XCSV-ORCH-002-canonicalization-20260809`.
+- `XCSV-ORCH-003` (2026-08-09) closes the runtime source-integrity gap. Orchestration
+  code runs from **content-addressed releases** under
+  `D:\CAGE\xcsv-ai-continuity\releases\<commit>\`, selected by a `CURRENT.json` pointer
+  that pins the manifest hash. Every dispatch path — Gauntlet controller, Hermes
+  launcher, and `Invoke-XcsvWorker` itself — verifies the chain before executing, and
+  fails closed with `INTEGRITY_BLOCKED`. Time-of-check/time-of-use is **closed** for
+  loaded modules: the loader hashes bytes in memory and executes those same bytes.
+  The live baton stays at `state\CURRENT_HANDOFF.json` and is never duplicated per
+  release. 19 adversarial integrity tests prove code mutation blocks while baton and
+  log mutation are allowed, plus rollback, no-second-state-root, mid-run pointer-swap
+  resistance, and baton-not-executable scanning. Runtime release
+  `8cb52165912f` verifies at manifest SHA256
+  `98FF21064F382F8FE370334D7369BAC3C11B70A0D47865897CCABAD0987E05E6`.
+  OpenClaw is verified only as a gated local lane; full Work-ID routing remains
+  unproven. Root of trust terminates at the pointer plus the integrity module — no
+  code signing is in place. See receipt
+  `XCSV-ORCH-003-runtime-integrity-20260809`.
 - GUARD-RCON-001: GUARD RCon credential drift was proven and the live encrypted
   config was repaired hash-only against the active BattlEye config. Shutdown
   semantics remain separate and unproven.
