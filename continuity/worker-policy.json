@@ -1,63 +1,138 @@
 {
   "project": "XCSV",
   "lane": "XCSV_AI_CONTINUITY",
+  "authority_version": "2026-08-09.1",
+  "tracked_summary_note": "This tracked file is a CURATED SUMMARY of the runtime policy at D:\\CAGE\\xcsv-ai-continuity\\config\\worker-policy.json. It is intentionally smaller and is NOT a byte copy: the runtime file carries machine-local probe detail and absolute state paths that do not belong in the public repo. Reconcile by curating, never by overwriting.",
   "hermes_profile": "xcsvcontinuity",
   "openclaw_profile": "xcsvcontinuity",
   "state_root": "D:\\CAGE\\xcsv-ai-continuity",
   "current_handoff": "D:\\CAGE\\xcsv-ai-continuity\\state\\CURRENT_HANDOFF.json",
+
+  "worker_status_verified": "2026-08-09 by live probe, not by assumption",
+
   "engineering_workers": [
     {
       "id": "codex-cli",
       "kind": "Codex",
-      "status": "observed_running_version_codex-cli_0.146.0",
+      "provider": "OpenAI",
+      "model_observed": "gpt-5.5",
+      "status": "AVAILABLE_PROBE_PASS",
       "authority": "GOVERNED",
-      "may_modify_code": true
+      "may_modify_code": true,
+      "critic_eligible": true
     },
     {
       "id": "claude-cli",
       "kind": "Claude",
-      "status": "observed_running_version_2.1.226",
+      "provider": "Anthropic",
+      "status": "AVAILABLE_PROBE_PASS",
       "authority": "GOVERNED",
-      "may_modify_code": true
+      "may_modify_code": true,
+      "critic_eligible": true
     },
     {
       "id": "opencode-cli",
       "kind": "OpenCode",
-      "status": "installed_version_1.18.15_not_authority_tested",
-      "authority": "GOVERNED",
-      "may_modify_code": false
+      "provider": "OpenCode",
+      "model_observed": "deepseek-v4-flash-free",
+      "status": "AVAILABLE_PROBE_PASS",
+      "authority": "CRITIC_READ_ONLY",
+      "may_modify_code": false,
+      "critic_eligible": true
     }
   ],
+
   "continuity_workers": [
     {
       "id": "hermes-xcsvcontinuity",
       "kind": "Hermes",
-      "status": "profile_exists_no_cli_on_path_no_api_keys",
+      "status": "PROFILE_EXISTS_NO_CLI_ON_PATH_NO_API_KEYS",
       "authority": "READ_ONLY",
-      "may_modify_code": false
+      "may_modify_code": false,
+      "note": "Hermes is installed at C:\\Users\\Architect\\AppData\\Local\\hermes (Python agent, uv-managed) with profiles field-business / sovran-command-deck / xcsvcontinuity. The xcsvcontinuity profile is clean but empty: no config.yaml, no sessions, no API keys. The durable baton is currently carried by the XCSV continuity tooling, not by a running Hermes agent."
     },
     {
       "id": "openclaw-xcsvcontinuity",
       "kind": "OpenClaw",
-      "status": "profile_repaired_config_valid_plugins_loaded_skills_pruned_collision_sensitive",
+      "status": "MANUAL_ONLY_collision_sensitive_no_provider_auth",
       "authority": "READ_ONLY",
-      "may_modify_code": false
+      "may_modify_code": false,
+      "note": "Profile isolation now PASSES (approval token rotated; cmd.exe AutoRun bypassed with /d). Auto-routing is still refused: the profile has no provider auth, and the documented remedy of copying auth from the default agentDir is the exact action that caused the original collision. Fail closed."
     }
   ],
+
   "local_fallback": [
     {
       "id": "ollama-local",
       "kind": "Ollama",
-      "status": "models_observed_qwen3_4b_instruct_reply_verified_read_only",
+      "status": "AVAILABLE_LANE_probe_passed_2026-08-09",
       "authority": "READ_ONLY",
-      "may_modify_code": false
+      "may_modify_code": false,
+      "note": "Aggregate entry for the local Ollama lane as a whole. The lane never inherits code-change authority; individual models below are bounded critics only."
+    },
+    {
+      "id": "ollama-qwen3-4b-instruct",
+      "kind": "Ollama",
+      "status": "AVAILABLE_PROBE_PASS",
+      "authority": "CRITIC_READ_ONLY",
+      "may_modify_code": false,
+      "critic_eligible": true,
+      "note": "Drive over REST (127.0.0.1:11434), never the TTY; the CLI spinner floods ANSI frames."
+    },
+    {
+      "id": "ollama-qwen3-4b-4k",
+      "kind": "Ollama",
+      "status": "AVAILABLE_PROBE_PASS",
+      "authority": "CRITIC_READ_ONLY",
+      "may_modify_code": false,
+      "critic_eligible": true
     }
   ],
+
+  "unavailable_workers": [
+    {
+      "id": "ollama-llama32-1b",
+      "status": "DEGRADED_NOT_CRITIC_ELIGIBLE",
+      "reason": "Failed a trivial instruction-following probe (answered 'Yes.' when asked to reply exactly 'ALIVE'). A critic that cannot honour an output contract cannot produce a trustworthy verdict."
+    },
+    {
+      "id": "gemini-cli",
+      "status": "UNAVAILABLE",
+      "reason": "IneligibleTierError: client no longer supported for Gemini Code Assist for individuals. CLI v0.52.0 installed and launching, but no request can complete. Needs ARCHITECT re-auth."
+    },
+    {
+      "id": "qwen-code-cli",
+      "status": "UNAVAILABLE",
+      "reason": "Not installed (absent from PATH and global npm root). Local Qwen capability is served by ollama-qwen3-4b-instruct instead."
+    },
+    {
+      "id": "antigravity",
+      "status": "UNAVAILABLE",
+      "reason": "Not locally callable. No integration was invented to claim coverage."
+    }
+  ],
+
+  "routing_policy": {
+    "implementation": ["codex-cli", "claude-cli"],
+    "independent_critic": ["claude-cli", "codex-cli", "opencode-cli", "ollama-qwen3-4b-instruct"],
+    "offline_fallback": ["ollama-qwen3-4b-instruct", "ollama-qwen3-4b-4k"],
+    "critic_separation_rule": "A critic must not share a provider with the implementer whose claim it reviews.",
+    "degradation_order": "preferred cloud -> alternate cloud provider -> free cloud -> local ollama -> BLOCKED"
+  },
+
+  "isolation_enforcement": {
+    "scrub_prefixes": ["OPENCLAW_SECRET_", "SOVRAN_", "SMTP_"],
+    "scrub_exact": ["OPENCLAW_HOOKS_TOKEN", "MC_RCON_PASSWORD", "MC_RCON_HOST", "MC_RCON_PORT"],
+    "cmd_autorun_bypass": "cmd.exe is always invoked with /d so the SOVRAN shell-landing AutoRun cannot re-inject SOVRAN_* after the scrub or corrupt worker stdout."
+  },
+
   "restricted_actions": [
     "destructive database mutation",
     "database backfill without explicit Architect authorization",
     "SOVRAN state write",
     "default Hermes profile use for XCSV baton",
-    "default OpenClaw profile use for XCSV baton"
+    "default OpenClaw profile use for XCSV baton",
+    "granting a critic mutation authority",
+    "copying OpenClaw provider auth from the default agentDir into the XCSV profile"
   ]
 }

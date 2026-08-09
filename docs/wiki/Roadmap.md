@@ -59,6 +59,17 @@ you can link to.
   validates, plugins load, and unavailable optional skills are pruned, but
   automatic failover authority remains `PARTIAL` until Hermes runtime invocation
   and stronger OpenClaw profile collision tests are proven.
+- `XCSV-ORCH-001` (2026-08-09) closes the Gauntlet Loop as `PASS_VERIFIED`. One
+  bounded claim was routed across four distinct providers — OpenAI `codex-cli`,
+  Anthropic `claude-cli`, OpenCode `opencode-cli` and local `ollama-qwen3-4b-instruct`
+  — with critic separation enforced by provider, a repair loop that changed the
+  planned reconciliation, and a transcript-free worker handoff. Nine failure/
+  exhaustion tests all preserved the baton. Two real isolation defects were found
+  and repaired: a shared OpenClaw approval token, and `cmd.exe` AutoRun re-injecting
+  SOVRAN state into every worker. OpenClaw auto-routing is deliberately
+  `MANUAL_ONLY` (failed closed rather than copy provider auth across the boundary);
+  `gemini-cli` is `UNAVAILABLE` pending re-auth. See
+  [AI Continuity](AI-Continuity.html) and receipt `XCSV-ORCH-001-gauntlet-20260809`.
 - GUARD-RCON-001: GUARD RCon credential drift was proven and the live encrypted
   config was repaired hash-only against the active BattlEye config. Shutdown
   semantics remain separate and unproven.

@@ -69,6 +69,55 @@ files.
 Do not store XCSV baton state in Hermes default state, Hermes
 `sovran-command-deck`, OpenClaw default state, or any SOVRAN project directory.
 
+## Gauntlet Loop (XCSV AI workforce)
+
+The Gauntlet Loop routes one bounded claim to a primary worker, then to critics
+drawn from *different providers*, and loops findings back for repair before any
+verdict is accepted.
+
+```
+ARCHITECT -> XCSV Work ID -> Hermes durable baton -> router (worker selection)
+          -> worker (bounded authority) -> evidence -> baton update
+          -> independent critic -> repair loop -> verdict
+```
+
+Tools (runtime root `D:\CAGE\xcsv-ai-continuity\tools`):
+
+| Tool | Purpose |
+| --- | --- |
+| `xcsv-workers.ps1` | Worker invocation + SOVRAN credential scrub + authority flags |
+| `xcsv-gauntlet.ps1` | Router, critic separation, durable baton writes |
+| `xcsv-failure-tests.ps1` | Nine real failure/exhaustion scenarios |
+| `xcsv-gauntlet-run.ps1` | The XCSV-ORCH-001 acceptance run |
+
+Routing degrades `OpenAI -> Anthropic -> OpenCode -> local Ollama -> BLOCKED`.
+A critic may never share a provider with the implementer it reviews; provider
+identity, not worker id, is the separation key.
+
+## Isolation: two real defects found and repaired (2026-08-09)
+
+**1. Shared OpenClaw approval token.** `exec-approvals.json` in the XCSV profile
+carried a socket token *byte-identical* to the default/SOVRAN-era profile. The
+socket paths differed but the shared secret did not. Repaired by rotating the
+XCSV token only; the default profile was left untouched.
+
+**2. `cmd.exe` AutoRun re-injecting SOVRAN state.**
+`HKCU\Software\Microsoft\Command Processor\AutoRun` points at the SOVRAN shell
+landing script. Because every npm-installed worker (`codex.cmd`, `gemini.cmd`,
+`opencode.cmd`) launches through `cmd.exe`, the landing script re-injected
+`SOVRAN_*` into each worker *after* the environment scrub and prepended its
+banner to worker stdout. Repaired by always invoking `cmd.exe /d`, which
+disables AutoRun for that invocation only and leaves the SOVRAN shell landing
+fully intact for SOVRAN's own use.
+
+Verified after repair: a real child process sees **0** `SOVRAN_*` /
+`OPENCLAW_SECRET_*` / `SMTP_*` variables, no banner in stdout, and the positive
+markers `XCSV_PROJECT` / `XCSV_STATE_ROOT` / `XCSV_ESTATE_ISOLATED`.
+
+The shared shell profile itself is classified `HARMLESS_SHARED_SHELL_PROFILE`:
+it sets three workspace-root variables, prints a banner, and changes directory.
+It carries no credentials, baton, or model configuration.
+
 ## Current Status
 
 Status is `PARTIAL` for automated failover and `HANDOFF_READY_MANUAL_FAILOVER`
@@ -128,3 +177,43 @@ OpenClaw remains collision-sensitive. The XCSV profile reports zero sessions at
 but its approval file copied shared authorization material from the default
 profile. Manual failover via the XCSV baton is the allowed continuity path until
 OpenClaw profile initialization is fully characterized.
+
+## 2026-08-09 XCSV-ORCH-001 — Gauntlet acceptance
+
+Verdict: `PASS_VERIFIED` for the Gauntlet Loop, `MANUAL_ONLY` for OpenClaw.
+
+Four claims were routed to **four distinct providers**, each on its first lane:
+
+| Claim | Role | Worker | Provider |
+| --- | --- | --- | --- |
+| C1 | primary analyst | `codex-cli` | OpenAI (gpt-5.5) |
+| C2 | independent critic | `claude-cli` | Anthropic |
+| C3 | second critic | `opencode-cli` | OpenCode (deepseek-v4-flash-free) |
+| C4 | offline lane | `ollama-qwen3-4b-instruct` | Ollama (local) |
+| C5 | replacement worker | `codex-cli` | OpenAI |
+
+The critic loop did real work. The claim under test was "the tracked XCSV
+continuity artifacts have drifted from runtime, and the correct reconciliation
+is runtime -> tracked". C1 returned `PARTIAL`; C2 and C3 both `CONFIRM`ed that
+the *direction* was unproven and that a 5x/23x size replacement would destroy
+tracked-only content unreviewed.
+
+They were right. `D:\XCSV\tools\xcsv-continuity.ps1` is a deliberate 378-byte
+*delegating wrapper* that invokes the runtime tool, not a stale copy of it.
+Because the runtime script derives its state root from its own location,
+copying runtime over tracked would have silently created a second continuity
+state root under `D:\XCSV`. The reconciliation was therefore changed from
+**copy** to **curated update**, and the wrapper was left untouched.
+
+Handoff was proven without transcript: a fresh `codex-cli` process given only
+`CURRENT_HANDOFF.json` correctly restated the work item, the next exact action,
+and a prohibition it was under.
+
+### OpenClaw: failed closed, deliberately
+
+`openclaw --profile xcsvcontinuity agent --local` reaches the agent lane but
+returns `ProviderAuthError: No API key found for provider "openai"`. OpenClaw's
+own remedy text suggests copying auth profiles from the main agentDir — which is
+exactly what produced the original approval-token collision. That path was
+refused. OpenClaw stays `MANUAL_ONLY`; routing authority remains with the
+deterministic XCSV router until ARCHITECT supplies XCSV-scoped credentials.

@@ -334,3 +334,48 @@ Anything set by one thread should be cleared by the one that finishes the job.
 ## 2026-08-08 EXILE-DB-001
 
 **A nullable placeholder is not automatically SQL NULL.** In the extDB3 SQL_CUSTOM path, binding literal `NULL` through `?` stored `0` for a nullable integer and the string `NULL` for a nullable varchar. The working pattern was SQL-side normalization: `NULLIF(?, 'NULL')`. When the old `$CUSTOM_n$` argument was located between ordinary placeholders, the `SQL1_INPUTS` list also had to stay non-sequential so money, ids, build rights, and nullable fields did not shift.
+
+## 2026-08-09 XCSV-ORCH-001 (AI workforce)
+
+**`cmd.exe` truncates an argv argument at its first newline.** Multi-line prompts
+passed as a command-line argument to the npm `.cmd` worker shims delivered only
+line 1. Codex received just the role preamble ("You are an XCSV analyst… do not
+modify files") and dutifully replied "Understood, I'll operate as read-only" — so
+three workers looked flaky, unreliable, or badly aligned when the orchestrator was
+at fault. `claude.exe` is a native binary with no `cmd.exe` in its launch path,
+which is exactly why it alone appeared to work. **Send multi-line prompts over
+stdin, never argv.** When several independent models all behave strangely in the
+same way, suspect the harness before the models.
+
+**A shared secret defeats separate paths.** The XCSV and default OpenClaw profiles
+had correctly distinct approval *socket paths* and a byte-identical approval
+*token*. Path isolation reads as isolation at a glance and is not. Compare the
+secrets, not the filenames.
+
+**Registry AutoRun runs inside your children.** `HKCU\Software\Microsoft\Command
+Processor\AutoRun` re-ran the SOVRAN shell landing inside every `cmd.exe`, so it
+re-injected `SOVRAN_*` *after* the environment scrub and prepended a banner to
+worker stdout. Scrubbing a child's environment is not enough when something
+re-populates it on the way in. `cmd.exe /d` disables it per-invocation without
+weakening anything globally.
+
+**A critic that cannot follow an output contract cannot be trusted with a
+verdict.** `llama3.2:1b` answered "Yes." when asked to reply exactly "ALIVE". It
+was marked DEGRADED and barred from critic duty rather than left in the roster to
+produce confident-looking noise.
+
+**Small models copy your placeholders.** `VERDICT: <DRIFT_CONFIRMED|NO_DRIFT>`
+came back literally, angle brackets and all. Give small models a filled-in
+template to imitate, not a grammar to interpret.
+
+**The critics earned their keep.** Two independent providers blocked a
+"reconcile runtime → tracked" plan on the grounds that the direction was never
+proven. They were right: the tracked file was a deliberate 378-byte delegating
+wrapper, and copying over it would have created a second continuity state root.
+An independent critic is worth most precisely when the primary analysis sounds
+reasonable.
+
+**Fail closed at a boundary.** OpenClaw's own error text recommended copying
+provider auth from the default agentDir — the exact action that caused the
+original contamination. Automatic routing was refused and the working manual
+path retained, rather than weakening the XCSV/SOVRAN boundary to claim a feature.
