@@ -258,6 +258,29 @@ with the active config but did not stop the process, and GUARD's encrypted RCon
 secret did not match the active BattlEye secret. Record that as
 `BLOCKED_RUNTIME_STOP`, not as a pass or fail of the supervision worker.
 
+**PID safety needs a handle, not a second command.** Build 14 validated the
+right server PID and then asked `taskkill` to terminate that PID. That left both
+a permission mismatch and a PID-reuse window. Build 15 changed the diagnostic
+stop path to open the process with
+`PROCESS_QUERY_LIMITED_INFORMATION|PROCESS_TERMINATE|SYNCHRONIZE`, validate the
+image path through that handle, and terminate through the same handle. It also
+made malformed diagnostic CLI flags fail closed with exit code `2` instead of
+falling through to normal GUARD launch.
+
+**HC process detection cannot depend on one Windows process API.** During the
+first successful minimized recovery, GUARD relaunched the server but spawned
+duplicate headless clients because the sysinfo path did not reliably prove an
+existing `-name=XCSV_HC` command line. Build 16 kept the fast sysinfo check but
+added a CIM fallback and a defensive pre-spawn HC check. The clean retest
+recovered server PID `41016` and exactly one HC PID `5788`.
+
+**Do not upgrade a runtime pass to closure when the critic is missing.** Build
+16 met the core minimized recovery condition, but the independent Claude critic
+stalled on repeated local approval prompts and never returned `worker_done`.
+Record the runtime pass and the critic tooling block separately; close the
+issue only after an independent critic returns a verdict or Architect waives the
+requirement.
+
 ## Debugging discipline
 
 **A log that stopped writing is not a process that stopped working.** The

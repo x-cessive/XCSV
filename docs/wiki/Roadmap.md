@@ -68,6 +68,16 @@ you can link to.
   proved correct target selection for PID 7956 but still hit Windows
   `Access is denied`; elevated scheduled-task creation/change is
   `BLOCKED_PERMISSION`, so minimized real-process recovery remains unclosed.
+- GUARD-PERF-001: builds `guard-0.7.1+15` and `guard-0.7.1+16`
+  repaired the diagnostic fail-open, replaced the `taskkill` PID handoff with
+  validated process-handle termination, refused broad image-name kills when
+  GUARD has no owned child handle, and fixed duplicate HC launch detection with
+  a CIM fallback. Build 16 proved the critical runtime path: GUARD minimized,
+  real server PID `37804` terminated, replacement server PID `41016` launched
+  by GUARD without GUI restoration, ports returned, mission/extDB/server-up
+  markers appeared, and exactly one HC PID `5788` connected. Final status
+  remains `PARTIAL`, not closed, because the required independent critic
+  stalled in an Orca approval loop and returned no verdict.
 - artifact versioning beyond GUARD itself
 
 ## 2026-08-07 development programme
