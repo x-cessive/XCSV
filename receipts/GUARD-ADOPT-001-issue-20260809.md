@@ -77,7 +77,7 @@ Starting classification: `PARTIAL`
 
 Final source verdict: `PASS_SOURCE_VERIFIED`
 
-Runtime/deployment verdict: `NOT_DEPLOYED_THIS_SLICE`
+Runtime/deployment verdict: `PASS_WITH_CAVEAT`
 
 Changes:
 
@@ -101,10 +101,35 @@ Verification:
 - `cargo build --manifest-path D:\XCSV_GUARD\Cargo.toml`: passed with existing
   dead-code warnings.
 
-Remaining runtime proof:
+Runtime evidence:
 
-- Deploy through `D:\XCSV_GUARD\tools\deploy.ps1`.
-- Restart GUARD while one configured `arma3server_x64.exe` is already running.
-- Observe `control=adopted`.
-- Prove Stop/Restart controls the adopted process without duplicate server or
-  duplicate HC instances.
+- Build `guard-0.7.1+17` deployed from commit
+  `1be829e3f88ffadfe0e4c564f90f43030c787d93` with full tests: 256 passed,
+  0 failed, 3 ignored.
+- After GUARD restart, already-running server PID `21424` remained external to
+  the new GUARD process and the UI displayed `control=adopted`.
+- Deployed diagnostic stop validated configured executable identity and
+  terminated adopted PID `21424`:
+  `terminated requested managed server process via validated process handle`.
+- GUARD recovery launched replacement server PID `41508` without creating a
+  duplicate dedicated server.
+- Build `guard-0.7.1+19` deployed from commit
+  `6d821f2af16c89728622574afdfb411be3b872e4` with full tests: 256 passed,
+  0 failed, 3 ignored.
+- Build 19 added deterministic AI-launch window placement. `deploy.ps1`
+  launched GUARD PID `16480` and placed it on the right half of the primary
+  work area at `960,0 960x1032`; `archive/CURRENT.json` recorded
+  `window_placement.ok=true`.
+- Orca independently observed the same right-side window geometry and visible
+  `adopted control` over server PID `41508`.
+- GUARD doctor after build 19: 24 passed, 2 warned, 0 failed. The warnings were
+  `hc-join` and known infiSTAR cloud `403 Forbidden`; `running-arch` passed for
+  `arma3server_x64.exe` PID `41508`.
+
+Caveat:
+
+- Orca synthetic clicks against the visible `STOP EVERYTHING` button did not
+  activate the button. Therefore the exact adopted StopStack GUI click path is
+  still `NOT_OBSERVED`. The underlying adopted-process termination path is
+  proven by deployed diagnostic stop, and stable right-side placement is now
+  automated for repeatable future GUI proof.

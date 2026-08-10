@@ -122,9 +122,16 @@ you can link to.
   `PASS_SOURCE_VERIFIED` in `D:\XCSV_GUARD`: GUARD distinguishes observed,
   adopted and owned-child control, adoption is gated on exactly one configured
   server executable, stop/relaunch revalidates before adopted control, and UI
-  displays the authority. Runtime deployment/adopted-stop proof remains
-  unclaimed until a deployed build proves control of an already-running server
-  without duplicate server or HC instances. See receipt
+  displays the authority. Runtime deployment is now `PASS_WITH_CAVEAT`: build
+  `guard-0.7.1+17` visibly adopted external server PID `21424`, a deployed
+  diagnostic stop terminated that validated adopted process by handle, and GUARD
+  recovered to replacement server PID `41508` without a duplicate dedicated
+  server. Build `guard-0.7.1+19` also makes AI launches deterministic by placing
+  GUARD on the right half of the primary work area; Orca verified geometry
+  `960,0 960x1032` and visible `adopted control` over PID `41508`. Remaining
+  caveat: Orca synthetic clicks did not activate the visible Stop Everything
+  button, so the exact adopted StopStack GUI click path is still `NOT_OBSERVED`.
+  See receipt
   `GUARD-ADOPT-001-issue-20260809`.
 - EXILE-DB-001 remains closed for the SQL/extDB3 repair, but 2026-08-09
   reconciliation found no proof yet of real player-driven construction,
