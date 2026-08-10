@@ -126,7 +126,14 @@ you can link to.
   handle and therefore refuses manual stop/restart control rather than broad
   killing by image name. Required direction is an explicit
   `OBSERVED`/`OWNED_CHILD`/`ADOPTED` authority model with executable identity,
-  ambiguity and PID-reuse protections.
+  ambiguity and PID-reuse protections. Source implementation is now
+  `PASS_SOURCE_VERIFIED` in `D:\XCSV_GUARD`: GUARD distinguishes observed,
+  adopted and owned-child control, adoption is gated on exactly one configured
+  server executable, stop/relaunch revalidates before adopted control, and UI
+  displays the authority. Runtime deployment/adopted-stop proof remains
+  unclaimed until a deployed build proves control of an already-running server
+  without duplicate server or HC instances. See receipt
+  `GUARD-ADOPT-001-issue-20260809`.
 - EXILE-DB-001 remains closed for the SQL/extDB3 repair, but 2026-08-09
   reconciliation found no proof yet of real player-driven construction,
   container and territory persistence through restart/reload after the repair.

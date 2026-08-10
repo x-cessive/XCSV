@@ -68,3 +68,43 @@ During GUARD-PERF-001:
 ## Rollback
 
 Keep the build 16 behavior: no owned child handle means refusal rather than unsafe termination.
+
+## 2026-08-10 Codex source implementation
+
+Agent: Codex/OpenAI
+
+Starting classification: `PARTIAL`
+
+Final source verdict: `PASS_SOURCE_VERIFIED`
+
+Runtime/deployment verdict: `NOT_DEPLOYED_THIS_SLICE`
+
+Changes:
+
+- Added `ServerAuthority` with explicit `None`, `Observed`, `Adopted`, and
+  `OwnedChild` states.
+- Added narrow adoption in `ServerCtl`: a process can become `Adopted` only when
+  the current process table has exactly one dedicated server process and the
+  executable path matches configured `server_exe`.
+- Stop/relaunch force-stop paths now use the same configured-executable
+  validation before controlling an adopted process.
+- The top bar and Overview server card display the current control authority.
+- `server_authority` is classified in `state_model.rs` as reconstructable OS
+  process state, never durable truth.
+- If a server stop fails, GUARD now leaves MariaDB running and preserves a
+  failure state instead of overwriting the status with a generic shutdown line.
+
+Verification:
+
+- `cargo test --manifest-path D:\XCSV_GUARD\Cargo.toml`: 256 passed, 0 failed,
+  3 ignored.
+- `cargo build --manifest-path D:\XCSV_GUARD\Cargo.toml`: passed with existing
+  dead-code warnings.
+
+Remaining runtime proof:
+
+- Deploy through `D:\XCSV_GUARD\tools\deploy.ps1`.
+- Restart GUARD while one configured `arma3server_x64.exe` is already running.
+- Observe `control=adopted`.
+- Prove Stop/Restart controls the adopted process without duplicate server or
+  duplicate HC instances.
