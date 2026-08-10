@@ -133,3 +133,145 @@ Caveat:
   still `NOT_OBSERVED`. The underlying adopted-process termination path is
   proven by deployed diagnostic stop, and stable right-side placement is now
   automated for repeatable future GUI proof.
+
+## 2026-08-10 Claude takeover - adopted StopStack GUI click path
+
+Agent: Claude Opus 5 (Claude Code)
+
+Starting classification: inherited `PASS_WITH_CAVEAT` with the exact adopted
+StopStack GUI click path `NOT_OBSERVED`.
+
+Final verdict for the click path: `PASS_GUI_CLICK_VERIFIED`.
+
+### Root cause of the failed synthetic clicks
+
+The clicks did not fail because of an Orca defect or a timing race. GUARD
+published no accessibility surface at all.
+
+`Cargo.toml` declared:
+
+```toml
+eframe = { version = "0.28", default-features = false, features = ["default_fonts", "glow"] }
+```
+
+`default-features = false` silently dropped eframe's default `accesskit`
+feature. Measured on the deployed build 19 process (PID `16480`):
+
+```text
+AutomationElement.FromHandle(hwnd)
+  root name='XCSV GUARD' class='Window Class' framework='Win32'
+  descendant count = 0
+```
+
+The window was a single opaque Win32/`glow` surface. There was no
+`STOP EVERYTHING` element for any automation client to locate or invoke, so
+the GUI click path was not merely unproven - it was unreachable.
+
+### Change
+
+Re-enabled the standard feature in `D:\XCSV_GUARD\Cargo.toml`:
+
+```toml
+eframe = { version = "0.28", default-features = false, features = ["accesskit", "default_fonts", "glow"] }
+```
+
+This adds no GUARD-specific control surface. It restores the ordinary
+operating-system accessibility tree, exposing exactly the widgets already
+drawn on screen. Every existing adoption/identity validation in
+`ServerCtl::stop_adopted` remains on the path; activation still runs through
+egui's own widget click handling.
+
+Commit: `5b148bb6f7467a0aa1250d10929698099de7951c`
+"Expose accessibility tree for GUI automation".
+
+Verification: `cargo test`: 256 passed, 0 failed, 3 ignored.
+
+### Runtime proof
+
+Build `guard-0.7.1+20` deployed via `tools\deploy.ps1` from commit
+`5b148bb6f746`, `source_state=CLEAN`, sha256
+`3CC4E72256BF6CD049FAE1415B4B808F3181DF028E9CAF069FBB27E8E1DCD0FE`.
+Deploy relaunched GUARD as PID `16496` and placed it at `960,0 960x1032`
+(`window_placement.ok=true`).
+
+Adoption precondition: GUARD was relaunched while the configured
+`arma3server_x64.exe` PID `41508` (started 01:16:14) was already running.
+
+Accessibility tree after the fix: 102 descendants, including GUARD's own
+rendered state read directly from the UI:
+
+```text
+[Text] 'server'   [Text] 'running'
+[Text] 'control'  [Text] 'adopted'
+[Button] '.  STOP EVERYTHING'   InvokePatternIdentifiers.Pattern
+  bounding rect x=1095 y=67 w=102 h=16
+```
+
+The bounding rectangle falls inside the right-half GUARD window, confirming the
+invoked element is the visible on-screen control and not a hidden widget.
+
+Observed sequence:
+
+```text
+PRE     2026-08-10T01:49:25.5433870-04:00  adopted server pid=41508  mysqld=35644
+INVOKE  2026-08-10T01:49:25.5609577-04:00  InvokePattern.Invoke() on STOP EVERYTHING
+t+2s    server=GONE  mysqld=GONE
+```
+
+GUARD UI immediately after the invoke: `server` -> `stopped`, status
+`stack: shutting down...`, and the control flipped to `. START EVERYTHING`.
+`Get-Service MariaDB` -> `Stopped`.
+
+MariaDB safety: the database was stopped only on the success path. The failure
+path is source-verified at `src\app\worker.rs:949-956` - when `stop_adopted`
+returns `Err`, GUARD sets `stop_db = false` and records
+`server stop failed, database left running`. The shutdown thread also waits for
+`arma_running()` to go false (up to 20s) before touching the service, so the
+database is never stopped underneath a live server.
+
+### Recovery
+
+Recovery was driven through the same UI path (`START EVERYTHING` invoked via
+`InvokePattern`) at `2026-08-10T01:50:21`:
+
+- exactly one dedicated server, PID `37604`; no duplicate `arma3server_x64.exe`
+- no duplicate HC
+- MariaDB back to `Running`
+- `Starting mission count = 1` - no restart loop
+- control authority correctly transitioned `adopted` -> `owned` once GUARD
+  spawned the replacement itself; `server` -> `running`
+- GUARD window still exactly `960,0 960x1032`
+
+GUARD doctor was run twice. Immediately after the restart it read
+`23 passed, 3 warned, 0 failed`, with `population` at `16/103` and `hc-join`
+warned - both simply because the server had only just booted. Once population
+and the HC join completed, the settled run read:
+
+```text
+25 passed, 1 warned, 0 failed
+```
+
+This is better than the build 19 baseline of `24 passed, 2 warned, 0 failed`.
+The only remaining warning is the known infiSTAR cloud `403 Forbidden`.
+Notably `hc-join` now **passes** - `latest server/HC logs show successful HC
+join` - where it had been a standing warning for Codex. Confirmed in the RPT:
+
+```text
+1:52:40 "[A3XAI] Headless client HC (owner: 4) logged in successfully."
+1:53:50 "##FuMsnInit: Script Transfer complete to Headless Client <4:HC> in 53.7 secs"
+```
+
+Final process state: exactly one dedicated server `arma3server_x64.exe` PID
+`37604`, exactly one headless client `arma3_x64.exe` PID `30564`, `mysqld` PID
+`33860`, GUARD PID `16496`. No duplicate server, no duplicate HC.
+
+### Verdict change
+
+The exact adopted StopStack GUI click path is no longer `NOT_OBSERVED`. The
+real on-screen button was activated through the standard accessibility invoke
+path, the adopted server PID exited, MariaDB was stopped safely and only after
+the server was gone, and recovery produced no duplicate server or HC.
+
+Note on scope: this proves the click path on build 20. Build 19 remains
+permanently unclickable by automation, because the accessibility tree it never
+published cannot be added retroactively.
