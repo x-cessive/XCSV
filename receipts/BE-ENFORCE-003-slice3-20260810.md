@@ -10,7 +10,19 @@ Gauntlet: G3
 
 Date: 2026-08-10
 
-Verdict: `APPLIED_PENDING_RESTART`
+Verdict: `PASS_ACTIVE`
+
+Activated 2026-08-10 02:15 via GUARD UI restart. GUARD doctor independently
+reports `PASS battleye-enforcement 11 of 51 rules enforcing` - since BattlEye
+only loads filters at boot, doctor reading 11 is the activation proof. Zero hits
+on the newly promoted rules since. Final stack: server PID `28132`, HC PID
+`32096`, MariaDB running, one mission start, no duplicates, doctor
+`25 passed, 1 warned, 0 failed`.
+
+The restart also surfaced `GUARD-HC-001` (issue #14): the *Restart server* path
+orphans the headless client and never recovers it, because `tick_hc_launch`
+early-returns on a process-existence check. See that issue; it is a plausible
+contributor to the standing FPS-decay complaint.
 
 ## Scope
 
