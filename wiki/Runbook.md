@@ -124,6 +124,49 @@ larger per entry.
   **XCSV: World census** — it buckets and maps every simulated object, locally
   to you only.
 
+## 8. Nobody can join, but the server looks fine
+
+If the process is up, the ports are bound, the mission started and the database
+connected — **and nothing can connect anyway** — check the Steam build ids
+before anything else. Arma refuses cross-version joins and the server logs
+nothing when a client fails the handshake, so this fault is invisible from the
+server's own logs. It caused the 2026-08-11 outage.
+
+XCSV GUARD checks this before every launch and will refuse to start on a
+mismatch (Overview shows a red banner; the toggle is on the **Integrity** tab).
+To check by hand, compare the two banners:
+
+```powershell
+# server
+Get-Content (Get-ChildItem E:\arma3server\profiles\arma3server*.rpt |
+  Sort LastWriteTime -Desc | Select -First 1).FullName -TotalCount 12
+# client / HC
+Get-Content (Get-ChildItem E:\arma3server\profiles_hc2\arma3_x64*.rpt |
+  Sort LastWriteTime -Desc | Select -First 1).FullName -TotalCount 12
+```
+
+Or read the Steam manifests directly, which needs nothing running:
+
+```powershell
+Select-String E:\arma3server\steamapps\appmanifest_233780.acf  -Pattern '"buildid"'
+Select-String E:\SteamLibrary\steamapps\appmanifest_107410.acf -Pattern '"buildid"'
+```
+
+**Fixing a mismatch.** Steam auto-updates the retail client; the dedicated
+server is a separate SteamCMD app (233780) and does not follow. Update it:
+
+```
+E:\SteamCMD\steamcmd.exe +force_install_dir E:\arma3server +login <steam-user> +app_update 233780 validate +quit
+```
+
+`+login anonymous` **does not work** for 233780 — it fails with
+`No subscription`. The app requires a Steam account that owns Arma 3, and the
+login is interactive (password, then Steam Guard), so it cannot be driven from
+a non-interactive shell or a scheduled task.
+
+Stop the stack before updating, and stop **XCSV GUARD first** — GUARD is the
+parent of the server process and will respawn it within seconds otherwise.
+
 ## Related
 
 - [Architecture](Architecture) · [Lessons](Lessons) · [Roadmap](Roadmap)

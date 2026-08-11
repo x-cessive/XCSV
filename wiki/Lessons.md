@@ -52,6 +52,25 @@ to 46 and completed the map. A plausible-sounding pattern is not a diagnosis.
 written off as harmless. It is an Arma 2 class — the inner safezone ring was
 invisible. Corrected to `Sign_Sphere100cm_F`, errors went to zero.
 
+**A green stack can still be unjoinable.** On 2026-08-11 nothing could connect —
+not the headless clients, not the operator — while the process was up, 2302-2306
+were bound, the mission reached `Starting mission:`, extDB3 said
+`Connected to database!`, and Steam was connected. There was no error in the RPT
+because there was nothing for the server to report: Steam had auto-updated the
+retail client to 2.22.153995 and the SteamCMD server install stayed on
+2.20.152984, and Arma refuses cross-version joins *silently from the server's
+side*. A client failing the version handshake never reaches the point where the
+server would log a join. **Compare the two RPT version banners before believing
+any other signal.** Now gated in GUARD (GUARD-BUILD-001) — the server and client
+Steam build ids are compared before every launch.
+
+**"Unhealthy, restart it" can be the loop, not the cure.** The same day, GUARD
+read "no players" as an unhealthy server and bounced it every ~10 minutes. Each
+relaunch produced another equally unjoinable server, and the restart logs
+recorded a cause that was a symptom. Killing the processes did not stop it
+either — GUARD is the parent of the respawn and has to be stopped first. A
+refusal that no amount of waiting can clear must arm no retry.
+
 **Read the enclosing block before calling something a bug.** `SC_mapMarkers = true`
 was flagged as leaking loot positions. It sits inside `if (SC_debug)`, which is
 false.
