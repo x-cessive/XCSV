@@ -51,11 +51,13 @@ database.
 
 Player app. `xcsv/fn_fieldNotes.sqf`, slide `XM8SlideXcsvNotes`. Static
 server-specific manual covering survival, medical, money/respect, territory
-decay, building, vehicles/garage, safe zones and island context.
+decay, building, vehicles/garage, safe zones, island context and faction
+dossiers.
 
-`FIELD-NOTES-001` adds a source-only `Fresh arrival` topic for the configured
-5-minute Bambi window. Live deployment is deferred until after the
-returning-player briefing test.
+`FIELD-NOTES-001` added and live-deployed a `Fresh arrival` topic for the
+configured 5-minute Bambi window. `FIELD-NOTES-003` folds the first
+`Island intel / lore reader` slice into this same app as Warden Control, The
+Yard and Salvage Net dossiers.
 
 ### App17 - Faction Standing
 
@@ -116,7 +118,8 @@ handlers.
 3. Virtual Garage remote: stored vehicles and where they are parked.
 4. Job board: generated fetch/deliver tasks for solo direction.
 5. Group / clan panel: members, online status, last seen, shared markers.
-6. Island intel / lore reader: faction dossiers and backstory.
+6. Island intel / lore reader: first faction-dossier slice lives in Field Notes;
+   a separate app is deferred until there is dynamic intel to render.
 7. Message board: asynchronous player-to-player notes.
 
 ## Order Of Work
