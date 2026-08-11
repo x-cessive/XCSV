@@ -26,7 +26,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-function Invoke-GitText {
+function Invoke-GitResult {
     param(
         [string] $Repo,
         # Must not be named $Args: that collides with the PowerShell automatic
@@ -35,16 +35,38 @@ function Invoke-GitText {
         [string[]] $GitArgs
     )
 
+    $errFile = [System.IO.Path]::GetTempFileName()
     $old = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
+    $ErrorActionPreference = 'Continue'
     try {
-        $out = & git -C $Repo @GitArgs 2>$null
-        if ($LASTEXITCODE -ne 0) { return $null }
-        return (($out | Out-String).Trim())
+        $out = & git -C $Repo @GitArgs 2>$errFile
+        $exitCode = $LASTEXITCODE
+        $err = ''
+        if (Test-Path $errFile) {
+            $err = ((Get-Content -LiteralPath $errFile -Raw -ErrorAction SilentlyContinue) | Out-String).Trim()
+        }
+
+        return [pscustomobject]@{
+            exit_code = $exitCode
+            stdout = (($out | Out-String).Trim())
+            stderr = $err
+        }
     }
     finally {
         $ErrorActionPreference = $old
+        Remove-Item -LiteralPath $errFile -Force -ErrorAction SilentlyContinue
     }
+}
+
+function Invoke-GitText {
+    param(
+        [string] $Repo,
+        [string[]] $GitArgs
+    )
+
+    $result = Invoke-GitResult -Repo $Repo -GitArgs $GitArgs
+    if ($result.exit_code -ne 0) { return $null }
+    return $result.stdout
 }
 
 function Get-GhAuthState {
@@ -181,11 +203,21 @@ function Get-RepoState {
             working_tree = 'MISSING'
             upstream = $null
             origin = $null
+            git_detail = $null
         }
     }
 
-    $inside = Invoke-GitText -Repo $Path -GitArgs @('rev-parse', '--is-inside-work-tree')
-    if ($inside -ne 'true') {
+    $inside = Invoke-GitResult -Repo $Path -GitArgs @('rev-parse', '--is-inside-work-tree')
+    if ($inside.exit_code -ne 0 -or $inside.stdout -ne 'true') {
+        $state = 'NOT_GIT'
+        $detail = $inside.stderr
+        if ($inside.stderr -match 'dubious ownership') {
+            $state = 'GIT_UNSAFE_OWNERSHIP'
+            $fatal = [regex]::Match($inside.stderr, 'fatal: detected dubious ownership[^\r\n]*')
+            $hint = [regex]::Match($inside.stderr, 'git config --global --add safe\.directory\s+\S+')
+            $detail = (@($fatal.Value, $hint.Value) | Where-Object { $_ }) -join '; '
+        }
+
         return [pscustomobject]@{
             name = $Name
             path = $Path
@@ -194,9 +226,10 @@ function Get-RepoState {
             local_sha = $null
             remote_sha = $null
             remote_match = 'UNKNOWN'
-            working_tree = 'NOT_GIT'
+            working_tree = $state
             upstream = $null
             origin = $null
+            git_detail = $detail
         }
     }
 
@@ -231,6 +264,7 @@ function Get-RepoState {
         working_tree = $(if ([string]::IsNullOrWhiteSpace($status)) { 'CLEAN' } else { 'DIRTY' })
         upstream = $upstream
         origin = $origin
+        git_detail = $null
     }
 }
 
@@ -301,6 +335,10 @@ Write-Host ''
 Write-Host 'Repositories:'
 foreach ($r in $repos) {
     Write-Host ('  {0,-12} {1,-9} remote={2,-8} branch={3} sha={4}' -f $r.name, $r.working_tree, $r.remote_match, $r.branch, $r.local_sha)
+    if ($r.git_detail) {
+        $detail = ($r.git_detail -split "`r?`n" | Select-Object -First 1)
+        Write-Host ('    detail: {0}' -f $detail)
+    }
 }
 Write-Host ''
 Write-Host 'Bootstrap files:'
