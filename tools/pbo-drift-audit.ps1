@@ -112,6 +112,13 @@ $ErrorActionPreference = 'Continue'
 $Pairs = @(
     @{ pbo = "$ServerDir\mpmissions\Exile.Tanoa.pbo";                  src = "$RepoDir\LiveSource\mpmissions\Exile.Tanoa";                                origin = 'ours'   }
     @{ pbo = "$ServerDir\@ExileServer\addons\xcsv_chatter.pbo";        src = "$RepoDir\LiveSource\server-addons\xcsv_chatter";                            origin = 'ours'   }
+    # Captured on 2026-08-11 (commit 1b524c6). It had NO source anywhere and the
+    # deployed PBO was the only copy of the loot tables and CfgSettings in
+    # existence. It stayed in the "no source held" list for a day after being
+    # captured, which is the worst state for an audit to be in: quietly telling
+    # you a gap is still open after it has been closed. Paired now so a future
+    # divergence is actually reported.
+    @{ pbo = "$ServerDir\@ExileServer\addons\exile_server_config.pbo"; src = "$RepoDir\LiveSource\server-addons\exile_server_config";                     origin = 'ours'   }
     @{ pbo = "$ServerDir\@ExileServer\addons\sovran_zeus.pbo";         src = "$RepoDir\original-addons\sovran_zeus";                                      origin = 'ours'   }
     @{ pbo = "$ServerDir\@ExileServer\addons\a3_exile_lootbox.pbo";    src = "$RepoDir\Addons\a3_exile_lootbox";                                          origin = 'vendor' }
     @{ pbo = "$ServerDir\@ExileServer\addons\a3_exile_occupation.pbo"; src = "$RepoDir\Addons\a3_exile_occupation-development\source\a3_exile_occupation"; origin = 'vendor' }
@@ -144,7 +151,8 @@ $Pairs = @(
 #>
 $NoSource = @(
     @{ pbo = 'exile_server.pbo';              note = 'Exile 1.0.4a stock server addon. The only trees carrying these paths are copies bundled inside third-party mods (ExileReborn zombies), not our source.' }
-    @{ pbo = 'exile_server_config.pbo';       note = 'A single 326 KB config.cpp with no source tree. Every trader, price and loadout on the server lives in it and the PBO is the only copy.' }
+    # exile_server_config.pbo was here until 2026-08-11. It is now captured at
+    # LiveSource\server-addons\exile_server_config and is audited above.
     @{ pbo = 'GADD_TrickOrTreat_Server.pbo';  note = 'The repo holds the shipped .pbo (Addons\Trick-Or-Treat\Server), not unpacked source.' }
     @{ pbo = 'Exile.Altis.pbo';               note = 'Stock mission, not the one this server runs.' }
     @{ pbo = 'Exile.Malden.pbo';              note = 'Stock mission, not the one this server runs.' }
