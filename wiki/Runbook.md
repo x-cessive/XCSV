@@ -134,6 +134,13 @@ server's own logs. It caused the 2026-08-11 outage.
 
 XCSV GUARD checks this before every launch and will refuse to start on a
 mismatch (Overview shows a red banner; the toggle is on the **Integrity** tab).
+
+> **Compare the game version, never the Steam build id.** The server is app
+> 233780 and the client is app 107410 — different applications, whose build ids
+> are independent counters that never match even when the installs do. Right
+> after the 2026-08-11 update, with both sides on 2.22.153995 and joining fine,
+> the manifests read 24610432 and 24672225.
+
 To check by hand, compare the two banners:
 
 ```powershell
