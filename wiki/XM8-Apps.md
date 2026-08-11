@@ -1,124 +1,135 @@
 # XM8 Apps
 
-The XM8 is Exile's in-game phone and the only sanctioned place to put
+The XM8 is Exile's in-game phone and the sanctioned place to put
 player-facing UI.
 
-## How registration works
+## How Registration Works
 
 Apps are declared in the mission's `config.cpp` under `CfgXM8`, one
 `XM8_AppNN_Button` class each:
 
 ```cpp
 class XM8_App14_Button {
-    idc         = ...;
-    text        = "Admin TP";
+    idc = ...;
+    text = "Admin TP";
     onButtonClick = "call XCSV_fnc_tpMenu";
-    resource    = "";          // "" == code-only, no slide
+    resource = ""; // "" == code-only, no slide
 };
 ```
 
-`resource = ""` gives a **code-only** app: the button simply calls a function.
-A real slide needs an `Rsc` control tree, which is a substantially larger build —
-**the first one will take several times longer than every one after it**, because
-the pattern only has to be established once.
+`resource = ""` gives a code-only app: the button simply calls a function. A
+real slide needs an `Rsc` control tree. The slide pattern now exists, but every
+new app still needs live XM8 exercise because keyboard focus, scrolling and
+structured-text rendering cannot be proven from static source alone.
 
-## Two rules that decide what to build
+## Two Build Rules
 
-1. **Text and UI cost nothing at BattlEye.** Read-only apps need no filter
-   exception at all.
-2. **Anything that creates, deletes or moves an object** touches
-   `createVehicle` / `deleteVehicle` / `setpos`. Those filters are genuine cheat
-   vectors. **Never** run the autofilter over them; write the one narrow
-   exception by hand, and gate the app on an admin UID.
+1. Text and read-only UI cost nothing at BattlEye.
+2. Anything that creates, deletes or moves an object touches `createVehicle`,
+   `deleteVehicle` or `setpos`. Write narrow exceptions by hand and gate the app
+   on an admin UID.
 
 ## Shipped
 
-### App14 — Admin TP *(admin only)*
+### App14 - Admin TP
 
-`mission/xcsv/fn_adminTeleport.sqf`. Three ways to move:
+Admin only. `xcsv/fn_adminTeleport.sqf`. Supports map-click teleport, teleport to
+player, and teleport to named places. It moves `vehicle player`, not just the
+unit, so vehicle occupants are not dropped out of moving vehicles.
 
-- **Map click** — arms the map for 45 s, then shift-click a destination. Time-boxed
-  so a stray click a minute later does not fling you across the island.
-- **To a player** — one scroll action per online player.
-- **To a named place** — trader zones and towns, for testing the dialogue addons.
+Before raising `setpos.txt` enforcement, add one narrow BattlEye exception by
+hand and watch infiSTAR's local logs on the first live use.
 
-It moves `vehicle player`, not the player: teleporting someone out of a moving
-vehicle leaves that vehicle driverless at speed.
+### App15 - Scoreboard
 
-> ⚠️ **Before enabling BattlEye enforcement.** This uses `setPosATL`, which trips
-> `battleye\setpos.txt`. Every rule there is action `1` (log only) today, so it
-> logs and nothing else. The moment those are raised, this kicks whoever uses it —
-> including you. Add **one narrow exception by hand**. infiSTAR is the second
-> gatekeeper: it carries its own anti-teleport detection and its cloud has never
-> succeeded here, so its admin list may not be loading. Watch `log_data.log` the
-> first time you teleport, and if it flags you, add the UID rather than weakening
-> the detection.
+Player app. `xcsv/fn_scoreboard.sqf`, slide `XM8SlideXcsvScoreboard`, server
+publisher `xcsv_chatter/scoreboard/fn_scoreboardPublish.sqf`. Read-only. The
+client renders public `XCSV_Scoreboard`; opening the app does not query the
+database.
 
-### App20 — Player Inspector *(admin only)*
+### App16 - Field Notes
 
-`xcsv/fn_playerInspector.sqf`, `xcsv_chatter/network/fn_inspectorRequest.sqf`, slide `XM8SlideXcsvInspector`. Admin types a name fragment, the server resolves account details (UID, respect, kills, deaths, K/D, locker, connections) and live territory flag membership, answered as structured text to the requesting admin session. Built-in `ExileClient_gui_xm8_slide_extraApps_onOpen.sqf` grid override extends app slots to App20+. Read-only, parameter-bound query.
+Player app. `xcsv/fn_fieldNotes.sqf`, slide `XM8SlideXcsvNotes`. Static
+server-specific manual covering survival, medical, money/respect, territory
+decay, building, vehicles/garage, safe zones and island context.
 
-### Also shipped, not XM8
+`FIELD-NOTES-001` adds a source-only `Fresh arrival` topic for the configured
+5-minute Bambi window. Live deployment is deferred until after the
+returning-player briefing test.
 
-`XCSV: World census` — an admin scroll action that buckets and maps every
-simulated object, using `createMarkerLocal` so the markers exist only on the
-admin's machine. Delivered as an action rather than a keybind because infiSTAR
-strips unregistered key handlers.
+### App17 - Faction Standing
 
-## Admin backlog
+Player app. `xcsv/fn_standing.sqf`, slide `XM8SlideXcsvStanding`, server
+publisher `xcsv_chatter/standing/fn_standingPublish.sqf`. Observational only:
+standing does not yet gate prices, stock or progression.
 
-Ordered by support burden removed.
+### App18 - Trader Prices
 
-1. **Territory browser** — every flag with owner, level, build rights and **days
-   until decay**. Highest value in the list; the decay column alone answers the
-   most common ticket there is. Read-only. Queries already exist in `exile.ini`.
-2. **Player inspector** — UID, ping, poptabs, respect, loadout, territory
-   membership, session history. Every other admin action starts here.
-3. **Spectate / free-cam** — watch a suspect without being visible. Check for a
-   collision with infiSTAR's own camera first.
-4. **Object cleanup wand** — look at a wreck, delete it. The census finds them;
-   this removes them. Needs a hand-written BE exception.
-5. **Live server health** — FPS, players, object count, memory in-game, from
-   infiSTAR's `meta_data.log`. Removes the alt-tab.
-6. **Event trigger** — force a helicrash, DMS mission or airdrop on demand.
-7. **Moderation** — kick / ban with reason, without opening RCon.
-8. **Ban / watchlist lookup** — check a GUID against history before acting.
-9. **Weather and time control** — screenshots, and testing night-only content.
-10. **Loot / vehicle spawner** — testing only. Heaviest BE exposure here; last, or
-    never.
+Player app. `xcsv/fn_traderPrices.sqf`, slide `XM8SlideXcsvPrices`. Client-side
+lookup built from mission config, so it tracks `CfgExileArsenal`, trader
+categories and sell factor without a server call.
 
-## Player backlog
+### App19 - Insurance / Dead Man's Switch
 
-1. **Scoreboard** — *build this first.* `getAccountScore` and `getAccountStats`
-   already exist as queries, and the server's own broadcast has been advertising
-   a P-key scoreboard that was never actually installed.
-2. **Bounty board** — poptabs on a head, claimed by killing them.
-   `ExileBountySystem` is already in the repo, unused.
-3. **Territory manager** — pay protection, check decay, manage build rights
-   without walking to the flag.
-4. **Trader price lookup** — search an item, see where it sells and for how much.
-   Saves an enormous amount of walking on Tanoa.
-5. **Virtual Garage remote** — stored vehicles and where they are parked.
-6. **Job board** — generated fetch/deliver tasks. Gives solo players direction,
-   which is what most of them quit for.
-7. **Group / clan panel** — members, online status, last seen, shared markers.
-8. **Field medical guide** — what actually treats what. Nothing in game explains
-   Exile's medical model.
-9. **Island intel / lore reader** — faction dossiers and backstory. The permanent
-   home for the welcome briefing's content.
-10. **Message board** — asynchronous notes. Most of this server's players will
-    never be online at the same time.
+Player app. `xcsv/fn_policy.sqf`, slide `XM8SlideXcsvPolicy`,
+`xcsv_chatter/network/fn_policyBuyRequest.sqf` and `fn_policyDeath.sqf`. This is
+the first XCSV client-to-server write path. The dispatcher alias typo was
+repaired in `XCSV-CHATTER-001`; first live purchase is still a real verification
+item.
 
-## Order of work
+### App20 - Player Inspector
 
-```
-FIRST    Territory browser (admin)   -- removes the most support burden
-THEN     Scoreboard (player)         -- establishes the Rsc slide pattern
-THEN     Player inspector, trader price lookup, lore reader
-LATER    bounty board, job board, virtual garage remote
+Admin only. `xcsv/fn_playerInspector.sqf`,
+`xcsv_chatter/network/fn_inspectorRequest.sqf`, slide
+`XM8SlideXcsvInspector`. Admin types a name fragment; the server resolves account
+details and live territory flag membership, then answers as structured text to
+the requesting admin session. Read-only, parameter-bound query.
+
+### Also Shipped, Not XM8
+
+`XCSV: World census` is an admin scroll action that buckets and maps simulated
+objects with `createMarkerLocal`, so markers exist only on the admin's machine.
+It is an action rather than a keybind because infiSTAR strips unregistered key
+handlers.
+
+## Admin Backlog
+
+1. Territory browser: every flag with owner, level, build rights and days until
+   decay. Highest support value, but not useful to live-test until a territory
+   exists.
+2. Spectate / free-cam: check for collision with infiSTAR's camera first.
+3. Object cleanup wand: delete the wreck/crate the census found. Requires a
+   hand-written BattlEye exception.
+4. Live server health: FPS, players, object count and memory in game.
+5. Event trigger: force a helicrash, DMS mission or airdrop for testing.
+6. Moderation: kick / ban with reason without opening RCon.
+7. Ban / watchlist lookup.
+8. Weather and time control.
+9. Loot / vehicle spawner for testing only; highest BattlEye exposure here.
+
+## Player Backlog
+
+1. Bounty board: poptabs on a player, claimed by killing them. `ExileBountySystem`
+   is already in the repo, unused.
+2. Territory manager: pay protection, check decay, manage build rights without
+   walking to the flag.
+3. Virtual Garage remote: stored vehicles and where they are parked.
+4. Job board: generated fetch/deliver tasks for solo direction.
+5. Group / clan panel: members, online status, last seen, shared markers.
+6. Island intel / lore reader: faction dossiers and backstory.
+7. Message board: asynchronous player-to-player notes.
+
+## Order Of Work
+
+```text
+NOW      live-verify Insurance purchase and Field Notes render heartbeat
+NEXT     territory browser / manager once a real territory exists
+THEN     bounty board, job board, virtual garage remote, lore reader
 LAST     anything that creates or deletes objects
 ```
 
 ## Related
 
-- [Repositories](Repositories) · [Roadmap](Roadmap) · [Architecture](Architecture)
+- [Repositories](Repositories)
+- [Roadmap](Roadmap)
+- [Architecture](Architecture)
