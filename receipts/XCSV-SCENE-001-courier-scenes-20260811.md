@@ -67,5 +67,5 @@ the existing grinder path.
   verified checksum OK with 360 entries and prefix `Exile.Tanoa`, and unpacked
   live scan confirmed `Exile_Magazine_Battery` in `CfgExileArsenal` and
   `class Tools`.
-- Final doctor after the battery deploy returned 25 passed, 1 warned, 0 failed;
+- Final doctor after the battery deploy returned 26 passed, 1 warned, 0 failed;
   the only warning remains the known infiSTAR cloud 403.
