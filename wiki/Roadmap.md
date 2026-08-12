@@ -308,6 +308,11 @@ Prioritize coherence over raw addon count:
 7. choreographed rotating events
 8. investigate ZCP/Capture Points before another heavy AI framework
 
+Active slice: `XCSV-SCENE-001` starts the choreographed-event path with bounded
+server-authored poptab courier wreck scenes. The first implementation spawns
+restart-local van wrecks, dead couriers with poptabs, a locked safe payout, and
+uses the existing grinder action rather than introducing a new mission system.
+
 Keep Zombies/Vcom parked until measured headroom changes the decision.
 
 ### S. AI evidence boundary
