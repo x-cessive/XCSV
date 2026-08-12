@@ -43,6 +43,7 @@ $pages = [ordered]@{
     'Memory'                           = @{ Order = 12; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
     'Memory-Index'                     = @{ Order = 13; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
     'Lessons'                          = @{ Order = 14; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'System-Components'                = @{ Order = 15; Title = 'System Components'; Blurb = 'Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }
