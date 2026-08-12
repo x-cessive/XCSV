@@ -148,6 +148,12 @@ you can link to.
   Treat the remaining delta as bounded verification, not as evidence of SQL
   regression.
 - artifact versioning beyond GUARD itself
+- XCSV-DRONE-001 is `PARTIAL_DEPLOYED`: Exile `effae18` and XCSV_ADDONS
+  `5e7d780` add the `DRONES & ELECTRONICS` trader tier, XM8 App22 `Drone
+  Control`, coarse RF detection and ownership refusal. Source, PBO, drift and
+  server boot are verified; player purchase/flight, native terminal open, Titan
+  AA counterplay and safe-zone no-grief tests remain before
+  `PASS_RUNTIME_VERIFIED`.
 
 ## 2026-08-07 development programme
 

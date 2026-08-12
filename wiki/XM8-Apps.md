@@ -94,6 +94,18 @@ only: read-only contract-board surface that explains status, planned rules and
 why payout posting is still locked. It does not call the server, reserve money,
 mark targets, install death hooks or activate the unused bounty addons yet.
 
+### App22 - Drone Control
+
+Player app. `xcsv/fn_droneControl.sqf`, slide `XM8SlideXcsvDrone`. First slice
+for `XCSV-DRONE-001`: native UAV status/convenience surface with coarse RF
+detection, selected-drone connect/disconnect, and an ownership guard that refuses
+connections to UAVs carrying another player's `ExileOwnerUID`.
+
+The live trader category is `DRONES & ELECTRONICS`. V1 intentionally enables
+only the AAF terminal, AR-2 Darter backpack, Titan AA launcher and Titan AA
+missiles. Armed drones, Stompers, DLC UAVs, static AA and Nyx AA remain deferred
+until balance and runtime counterplay are proven.
+
 ### Also Shipped, Not XM8
 
 `XCSV: World census` is an admin scroll action that buckets and maps simulated
