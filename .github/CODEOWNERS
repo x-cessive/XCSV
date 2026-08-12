@@ -1,0 +1,12 @@
+# XCSV ownership map
+#
+# This file documents current repository ownership. It does not by itself
+# require reviews; review enforcement belongs to repository rulesets/settings.
+
+*                       @x-cessive
+/.github/               @x-cessive
+/wiki/                  @x-cessive
+/registry/              @x-cessive
+/tools/                 @x-cessive
+/receipts/              @x-cessive
+/continuity/            @x-cessive
