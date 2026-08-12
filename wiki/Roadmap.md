@@ -150,9 +150,15 @@ you can link to.
   `READY_FOR_ARCHITECT_SITE_SELECTION`: issue #28 is authorized to begin while
   XCSV-DRONE-001 remains `PARTIAL_DEPLOYED`. Exile `bc57779` adds source-custody
   docs plus Eden helpers for candidate-site markers, modular prison layers,
-  basic graybox placement and selected-object baselining. No live mission/PBO
-  mutation occurred and no graybox pass is claimed before Architect selects the
-  site.
+  basic graybox placement and selected-object baselining. Exile `5e86b4d` also
+  makes the helpers mission-local so Eden can run
+  `execVM "tools\eden\prison_site_candidates.sqf";` from the loaded mission. No
+  `mission.sqm`/live PBO mutation occurred and no graybox pass is claimed before
+  Architect selects the site. Site `A_NORTH_CENTRAL_COAST` (`[7140,11800,0]`,
+  520m x 360m, heading 35) was selected 2026-08-12; the parametrized builder
+  `tools/eden/prison_graybox_build.sqf` places the perimeter/interior as one
+  undoable history step with classnames verified against the server classdump,
+  still without saving `mission.sqm`.
 
 ## 2026-08-07 development programme
 

@@ -19,6 +19,17 @@ GitHub issue #28 comment `5261344590` records the priority override.
 - Deferred `Objects-Server-Side` until after a measurable graybox exists.
 - Added source-controlled Eden prep docs and helper scripts in Exile commit
   `bc57779`.
+- Added mission-local Eden helper copies and corrected the Eden debug-console
+  command in Exile commit `5e86b4d`, so the loaded mission can run:
+  `execVM "tools\eden\prison_site_candidates.sqf";`
+- Architect selected site `A_NORTH_CENTRAL_COAST` (`[7140,11800,0]`, 520m x
+  360m, heading 35) on 2026-08-12. Added parametrized graybox builder
+  `tools/eden/prison_graybox_build.sqf` (plus mission-local copy) that places
+  the full perimeter, towers, gatehouse/intake, cellblocks, max-sec/SHU,
+  medical/workshop, armory/utilities and dock staging as ONE undoable history
+  step in the `PRISON_*` layers. Every classname used in the builder was
+  verified against the running-server classdump (`E:\ArmaTools\classes\ALL.txt`).
+  The builder never saves `mission.sqm`.
 
 ## Source Locations
 
@@ -33,6 +44,9 @@ GitHub issue #28 comment `5261344590` records the priority override.
 - Eden helper scripts:
   `E:\ExileRepo\tools\eden\prison_site_candidates.sqf`
   `E:\ExileRepo\tools\eden\prison_graybox_tools.sqf`
+- Mission-local Eden helper copies:
+  `E:\ExileRepo\LiveSource\mpmissions\Exile.Tanoa\tools\eden\prison_site_candidates.sqf`
+  `E:\ExileRepo\LiveSource\mpmissions\Exile.Tanoa\tools\eden\prison_graybox_tools.sqf`
 
 ## Candidate Sites
 
@@ -66,6 +80,8 @@ markers in a `PRISON_SITE_CANDIDATES` layer as one undo history step.
   - live `Exile.Tanoa.pbo`:
     `40C746125B278505112CD8D3FE6AC9BB9425235F7ECAE02B5B1F5AA31D0D9E28`
 - No live server deploy or PBO mutation was performed.
+- `mission.sqm`, `initServer.sqf`, and live `Exile.Tanoa.pbo` hashes remained
+  unchanged after the mission-local helper checkpoint.
 
 ## Tooling Caveat
 
@@ -80,4 +96,3 @@ with real Orca provenance in this checkpoint.
 Do not claim `PASS_GRAYBOX_VERIFIED`. Architect has not selected a site, no
 permanent prison geometry has been built, and no visual graybox acceptance has
 occurred.
-
