@@ -163,7 +163,14 @@ jobs:
           set -euo pipefail
           grep -Fq 'READ_ONLY_BOOTSTRAP' tools/ai-reconcile.ps1
           grep -Fq 'git ls-remote' tools/ai-reconcile.ps1
-          if grep -Eqi 'git (pull|reset|checkout|merge|rebase)|Remove-Item|Set-Content|Move-Item' tools/ai-reconcile.ps1; then
+          # The probe writes in exactly one place: the temp file it creates to
+          # capture git's stderr, which it then cleans up. That is not a
+          # mutation of anything the contract protects, but a blanket grep
+          # cannot tell it apart from a real one. So assert the file is a
+          # genuine temp file first, then exempt only the lines that name it.
+          grep -Fq '$errFile = [System.IO.Path]::GetTempFileName()' tools/ai-reconcile.ps1
+          if grep -vF 'LiteralPath $errFile' tools/ai-reconcile.ps1 \
+              | grep -Eqi 'git (pull|reset|checkout|merge|rebase)|Remove-Item|Set-Content|Move-Item'; then
             echo 'ai-reconcile.ps1 contains a potentially mutating command; review required.'
             exit 1
           fi
