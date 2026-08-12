@@ -2,6 +2,7 @@
 
 - [Home](Home)
 - [Architecture](Architecture)
+- [System Components](System-Components)
 - [Runbook](Runbook)
 - [Repositories](Repositories)
 - [AI Continuity](AI-Continuity)
