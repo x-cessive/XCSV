@@ -95,6 +95,13 @@ Admin only. `xcsv/fn_playerInspector.sqf`,
 details and live territory flag membership, then answers as structured text to
 the requesting admin session. Read-only, parameter-bound query.
 
+### App21 - Bounty Board
+
+Player app. `xcsv/fn_bountyBoard.sqf`, slide `XM8SlideXcsvBounty`. First slice
+only: read-only contract-board surface that explains status, planned rules and
+why payout posting is still locked. It does not call the server, reserve money,
+mark targets, install death hooks or activate the unused bounty addons yet.
+
 ### Also Shipped, Not XM8
 
 `XCSV: World census` is an admin scroll action that buckets and maps simulated
@@ -119,8 +126,10 @@ handlers.
 
 ## Player Backlog
 
-1. Bounty board: poptabs on a player, claimed by killing them. `ExileBountySystem`
-   is already in the repo, unused.
+1. Bounty board: App21 read-only surface is staged; remaining delta is the
+   server-owned contract ledger, escrow and trusted death-event payout path.
+   `ExileBountySystem` and `MostWanted` are both present in the repo and must
+   be audited before either is integrated.
 2. Territory manager: pay protection, check decay, manage build rights without
    walking to the flag.
 3. Virtual Garage remote: stored vehicles and where they are parked.
@@ -135,7 +144,7 @@ handlers.
 ```text
 NOW      live-verify Insurance purchase and Field Notes render heartbeat
 NEXT     territory browser / manager once a real territory exists
-THEN     bounty board, job board, virtual garage remote, lore reader
+THEN     bounty board write path, job board, virtual garage remote, lore reader
 LAST     anything that creates or deletes objects
 ```
 
