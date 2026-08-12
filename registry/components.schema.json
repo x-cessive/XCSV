@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://x-cessive.github.io/XCSV/schema/components.schema.json",
+  "title": "XCSV System Component Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "classification", "components"],
+  "properties": {
+    "registry_version": {
+      "type": "string"
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "PARTIAL_GITHUB_ONLY",
+        "PARTIAL_SOURCE_VERIFIED",
+        "PASS_INVENTORY_VERIFIED"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/component" }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "catalogue_present": { "type": ["boolean", "null"] },
+        "source_wired": { "type": ["boolean", "null"] },
+        "packed_artifact_present": { "type": ["boolean", "null"] },
+        "deployed_present": { "type": ["boolean", "null"] },
+        "boot_evidence": { "type": ["boolean", "null"] },
+        "player_runtime_evidence": { "type": ["boolean", "null"] },
+        "detail": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "name",
+        "family",
+        "kind",
+        "repo",
+        "canonical_path",
+        "ownership",
+        "status",
+        "runtime_authority",
+        "evidence",
+        "refactor_action",
+        "verdict"
+      ],
+      "properties": {
+        "component_id": { "type": "string" },
+        "name": { "type": "string" },
+        "family": { "type": "string" },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ADDON",
+            "SCRIPT",
+            "MOD",
+            "MISSION_MODULE",
+            "SERVER_ADDON",
+            "TOOL",
+            "DOC",
+            "VENDOR",
+            "DATABASE",
+            "OTHER"
+          ]
+        },
+        "repo": { "type": "string" },
+        "canonical_path": { "type": "string" },
+        "upstream_origin": { "type": ["string", "null"] },
+        "license": { "type": ["string", "null"] },
+        "ownership": {
+          "type": "string",
+          "enum": ["XCSV", "THIRD_PARTY", "MIXED", "UNKNOWN"]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "LIVE",
+            "DISABLED",
+            "CANDIDATE",
+            "REFERENCE_ONLY",
+            "ARCHIVED",
+            "UNKNOWN"
+          ]
+        },
+        "runtime_authority": {
+          "type": "string",
+          "enum": ["CLIENT", "SERVER", "HC", "DATABASE", "MIXED", "NONE", "UNKNOWN"]
+        },
+        "live_wiring": { "type": "array", "items": { "type": "string" } },
+        "packed_artifact": { "type": ["string", "null"] },
+        "startup_hook": { "type": "array", "items": { "type": "string" } },
+        "custom_code_hooks": { "type": "array", "items": { "type": "string" } },
+        "network_messages": { "type": "array", "items": { "type": "string" } },
+        "xm8_registration": { "type": "array", "items": { "type": "string" } },
+        "trader_economy_hooks": { "type": "array", "items": { "type": "string" } },
+        "database_schema_queries": { "type": "array", "items": { "type": "string" } },
+        "battleye_requirements": { "type": "array", "items": { "type": "string" } },
+        "persistence_impact": { "type": "array", "items": { "type": "string" } },
+        "security_safezone_impact": { "type": "array", "items": { "type": "string" } },
+        "background_loops_schedulers": { "type": "array", "items": { "type": "string" } },
+        "performance_risks": { "type": "array", "items": { "type": "string" } },
+        "overlap_conflicts": { "type": "array", "items": { "type": "string" } },
+        "tests_evidence": { "type": "array", "items": { "type": "string" } },
+        "docs": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW", "UNKNOWN"]
+        },
+        "staleness": {
+          "type": "string",
+          "enum": ["CURRENT", "HISTORICAL", "STALE_SUSPECTED", "UNKNOWN"]
+        },
+        "refactor_action": {
+          "type": "string",
+          "enum": [
+            "KEEP_ACTIVE",
+            "REFACTOR_ACTIVE",
+            "CONSOLIDATE_DUPLICATE",
+            "DISABLED_KEEP",
+            "KEEP_VENDOR_REFERENCE",
+            "ARCHIVE_CANDIDATE",
+            "REMOVE_CANDIDATE",
+            "UNKNOWN"
+          ]
+        },
+        "rollback": { "type": "array", "items": { "type": "string" } },
+        "last_verified": { "type": ["string", "null"] },
+        "verdict": { "type": "string" },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
