@@ -40,5 +40,32 @@ the existing grinder path.
 
 ## Remaining Unknown
 
-- Runtime spawn is pending live deployment and RPT validation.
+- Runtime spawn validated on live deploys. Initial deploy spawned two courier
+  scenes and the presentation follow-up spawned two scenes with four map
+  markers.
 - Player grinder completion on the spawned safe is pending in-game test.
+- Trader support follow-up: `Exile_Magazine_Battery` is now priced and listed
+  in the Tools trader category next to `Exile_Item_Grinder`, so players can buy
+  both items required by the safe `Grind Lock` condition.
+
+## Follow-up Validation
+
+- Presentation fix commit: Exile `4524770`, XCSV_ADDONS `c9a0a38`, hub
+  `04d4015`.
+- Battery trader fix commit: Exile `3413517`.
+- Live `xcsv_chatter.pbo` presentation deploy backed up
+  `E:\arma3server\@ExileServer\addons\xcsv_chatter.pbo.20260811-2118.COURIERVISUALS.bak`,
+  verified checksum OK with 15 entries and prefix `xcsv_chatter`, and unpacked
+  live scan confirmed marker, surface-aligned safe, and dead-body animation
+  fixes.
+- Fresh RPT `E:\arma3server\profiles\arma3server_x64_2026-08-11_21-10-29.rpt`
+  showed two courier scenes spawned at `[5917.33,10605.3,0]` and
+  `[5540.07,9909.48,0]`, final line:
+  `[XCSV_SCENE] courier scene spawn complete: 2 scene(s), 12 object(s), 4 marker(s).`
+- Live mission battery deploy backed up
+  `E:\arma3server\mpmissions\Exile.Tanoa.pbo.20260811-2126.BATTERYTOOLS.bak`,
+  verified checksum OK with 360 entries and prefix `Exile.Tanoa`, and unpacked
+  live scan confirmed `Exile_Magazine_Battery` in `CfgExileArsenal` and
+  `class Tools`.
+- Final doctor after the battery deploy returned 25 passed, 1 warned, 0 failed;
+  the only warning remains the known infiSTAR cloud 403.
