@@ -37,8 +37,8 @@
 [CmdletBinding()]
 param(
     [string]$BePath     = 'E:\arma3server\battleye',
-    [string]$GuardCfg   = "$env:USERPROFILE\Desktop\xcsv_guard.json",
-    [string]$GuardExe   = "$env:USERPROFILE\Desktop\XCSV_GUARD.exe",
+    [string]$GuardCfg   = "D:\XCSV_GUARD\live\xcsv_guard.json",
+    [string]$GuardExe   = "D:\XCSV_GUARD\live\XCSV_GUARD.exe",
     [int]$Length        = 32,
     [switch]$WhatIfOnly
 )
