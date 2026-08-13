@@ -59,9 +59,9 @@ copied and packed into them.
 Deploy **through the script**, never by copying the exe. It refuses to deploy on
 failing tests, archives the binary it replaces, prunes to the newest N,
 regenerates SHA256/current-build manifests, updates the taskbar shortcut to the
-single live Desktop exe, and launches that exe. The live location always holds
-exactly one binary; taskbar pins must never point at `target\debug` or
-`target\release`.
+single live exe at `D:\XCSV_GUARD\live\XCSV_GUARD.exe`, and launches that exe.
+The live location always holds exactly one binary; taskbar pins must never point
+at `target\debug` or `target\release`.
 
 Any GUARD behavior or UI change must also refresh the GitHub-facing screenshots
 and GIFs across the XCSV repos before the work is called complete. Use
