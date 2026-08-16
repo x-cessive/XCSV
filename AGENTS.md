@@ -92,3 +92,49 @@ XCSV policy is more specific, it governs. The portfolio rule adds the explicit
 It never authorizes editing provenance records, decision history or published
 projections whose canonical source lives elsewhere.
 
+## Completion impact (mandatory)
+
+Portfolio rule `SOVRAN_COMPLETION_IMPACT_CONTRACT` v`1.0.0`, owned by
+`x-cessive/SOVRAN_PROJECT_BOUNDARIES` ->
+`governance/SOVRAN_COMPLETION_IMPACT_CONTRACT.md`.
+
+It **composes with** the documentation rule above and embeds `DOC_IMPACT` verbatim
+rather than replacing it. Everything already written in this file stays in force.
+
+A substantive completion is not done until its material consequences have been
+assessed across all eight domains, in-scope obligations resolved, and anything
+material outside current authority durably routed:
+
+```text
+COMPLETION_IMPACT: v1.0.0
+CHANGED_SURFACES: <paths, or NONE>
+
+DOC_IMPACT:           UPDATED | NONE | DEFERRED_OUT_OF_SCOPE | BLOCKED
+TEST_IMPACT:          UPDATED | COVERED_EXISTING | NOT_APPLICABLE | UNVERIFIED_BLOCKED | DEFERRED_OUT_OF_SCOPE
+INTERFACE_IMPACT:     UNCHANGED | CHANGED_DOCUMENTED | BREAKING_DOCUMENTED | DEFERRED_OUT_OF_SCOPE
+SECURITY_IMPACT:      NO_CHANGE_REVIEWED | CHANGED_REVIEWED | INCREASED_EXPOSURE_AUTHORIZED | BLOCKED | DEFERRED_OUT_OF_SCOPE
+OPERATIONAL_IMPACT:   NONE | UPDATED | DEFERRED_OUT_OF_SCOPE | BLOCKED
+CROSS_REPO_IMPACT:    NONE | RECORDED_AND_ROUTED | BLOCKED
+COMPATIBILITY_IMPACT: NONE | MIGRATION_REQUIRED_DOCUMENTED | BREAKING_DOCUMENTED | DEFERRED_OUT_OF_SCOPE
+FRESHNESS[<source>]:  VERIFIED_CURRENT | NOT_REVERIFIED | STALE | UNKNOWN
+```
+
+Rules that matter most in practice:
+
+- **Capability does not widen authority.** An impact declaration is evidence and
+  obligation metadata, never permission. Finding an operational impact does not
+  authorize a deploy or a restart; finding a cross-repository impact does not
+  authorize a write into that repository.
+- **"The suite passes" is not evidence that the changed behavior is tested.**
+  `COVERED_EXISTING` must name the specific covering test.
+- **Freshness is per source.** A repository may be freshly inspected while its
+  runtime or planning state is stale. No marker may be advanced for a source that
+  was not actually reverified.
+- Assess by **consequence, not diff size**. A one-line change can be material; a
+  large internal refactor with no observable effect need not be.
+- Out-of-scope impact is routed durably: non-documentation domains to
+  `registry/completion-impact-debt.json` (`CID-nnnn`), documentation to
+  `registry/documentation-debt.json` (`DEBT-nnnn`).
+- It never authorizes editing control pointers, durable decisions, historical
+  evidence or generated projections, and never authorizes running a migration.
+
