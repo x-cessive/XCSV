@@ -1,9 +1,16 @@
 ﻿param(
     [string] $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path,
-    [string] $OrchRoot = 'D:\XCSV_ORCH'
+    [string] $OrchRoot,
+    [string] $ObservedAtUtc
 )
 
 $ErrorActionPreference = 'Stop'
+
+if ([string]::IsNullOrWhiteSpace($ObservedAtUtc)) {
+    $ObservedAtUtc = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+}
+$script:ObservedAtUtc = $ObservedAtUtc
+$script:ObservationDate = $ObservedAtUtc.Substring(0, 10)
 
 function Get-Rel([string] $Base, [string] $Path) {
     $baseFull = [IO.Path]::GetFullPath($Base).TrimEnd('\') + '\'
@@ -15,6 +22,90 @@ function Get-Slug([string] $Text) {
     $slug = ($Text -replace '[^A-Za-z0-9]+', '-').Trim('-').ToUpperInvariant()
     if ([string]::IsNullOrWhiteSpace($slug)) { return 'ROOT' }
     return $slug
+}
+
+function Get-RepoSlugFromRemote([string] $RemoteUrl) {
+    if ([string]::IsNullOrWhiteSpace($RemoteUrl)) { return $null }
+    $remote = ($RemoteUrl -replace '\\', '/').Trim()
+    if ($remote -match 'github\.com[:/]([^/]+)/([^/.]+)(?:\.git)?/?$') {
+        return ('{0}/{1}' -f $Matches[1], $Matches[2])
+    }
+    return $null
+}
+
+function Get-GitObservation([string] $Path, [string] $ExpectedRepo, [bool] $Required) {
+    if ([string]::IsNullOrWhiteSpace($Path) -or !(Test-Path -LiteralPath $Path)) {
+        if ($Required) { throw "Required source path is unavailable: $Path" }
+        return [pscustomobject][ordered]@{
+            repo = $ExpectedRepo
+            available = $false
+            result = 'NOT_REVERIFIED'
+            sha = $null
+            remote = $null
+            top = $null
+            observed_at = $script:ObservedAtUtc
+            detail = "$ExpectedRepo source was not explicitly provided or available; file-level inventory was not refreshed."
+        }
+    }
+
+    $top = (& git -C $Path rev-parse --show-toplevel 2>$null)
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($top)) {
+        if ($Required) { throw "Cannot resolve Git top-level for required source: $Path" }
+        return [pscustomobject][ordered]@{
+            repo = $ExpectedRepo
+            available = $false
+            result = 'UNKNOWN'
+            sha = $null
+            remote = $null
+            top = $Path
+            observed_at = $script:ObservedAtUtc
+            detail = "$ExpectedRepo source path exists, but Git identity could not be resolved."
+        }
+    }
+
+    $sha = (& git -C $top rev-parse HEAD 2>$null)
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($sha)) {
+        if ($Required) { throw "Cannot resolve Git HEAD for required source: $Path" }
+        return [pscustomobject][ordered]@{
+            repo = $ExpectedRepo
+            available = $false
+            result = 'UNKNOWN'
+            sha = $null
+            remote = $null
+            top = $top
+            observed_at = $script:ObservedAtUtc
+            detail = "$ExpectedRepo source Git HEAD could not be resolved."
+        }
+    }
+
+    $remote = (& git -C $top remote get-url origin 2>$null)
+    if ($LASTEXITCODE -ne 0) { $remote = $null }
+    $actualRepo = Get-RepoSlugFromRemote $remote
+    if ($actualRepo -ne $ExpectedRepo) {
+        $message = "Git source identity mismatch for $Path; expected $ExpectedRepo but observed $actualRepo from origin $remote."
+        if ($Required) { throw $message }
+        return [pscustomobject][ordered]@{
+            repo = $ExpectedRepo
+            available = $false
+            result = 'UNKNOWN'
+            sha = $sha
+            remote = $remote
+            top = $top
+            observed_at = $script:ObservedAtUtc
+            detail = $message
+        }
+    }
+
+    return [pscustomobject][ordered]@{
+        repo = $ExpectedRepo
+        available = $true
+        result = 'VERIFIED_AT_OBSERVATION'
+        sha = $sha
+        remote = $remote
+        top = $top
+        observed_at = $script:ObservedAtUtc
+        detail = "Observed $ExpectedRepo@$sha at $($script:ObservedAtUtc)."
+    }
 }
 
 function New-Evidence(
@@ -102,7 +193,7 @@ function New-Component(
         staleness = $Staleness
         refactor_action = $Action
         rollback = @()
-        last_verified = '2026-08-21'
+        last_verified = $script:ObservationDate
         verdict = $Verdict
         notes = @($Notes)
     }
@@ -199,6 +290,9 @@ function Get-ConcreteWiringEvidence([string] $RelPath, [string] $Kind) {
     return @()
 }
 
+$script:XcsvObservation = Get-GitObservation -Path $Root -ExpectedRepo 'x-cessive/XCSV' -Required $true
+$script:OrchObservation = Get-GitObservation -Path $OrchRoot -ExpectedRepo 'x-cessive/XCSV_ORCH' -Required (-not [string]::IsNullOrWhiteSpace($OrchRoot))
+
 $components = New-Object System.Collections.Generic.List[object]
 
 function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [string] $Kind, [string] $Ownership, [string] $Authority, [bool] $LiveSource) {
@@ -211,7 +305,7 @@ function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [stri
         $referenceCandidate = if ($wired) { $false } elseif ($LiveSource) { $true } else { Test-SourceReference $_.Name }
         $action = if ($LiveSource -or $wired -or $referenceCandidate) { 'REFACTOR_ACTIVE' } else { 'KEEP_VENDOR_REFERENCE' }
         $status = if ($LiveSource) { 'UNKNOWN' } else { 'REFERENCE_ONLY' }
-        $detail = @("Enumerated from $BaseRel at hub commit 38249878de2c03d6f5e2afd4884ee1b5beb9603d.")
+        $detail = @("Enumerated from $BaseRel. $($script:XcsvObservation.detail)")
         if ($wired) {
             $detail += $wiringEvidence
         } elseif ($LiveSource) {
@@ -262,7 +356,7 @@ if (Test-Path $addonRoot) {
             -Path $rel `
             -Ownership 'XCSV' `
             -Authority 'SERVER' `
-            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS runtime top-level source.", $(if (Test-Path $livePeer) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }), $wiringEvidence)) `
+            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS runtime top-level source. $($script:XcsvObservation.detail)", $(if (Test-Path $livePeer) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }), $wiringEvidence)) `
             -Action ($(if ($wired) { 'CONSOLIDATE_DUPLICATE' } else { 'UNKNOWN' })) `
             -Confidence 'MEDIUM' `
             -Staleness 'CURRENT' `
@@ -272,13 +366,22 @@ if (Test-Path $addonRoot) {
     }
 }
 
-function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [string] $Family, [string] $Kind, [string] $Ownership, [string] $Authority) {
+function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [string] $Family, [string] $Kind, [string] $Ownership, [string] $Authority, [string] $CanonicalRoot = $Root, [string] $ObservationDetail = $script:XcsvObservation.detail) {
     $base = if ([IO.Path]::IsPathRooted($BaseRel)) { $BaseRel } else { Join-Path $Root $BaseRel }
     if (!(Test-Path $base)) { return }
     rg --files $base | Sort-Object | ForEach-Object {
         $path = $_
         $name = [IO.Path]::GetFileNameWithoutExtension($path)
-        $rel = if ($path.StartsWith($Root, [StringComparison]::OrdinalIgnoreCase)) { Get-Rel $Root $path } else { $path }
+        $pathFull = [IO.Path]::GetFullPath($path)
+        $canonicalFull = [IO.Path]::GetFullPath($CanonicalRoot).TrimEnd('\') + '\'
+        $rootFull = [IO.Path]::GetFullPath($Root).TrimEnd('\') + '\'
+        $rel = if ($pathFull.StartsWith($canonicalFull, [StringComparison]::OrdinalIgnoreCase)) {
+            Get-Rel $CanonicalRoot $path
+        } elseif ($pathFull.StartsWith($rootFull, [StringComparison]::OrdinalIgnoreCase)) {
+            Get-Rel $Root $path
+        } else {
+            throw "Cannot derive repository-relative canonical path for $path from $CanonicalRoot."
+        }
         $components.Add((New-Component `
             -Id "$Prefix-$(Get-Slug (($rel -replace '^[A-Za-z]:','') -replace '/', '-'))" `
             -Name $name `
@@ -288,7 +391,7 @@ function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [str
             -Path ($rel.Replace('\','/')) `
             -Ownership $Ownership `
             -Authority $Authority `
-            -Evidence (New-Evidence $true $false $null $null $null $null @("Enumerated source file during issue #30 inventory expansion. Source presence does not prove SOURCE_WIRED.")) `
+            -Evidence (New-Evidence $true $false $null $null $null $null @("Enumerated source file during issue #30 inventory expansion. $ObservationDetail Source presence does not prove SOURCE_WIRED.")) `
             -Action 'REFACTOR_ACTIVE' `
             -Confidence 'MEDIUM' `
             -Staleness 'CURRENT' `
@@ -300,10 +403,27 @@ function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [str
 Add-FileGroup 'guard/src' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-SRC' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER'
 Add-FileGroup 'guard/tools' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-TOOL' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER'
 Add-FileGroup 'tools' 'x-cessive/XCSV' 'XCSV-HUB-TOOL' 'Hub build/sync/audit tooling' 'TOOL' 'XCSV' 'NONE'
-if (Test-Path $OrchRoot) {
-    Add-FileGroup (Join-Path $OrchRoot 'src') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-SRC' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE'
-    Add-FileGroup (Join-Path $OrchRoot 'tools') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-TOOL' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE'
-    Add-FileGroup (Join-Path $OrchRoot 'tests') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-TEST' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE'
+if ($script:OrchObservation.available -eq $true) {
+    Add-FileGroup (Join-Path $script:OrchObservation.top 'src') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-SRC' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE' $script:OrchObservation.top $script:OrchObservation.detail
+    Add-FileGroup (Join-Path $script:OrchObservation.top 'tools') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-TOOL' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE' $script:OrchObservation.top $script:OrchObservation.detail
+    Add-FileGroup (Join-Path $script:OrchObservation.top 'tests') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-TEST' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE' $script:OrchObservation.top $script:OrchObservation.detail
+} else {
+    $components.Add((New-Component `
+        -Id 'XCSV-ORCH-OBSERVATION-NOT-VERIFIED' `
+        -Name 'XCSV_ORCH external source observation' `
+        -Family 'ORCH / AI workforce' `
+        -Kind 'TOOL' `
+        -Repo 'x-cessive/XCSV_ORCH' `
+        -Path '.' `
+        -Ownership 'XCSV' `
+        -Authority 'NONE' `
+        -Evidence (New-Evidence $null $null $null $null $null $null @($script:OrchObservation.detail)) `
+        -Action 'UNKNOWN' `
+        -Status 'UNKNOWN' `
+        -Confidence 'UNKNOWN' `
+        -Staleness 'UNKNOWN' `
+        -Verdict 'EXTERNAL_SOURCE_NOT_REVERIFIED' `
+        -Notes @('ORCH inventory requires an explicit verified x-cessive/XCSV_ORCH source; no machine-local default is used.')))
 }
 
 rg --files (Join-Path $Root 'catalogue') (Join-Path $Root 'addons') | Where-Object { Test-DatabaseSurface $_ } | Sort-Object | ForEach-Object {
@@ -317,7 +437,7 @@ rg --files (Join-Path $Root 'catalogue') (Join-Path $Root 'addons') | Where-Obje
         -Path $rel `
         -Ownership 'MIXED' `
         -Authority 'DATABASE' `
-        -Evidence (New-Evidence $true $null $null $null $null $null @('Database/extDB/schema/query file exists in Git source. Live DB schema was not inspected.')) `
+        -Evidence (New-Evidence $true $null $null $null $null $null @("Database/extDB/schema/query file exists in Git source. $($script:XcsvObservation.detail) Live DB schema was not inspected.")) `
         -Action 'UNKNOWN' `
         -Confidence 'LOW' `
         -Staleness 'UNKNOWN' `
@@ -336,7 +456,7 @@ rg --files (Join-Path $Root 'catalogue') | Where-Object { $_ -match '(?i)(battle
         -Path $rel `
         -Ownership 'MIXED' `
         -Authority 'SERVER' `
-        -Evidence (New-Evidence $true $null $null $null $null $null @('BattlEye filter/exception material exists in Git source. Live BattlEye filters were not inspected.')) `
+        -Evidence (New-Evidence $true $null $null $null $null $null @("BattlEye filter/exception material exists in Git source. $($script:XcsvObservation.detail) Live BattlEye filters were not inspected.")) `
         -Action 'UNKNOWN' `
         -Confidence 'LOW' `
         -Staleness 'UNKNOWN' `
@@ -363,9 +483,11 @@ $registry = [ordered]@{
     registry_version = '0.2.0'
     classification = 'PARTIAL_SOURCE_VERIFIED'
     notes = @(
-        'Expanded by XCSV-REFACTOR-INV-001 (#30) from Git source enumeration on 2026-08-21.',
+        "Expanded by XCSV-REFACTOR-INV-001 (#30) from Git source enumeration at $($script:ObservedAtUtc).",
+        "XCSV source observation: $($script:XcsvObservation.repo)@$($script:XcsvObservation.sha) ($($script:XcsvObservation.result)).",
+        $(if ($script:OrchObservation.available -eq $true) { "XCSV_ORCH external source observation: $($script:OrchObservation.repo)@$($script:OrchObservation.sha) ($($script:OrchObservation.result)); ORCH canonical paths are repository-relative." } else { "XCSV_ORCH external source observation: $($script:OrchObservation.result); ORCH file-level inventory omitted rather than inferred from a machine-local default." }),
         'This is not PASS_INVENTORY_VERIFIED because deployed server, boot logs, live DB, live BattlEye and player-runtime evidence were not inspected.',
-        'Catalogue/source presence is not runtime truth; source_wired is recorded only where current LiveSource contains or references the component.'
+        'Catalogue/source presence is not runtime truth; SOURCE_WIRED requires concrete evidence such as engine entrypoint, config/include, init/bootstrap, module/handler or direct load/import/call-path evidence. Presence and name/reference candidates remain non-wired evidence.detail/notes.'
     )
     components = @($components | Sort-Object component_id)
 }
@@ -393,7 +515,7 @@ $wiki = New-Object System.Collections.Generic.List[string]
 [void]($wiki.Add(''))
 [void]($wiki.Add(('- Registry classification: `{0}`' -f $registry.classification)))
 [void]($wiki.Add(('- Component entries: {0}' -f $components.Count)))
-[void]($wiki.Add(('- Source-wired/current LiveSource references: {0}' -f $sourceWiredCount)))
+[void]($wiki.Add(('- Source-wired concrete wiring evidence: {0}' -f $sourceWiredCount)))
 [void]($wiki.Add(('- Packed artifact evidence: {0}' -f $packedCount)))
 [void]($wiki.Add(('- Deployed evidence: {0}' -f $deployedCount)))
 [void]($wiki.Add(('- Boot evidence: {0}' -f $bootCount)))
@@ -448,7 +570,7 @@ foreach ($row in ($networkRows | Sort-Object Message)) { [void]($wiki.Add(('| `{
 [void]($wiki.Add('| xcsv_chatter | `config.cpp` defines preInit/postInit and `bootstrap/fn_postInit.sqf` registers Exile server thread tasks. |'))
 [void]($wiki.Add('| XCSV mission modules | `fn_droneControl.sqf` registers an Exile client thread; several UI modules spawn scheduled client work. |'))
 [void]($wiki.Add('| GUARD | Rust modules include stack/server/db/rcon/live/metrics/docs/ai and UI tabs; runtime state not reverified in this lane. |'))
-[void]($wiki.Add('| ORCH | Local read-only `D:\XCSV_ORCH` exposes controller, gauntlet, Hermes, workers, integrity, deploy/release and tests. |'))
+[void]($wiki.Add(('| ORCH | `{0}`; ORCH paths are repository-relative when an explicit verified source is supplied. |' -f $(if ($script:OrchObservation.available -eq $true) { "$($script:OrchObservation.repo)@$($script:OrchObservation.sha) observed at $($script:ObservedAtUtc)" } else { "$($script:OrchObservation.result): explicit verified source not supplied" }))))
 [void]($wiki.Add(''))
 [void]($wiki.Add('## Prioritized Refactor Queue Draft'))
 [void]($wiki.Add(''))

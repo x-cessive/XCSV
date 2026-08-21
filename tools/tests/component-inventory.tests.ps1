@@ -75,6 +75,13 @@ function New-Fixture {
     Set-Content -LiteralPath (Join-Path $root 'addons/AI-START-HERE.md') -Value '# bootstrap' -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $root 'addons/CLAUDE.md') -Value '# adapter' -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $root 'addons/xcsv_chatter/config.cpp') -Value 'class CfgFunctions { class XCSV {}; };' -Encoding UTF8
+
+    git -C $root init | Out-Null
+    git -C $root config user.email test@example.invalid | Out-Null
+    git -C $root config user.name 'XCSV Test' | Out-Null
+    git -C $root remote add origin https://github.com/x-cessive/XCSV.git | Out-Null
+    git -C $root add . | Out-Null
+    git -C $root commit -m 'fixture source' | Out-Null
     return $root
 }
 
@@ -83,7 +90,7 @@ Write-Host 'XCSV component inventory generator' -ForegroundColor Cyan
 
 $fixture = New-Fixture
 try {
-    powershell -NoProfile -ExecutionPolicy Bypass -File $Generator -Root $fixture -OrchRoot (Join-Path $fixture 'no-orch') | Out-Null
+    powershell -NoProfile -ExecutionPolicy Bypass -File $Generator -Root $fixture -ObservedAtUtc '2026-08-21T03:00:00Z' | Out-Null
     $registry = Get-Content -Raw -LiteralPath (Join-Path $fixture 'registry/components.json') | ConvertFrom-Json
 
     Test-Case 'unrelated names containing db letter sequence are not DATABASE' {
