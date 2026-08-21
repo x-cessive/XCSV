@@ -108,6 +108,54 @@ function Get-GitObservation([string] $Path, [string] $ExpectedRepo, [bool] $Requ
     }
 }
 
+function Get-ExpectedGitlinkSha([string] $RelPath) {
+    $entry = (& git -C $Root ls-tree HEAD -- $RelPath 2>$null)
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($entry)) {
+        throw "Cannot resolve XCSV gitlink for member source: $RelPath"
+    }
+    if ($entry -notmatch '^160000\s+commit\s+([0-9a-f]{40})\s+') {
+        throw "XCSV path is not a submodule gitlink: $RelPath"
+    }
+    return $Matches[1]
+}
+
+function Get-DirtyFingerprint([string[]] $PorcelainLines) {
+    if ($PorcelainLines.Count -eq 0) { return $null }
+    $normalized = ($PorcelainLines | Sort-Object) -join "`n"
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($normalized)
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return (($sha.ComputeHash($bytes) | ForEach-Object { $_.ToString('x2') }) -join '')
+    }
+    finally {
+        $sha.Dispose()
+    }
+}
+
+function Get-MemberObservation([string] $RelPath, [string] $ExpectedRepo) {
+    $expectedSha = Get-ExpectedGitlinkSha $RelPath
+    $path = Join-Path $Root $RelPath
+    $observation = Get-GitObservation -Path $path -ExpectedRepo $ExpectedRepo -Required $true
+
+    if ($observation.sha -ne $expectedSha) {
+        throw "STALE_MEMBER_SOURCE: $RelPath expected gitlink $expectedSha but observed $($observation.sha)."
+    }
+
+    $dirty = @(& git -C $observation.top status --porcelain --untracked-files=all 2>$null)
+    if ($LASTEXITCODE -ne 0) {
+        throw "UNKNOWN_MEMBER_SOURCE: cannot inspect member worktree status for $RelPath."
+    }
+    if ($dirty.Count -gt 0) {
+        $fingerprint = Get-DirtyFingerprint $dirty
+        throw "DIRTY_MEMBER_SOURCE: $RelPath has $($dirty.Count) dirty/untracked entries; dirty_fingerprint=$fingerprint."
+    }
+
+    $observation | Add-Member -NotePropertyName expected_gitlink_sha -NotePropertyValue $expectedSha
+    $observation | Add-Member -NotePropertyName clean -NotePropertyValue $true
+    $observation.detail = "Observed $ExpectedRepo@$($observation.sha) at $($script:ObservedAtUtc); expected XCSV gitlink $expectedSha; member worktree clean."
+    return $observation
+}
+
 function New-Evidence(
     [Nullable[bool]] $CataloguePresent,
     [Nullable[bool]] $SourceWired,
@@ -291,9 +339,21 @@ function Get-ConcreteWiringEvidence([string] $RelPath, [string] $Kind) {
 }
 
 $script:XcsvObservation = Get-GitObservation -Path $Root -ExpectedRepo 'x-cessive/XCSV' -Required $true
+$script:MemberObservations = [ordered]@{
+    addons = Get-MemberObservation -RelPath 'addons' -ExpectedRepo 'x-cessive/XCSV_ADDONS'
+    catalogue = Get-MemberObservation -RelPath 'catalogue' -ExpectedRepo 'x-cessive/Exile'
+    guard = Get-MemberObservation -RelPath 'guard' -ExpectedRepo 'x-cessive/XCSV_GUARD'
+}
 $script:OrchObservation = Get-GitObservation -Path $OrchRoot -ExpectedRepo 'x-cessive/XCSV_ORCH' -Required (-not [string]::IsNullOrWhiteSpace($OrchRoot))
 
 $components = New-Object System.Collections.Generic.List[object]
+
+function Get-ObservationDetailForRel([string] $RelPath) {
+    if ($RelPath -like 'addons/*' -or $RelPath -eq 'addons') { return $script:MemberObservations.addons.detail }
+    if ($RelPath -like 'catalogue/*' -or $RelPath -eq 'catalogue') { return $script:MemberObservations.catalogue.detail }
+    if ($RelPath -like 'guard/*' -or $RelPath -eq 'guard') { return $script:MemberObservations.guard.detail }
+    return $script:XcsvObservation.detail
+}
 
 function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [string] $Kind, [string] $Ownership, [string] $Authority, [bool] $LiveSource) {
     $base = Join-Path $Root $BaseRel
@@ -305,7 +365,7 @@ function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [stri
         $referenceCandidate = if ($wired) { $false } elseif ($LiveSource) { $true } else { Test-SourceReference $_.Name }
         $action = if ($LiveSource -or $wired -or $referenceCandidate) { 'REFACTOR_ACTIVE' } else { 'KEEP_VENDOR_REFERENCE' }
         $status = if ($LiveSource) { 'UNKNOWN' } else { 'REFERENCE_ONLY' }
-        $detail = @("Enumerated from $BaseRel. $($script:XcsvObservation.detail)")
+        $detail = @("Enumerated from $BaseRel. $(Get-ObservationDetailForRel $BaseRel)")
         if ($wired) {
             $detail += $wiringEvidence
         } elseif ($LiveSource) {
@@ -356,7 +416,7 @@ if (Test-Path $addonRoot) {
             -Path $rel `
             -Ownership 'XCSV' `
             -Authority 'SERVER' `
-            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS runtime top-level source. $($script:XcsvObservation.detail)", $(if (Test-Path $livePeer) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }), $wiringEvidence)) `
+            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS runtime top-level source. $($script:MemberObservations.addons.detail)", $(if (Test-Path $livePeer) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }), $wiringEvidence)) `
             -Action ($(if ($wired) { 'CONSOLIDATE_DUPLICATE' } else { 'UNKNOWN' })) `
             -Confidence 'MEDIUM' `
             -Staleness 'CURRENT' `
@@ -400,8 +460,8 @@ function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [str
     }
 }
 
-Add-FileGroup 'guard/src' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-SRC' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER'
-Add-FileGroup 'guard/tools' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-TOOL' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER'
+Add-FileGroup 'guard/src' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-SRC' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER' $Root $script:MemberObservations.guard.detail
+Add-FileGroup 'guard/tools' 'x-cessive/XCSV_GUARD' 'XCSV-GUARD-TOOL' 'GUARD / operations' 'TOOL' 'XCSV' 'SERVER' $Root $script:MemberObservations.guard.detail
 Add-FileGroup 'tools' 'x-cessive/XCSV' 'XCSV-HUB-TOOL' 'Hub build/sync/audit tooling' 'TOOL' 'XCSV' 'NONE'
 if ($script:OrchObservation.available -eq $true) {
     Add-FileGroup (Join-Path $script:OrchObservation.top 'src') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-SRC' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE' $script:OrchObservation.top $script:OrchObservation.detail
@@ -437,7 +497,7 @@ rg --files (Join-Path $Root 'catalogue') (Join-Path $Root 'addons') | Where-Obje
         -Path $rel `
         -Ownership 'MIXED' `
         -Authority 'DATABASE' `
-        -Evidence (New-Evidence $true $null $null $null $null $null @("Database/extDB/schema/query file exists in Git source. $($script:XcsvObservation.detail) Live DB schema was not inspected.")) `
+        -Evidence (New-Evidence $true $null $null $null $null $null @("Database/extDB/schema/query file exists in Git source. $(Get-ObservationDetailForRel $rel) Live DB schema was not inspected.")) `
         -Action 'UNKNOWN' `
         -Confidence 'LOW' `
         -Staleness 'UNKNOWN' `
@@ -456,7 +516,7 @@ rg --files (Join-Path $Root 'catalogue') | Where-Object { $_ -match '(?i)(battle
         -Path $rel `
         -Ownership 'MIXED' `
         -Authority 'SERVER' `
-        -Evidence (New-Evidence $true $null $null $null $null $null @("BattlEye filter/exception material exists in Git source. $($script:XcsvObservation.detail) Live BattlEye filters were not inspected.")) `
+        -Evidence (New-Evidence $true $null $null $null $null $null @("BattlEye filter/exception material exists in Git source. $(Get-ObservationDetailForRel $rel) Live BattlEye filters were not inspected.")) `
         -Action 'UNKNOWN' `
         -Confidence 'LOW' `
         -Staleness 'UNKNOWN' `
@@ -485,6 +545,9 @@ $registry = [ordered]@{
     notes = @(
         "Expanded by XCSV-REFACTOR-INV-001 (#30) from Git source enumeration at $($script:ObservedAtUtc).",
         "XCSV source observation: $($script:XcsvObservation.repo)@$($script:XcsvObservation.sha) ($($script:XcsvObservation.result)).",
+        "XCSV_ADDONS member observation: $($script:MemberObservations.addons.repo)@$($script:MemberObservations.addons.sha) ($($script:MemberObservations.addons.result)); expected gitlink $($script:MemberObservations.addons.expected_gitlink_sha); clean=$($script:MemberObservations.addons.clean).",
+        "Exile member observation: $($script:MemberObservations.catalogue.repo)@$($script:MemberObservations.catalogue.sha) ($($script:MemberObservations.catalogue.result)); expected gitlink $($script:MemberObservations.catalogue.expected_gitlink_sha); clean=$($script:MemberObservations.catalogue.clean).",
+        "XCSV_GUARD member observation: $($script:MemberObservations.guard.repo)@$($script:MemberObservations.guard.sha) ($($script:MemberObservations.guard.result)); expected gitlink $($script:MemberObservations.guard.expected_gitlink_sha); clean=$($script:MemberObservations.guard.clean).",
         $(if ($script:OrchObservation.available -eq $true) { "XCSV_ORCH external source observation: $($script:OrchObservation.repo)@$($script:OrchObservation.sha) ($($script:OrchObservation.result)); ORCH canonical paths are repository-relative." } else { "XCSV_ORCH external source observation: $($script:OrchObservation.result); ORCH file-level inventory omitted rather than inferred from a machine-local default." }),
         'This is not PASS_INVENTORY_VERIFIED because deployed server, boot logs, live DB, live BattlEye and player-runtime evidence were not inspected.',
         'Catalogue/source presence is not runtime truth; SOURCE_WIRED requires concrete evidence such as engine entrypoint, config/include, init/bootstrap, module/handler or direct load/import/call-path evidence. Presence and name/reference candidates remain non-wired evidence.detail/notes.'

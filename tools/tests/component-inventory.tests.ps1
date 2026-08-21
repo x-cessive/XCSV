@@ -45,6 +45,18 @@ function Assert-Equal {
     }
 }
 
+function Initialize-TestGitRepo([string] $Path, [string] $Origin) {
+    git -C $Path init | Out-Null
+    git -C $Path config user.email test@example.invalid | Out-Null
+    git -C $Path config user.name 'XCSV Test' | Out-Null
+    git -C $Path remote add origin $Origin | Out-Null
+}
+
+function Commit-All([string] $Path, [string] $Message) {
+    git -C $Path add . | Out-Null
+    git -C $Path commit -m $Message | Out-Null
+}
+
 function New-Fixture {
     $root = Join-Path $env:TEMP ('xcsv-component-inventory-test-' + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Force -Path $root | Out-Null
@@ -58,7 +70,9 @@ function New-Fixture {
         'catalogue/LiveSource/server-addons/xcsv_chatter',
         'addons/.agents',
         'addons/mission/xcsv',
-        'addons/xcsv_chatter/bootstrap'
+        'addons/xcsv_chatter/bootstrap',
+        'guard/src',
+        'guard/tools'
     )) {
         New-Item -ItemType Directory -Force -Path (Join-Path $root $dir) | Out-Null
     }
@@ -75,11 +89,17 @@ function New-Fixture {
     Set-Content -LiteralPath (Join-Path $root 'addons/AI-START-HERE.md') -Value '# bootstrap' -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $root 'addons/CLAUDE.md') -Value '# adapter' -Encoding UTF8
     Set-Content -LiteralPath (Join-Path $root 'addons/xcsv_chatter/config.cpp') -Value 'class CfgFunctions { class XCSV {}; };' -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $root 'guard/src/main.rs') -Value 'fn main() {}' -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $root 'guard/tools/doctor.ps1') -Value 'Write-Output doctor' -Encoding UTF8
 
-    git -C $root init | Out-Null
-    git -C $root config user.email test@example.invalid | Out-Null
-    git -C $root config user.name 'XCSV Test' | Out-Null
-    git -C $root remote add origin https://github.com/x-cessive/XCSV.git | Out-Null
+    Initialize-TestGitRepo (Join-Path $root 'addons') 'https://github.com/x-cessive/XCSV_ADDONS.git'
+    Commit-All (Join-Path $root 'addons') 'addons fixture'
+    Initialize-TestGitRepo (Join-Path $root 'catalogue') 'https://github.com/x-cessive/Exile.git'
+    Commit-All (Join-Path $root 'catalogue') 'catalogue fixture'
+    Initialize-TestGitRepo (Join-Path $root 'guard') 'https://github.com/x-cessive/XCSV_GUARD.git'
+    Commit-All (Join-Path $root 'guard') 'guard fixture'
+
+    Initialize-TestGitRepo $root 'https://github.com/x-cessive/XCSV.git'
     git -C $root add . | Out-Null
     git -C $root commit -m 'fixture source' | Out-Null
     return $root

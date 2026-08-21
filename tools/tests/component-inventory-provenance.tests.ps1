@@ -62,16 +62,29 @@ function New-XcsvFixture {
     foreach ($dir in @(
         'registry',
         'wiki',
+        'tools',
         'catalogue/Addons',
         'catalogue/Scripts',
         'catalogue/LiveSource/mpmissions/Exile.Tanoa',
         'catalogue/LiveSource/server-addons',
-        'addons/mission/xcsv'
+        'addons/mission/xcsv',
+        'guard/src',
+        'guard/tools'
     )) {
         New-Item -ItemType Directory -Force -Path (Join-Path $root $dir) | Out-Null
     }
     Set-Content -LiteralPath (Join-Path $root 'catalogue/LiveSource/mpmissions/Exile.Tanoa/init.sqf') -Value 'systemChat "init";' -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $root 'addons/mission/xcsv/fn_fixture.sqf') -Value 'systemChat "addon";' -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $root 'guard/src/main.rs') -Value 'fn main() {}' -Encoding UTF8
+    Set-Content -LiteralPath (Join-Path $root 'guard/tools/doctor.ps1') -Value 'Write-Output doctor' -Encoding UTF8
+    Initialize-TestGitRepo (Join-Path $root 'addons') 'https://github.com/x-cessive/XCSV_ADDONS.git'
+    [void](Commit-All (Join-Path $root 'addons') 'addons fixture')
+    Initialize-TestGitRepo (Join-Path $root 'catalogue') 'https://github.com/x-cessive/Exile.git'
+    [void](Commit-All (Join-Path $root 'catalogue') 'catalogue fixture')
+    Initialize-TestGitRepo (Join-Path $root 'guard') 'https://github.com/x-cessive/XCSV_GUARD.git'
+    [void](Commit-All (Join-Path $root 'guard') 'guard fixture')
     Initialize-TestGitRepo $root 'https://github.com/x-cessive/XCSV.git'
+    git -C $root add . | Out-Null
     [void](Commit-All $root 'xcsv fixture')
     return $root
 }
@@ -114,8 +127,8 @@ Test-Case 'XCSV observation provenance follows the current fixture Git identity'
         $first = Invoke-Inventory $root
         Assert-True ((@($first.notes) -join "`n").Contains($firstSha)) 'first generated registry must contain first observed XCSV SHA'
 
-        Set-Content -LiteralPath (Join-Path $root 'catalogue/Addons/provenance-change.sqf') -Value 'systemChat "changed";' -Encoding UTF8
-        git -C $root add catalogue/Addons/provenance-change.sqf | Out-Null
+        Set-Content -LiteralPath (Join-Path $root 'tools/provenance-change.ps1') -Value 'Write-Output changed' -Encoding UTF8
+        git -C $root add tools/provenance-change.ps1 | Out-Null
         git -C $root commit -m 'advance fixture source' | Out-Null
         $secondSha = git -C $root rev-parse HEAD
         $second = Invoke-Inventory $root
