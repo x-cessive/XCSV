@@ -1,0 +1,94 @@
+{
+  "$schema": "repository-identity.schema.json",
+  "schema_version": "1.0.0",
+  "repository_id": "XCSV",
+  "github_full_name": "x-cessive/XCSV",
+  "family_id": "PROJECT_XCSV",
+  "owner_scope": "PROJECT:XCSV",
+  "role": "PROJECT_HUB",
+  "lifecycle": "ACTIVE",
+  "visibility": "public",
+  "default_branch": "main",
+  "canonical_for": [
+    "XCSV system map and project-hub navigation",
+    "XCSV Git-tracked wiki source and generated documentation source relationship",
+    "XCSV AI bootstrap, provenance and documentation-reconciliation contracts",
+    "XCSV hub tooling, memory/RAG tooling and submodule/member-repository pointers",
+    "XCSV shared roadmap and durable project-level engineering knowledge"
+  ],
+  "not_canonical_for": [
+    "XCSV GUARD Rust application source",
+    "XCSV first-party addon and mission-module source",
+    "XCSV orchestration implementation source",
+    "third-party Exile catalogue source",
+    "live runtime health merely because documentation says a component is healthy",
+    "portfolio-wide SOVRAN project ownership or cross-project execution authority"
+  ],
+  "authority": {
+    "identity_is_authority": false,
+    "execution_model": "XCSV child-defined governance with reconciliation-before-mutation and explicit Architect authority; roadmap status is intent, not implementation proof.",
+    "rules": [
+      "README, wiki and this identity manifest describe and route; they do not grant execution authority.",
+      "Operational claims require relevant live evidence; GitHub source presence is not runtime proof.",
+      "Member-repository source remains authoritative in the owning member repository.",
+      "Cross-repository impact must be routed rather than treated as implicit write authority.",
+      "UNKNOWN remains explicit when local, runtime, deployment or planning sources were not reverified."
+    ]
+  },
+  "bootstrap": {
+    "human_entry": "README.md",
+    "ai_entry": "AI-START-HERE.md",
+    "canonical_ai_contract": "wiki/AI-Start-Here.md",
+    "provenance_contract": "wiki/AI-Provenance-and-Doc-Sync.md",
+    "provider_adapters": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "opencode.json",
+      ".agents/rules/00-xcsv-ai-entrypoint.md"
+    ]
+  },
+  "documentation": {
+    "canonical_source": "wiki/",
+    "generated_projection": "docs/wiki/",
+    "published_wiki": "https://github.com/x-cessive/XCSV/wiki",
+    "generated_is_authority": false,
+    "build_tool": "tools/build-docs.ps1",
+    "publish_tool": "tools/push-wiki.ps1"
+  },
+  "relationships": [
+    {
+      "kind": "PROJECT_HUB_FOR",
+      "repository": "x-cessive/XCSV_GUARD",
+      "note": "GUARD owns its Rust application source, tests, build and deployment tooling."
+    },
+    {
+      "kind": "PROJECT_HUB_FOR",
+      "repository": "x-cessive/XCSV_ADDONS",
+      "note": "XCSV_ADDONS owns first-party XCSV addon and mission-module source."
+    },
+    {
+      "kind": "PROJECT_HUB_FOR",
+      "repository": "x-cessive/XCSV_ORCH",
+      "note": "XCSV_ORCH owns XCSV-specific orchestration implementation source."
+    },
+    {
+      "kind": "PROJECT_HUB_FOR",
+      "repository": "x-cessive/Exile",
+      "note": "Exile owns the mixed third-party catalogue/reference estate and its first-party packaging/tooling context."
+    },
+    {
+      "kind": "PORTFOLIO_ROUTED_BY",
+      "repository": "x-cessive/SOVRAN_PROJECT_BOUNDARIES",
+      "note": "Portfolio routing metadata exists there; this reference grants no cross-project authority."
+    }
+  ],
+  "provenance": {
+    "work_id": "XCSV-REPO-001",
+    "basis": [
+      "XCSV README.md and AI bootstrap/provenance contracts",
+      "XCSV repository structure and existing member-repository map",
+      "Existing SOVRAN portfolio routing metadata observed read-only during planning"
+    ],
+    "note": "This manifest is repository identity/routing metadata. It must not be interpreted as current runtime state or execution authority."
+  }
+}
