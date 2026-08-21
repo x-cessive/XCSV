@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/x-cessive/XCSV/blob/main/registry/current-state.schema.json",
+  "title": "XCSV Repository Current-State Observation",
+  "description": "Per-source freshness observation. This document records what was actually reverified and never grants authority or converts unverified sources into current truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repository_id",
+    "observation_is_authority",
+    "generated_or_recorded_at",
+    "sources",
+    "rules"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "repository_id": { "type": "string", "minLength": 1 },
+    "observation_is_authority": { "type": "boolean", "const": false },
+    "generated_or_recorded_at": { "type": "string", "format": "date-time" },
+    "work_id": { "type": "string" },
+    "sources": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/sourceObservation" }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "sourceObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["freshness", "evidence"],
+      "properties": {
+        "freshness": {
+          "type": "string",
+          "enum": ["VERIFIED_CURRENT", "NOT_REVERIFIED", "STALE", "UNKNOWN"]
+        },
+        "observed_at": { "type": ["string", "null"], "format": "date-time" },
+        "identity": { "type": ["string", "null"] },
+        "evidence": { "type": "string", "minLength": 1 },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}
