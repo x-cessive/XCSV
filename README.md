@@ -25,7 +25,7 @@
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, enter **READ_ONLY_BOOTSTRAP** first. Roadmap status is intent, not implementation proof. Reconcile the sources actually available, then work only on the remaining delta.
 >
-> **Do not inherit old `SYNCED` claims.** The 2026-08-07 reconciliation is historical evidence of the state at that time. Current source freshness is tracked per source in [`registry/current-state.json`](registry/current-state.json); `NOT_REVERIFIED`, `STALE` and `UNKNOWN` are valid outcomes.
+> **Do not inherit old `SYNCED` claims.** The 2026-08-07 reconciliation is historical evidence of the state at that time. Source observations are tracked per source in [`registry/current-state.json`](registry/current-state.json); live freshness/currentness is derived by comparing recorded observations to the source when checked. `NOT_REVERIFIED`, `STALE` and `UNKNOWN` are valid outcomes.
 >
 > Repository identity and routing live in [`registry/repository-identity.json`](registry/repository-identity.json). Identity and current-state observations are **not execution authority**.
 >

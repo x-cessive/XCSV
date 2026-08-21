@@ -11,7 +11,7 @@ This root file is intentionally short.
 - `wiki/AI-Start-Here.md`
 - `wiki/AI-Provenance-and-Doc-Sync.md`
 
-The identity manifest answers **what this repository is and is not canonical for**. The current-state file records **per-source observations/freshness only**; it is never authority. The wiki documents define the canonical XCSV AI operating contract, provenance, work receipts and safe desktop/GitHub reconciliation.
+The identity manifest answers **what this repository is and is not canonical for**. The current-state file records **per-source observations only**; standing currentness is derived by comparing those observations against the live source at bootstrap/read time. It is never authority. The wiki documents define the canonical XCSV AI operating contract, provenance, work receipts and safe desktop/GitHub reconciliation.
 
 Together they define the **read the GitHub** bootstrap, authority hierarchy, roadmap reconciliation states, delta-first rule, Gauntlet ordering, GitHub work tracking, AI provenance and completion transaction.
 
@@ -29,9 +29,10 @@ At every bootstrap:
 1. inspect the sources actually available;
 2. classify each relevant source independently;
 3. preserve `NOT_REVERIFIED`, `STALE` or `UNKNOWN` where evidence is missing;
-4. never advance a local/runtime/wiki-publication freshness claim merely because GitHub source was inspected.
+4. never advance a local/runtime/wiki-publication freshness claim merely because GitHub source was inspected;
+5. never inherit `CURRENT` from a stored observation without a live identity comparison.
 
-`registry/current-state.json` is a convenience observation surface, not a substitute for checking the actual source when the claim matters.
+`registry/current-state.json` is a convenience observation surface, not a substitute for checking the actual source when the claim matters. Use `tools/current-state.ps1` or an equivalent bootstrap check to derive live `CURRENT`, `STALE`, `UNKNOWN` or `NOT_REVERIFIED`.
 
 ## Cold rehydration
 

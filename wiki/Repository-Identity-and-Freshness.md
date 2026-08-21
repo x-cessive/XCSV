@@ -24,21 +24,35 @@ The negative boundary is deliberate. An AI must be able to determine not only wh
 
 ### State
 
-**What was actually observed, from which source, and how fresh is that observation?**
+**What was actually observed, from which source, and what does it mean when checked now?**
 
 Machine-readable source:
 
 - `registry/current-state.json`
 - schema: `registry/current-state.schema.json`
 
-State is recorded per source. Valid freshness vocabulary:
+State is recorded per source as an observation. Stored observations are deliberately not standing currentness. They persist:
 
-- `VERIFIED_CURRENT`
+- `observation_result`
+- `observed_identity`
+- `observed_at`
+- `evidence`
+
+Valid stored observation results:
+
+- `VERIFIED_AT_OBSERVATION`
 - `NOT_REVERIFIED`
-- `STALE`
-- `UNKNOWN`
+- `STALE_AT_OBSERVATION`
+- `UNKNOWN_AT_OBSERVATION`
 
-One current source never makes the whole system current. A freshly inspected GitHub branch does not refresh the local SOVRAN-1 worktree, desktop roadmap, live server, deployed artifacts, published GitHub Wiki or Pages deployment.
+Live freshness is derived by a consumer or bootstrap validator at read time:
+
+- `CURRENT` when a live source identity is available and matches `observed_identity`
+- `STALE` when a live source identity is available and differs from `observed_identity`, or when the observation was stale when recorded
+- `UNKNOWN` when live comparison is unavailable for a previously observed source
+- `NOT_REVERIFIED` when no source observation was made
+
+One current source never makes the whole system current. A freshly inspected GitHub branch does not refresh the local SOVRAN-1 worktree, desktop roadmap, live server, deployed artifacts, published GitHub Wiki or Pages deployment. A committed Git identity observation also does not remain `CURRENT` merely because it was once verified; commits and merges change repository identities.
 
 ### Authority
 

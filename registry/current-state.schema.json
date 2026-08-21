@@ -9,6 +9,7 @@
     "schema_version",
     "repository_id",
     "observation_is_authority",
+    "currentness_is_derived",
     "generated_or_recorded_at",
     "sources",
     "rules"
@@ -18,6 +19,7 @@
     "schema_version": { "type": "string", "const": "1.0.0" },
     "repository_id": { "type": "string", "minLength": 1 },
     "observation_is_authority": { "type": "boolean", "const": false },
+    "currentness_is_derived": { "type": "boolean", "const": true },
     "generated_or_recorded_at": { "type": "string", "format": "date-time" },
     "work_id": { "type": "string" },
     "sources": {
@@ -35,14 +37,14 @@
     "sourceObservation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["freshness", "evidence"],
+      "required": ["observation_result", "evidence"],
       "properties": {
-        "freshness": {
+        "observation_result": {
           "type": "string",
-          "enum": ["VERIFIED_CURRENT", "NOT_REVERIFIED", "STALE", "UNKNOWN"]
+          "enum": ["VERIFIED_AT_OBSERVATION", "NOT_REVERIFIED", "STALE_AT_OBSERVATION", "UNKNOWN_AT_OBSERVATION"]
         },
         "observed_at": { "type": ["string", "null"], "format": "date-time" },
-        "identity": { "type": ["string", "null"] },
+        "observed_identity": { "type": ["string", "null"] },
         "evidence": { "type": "string", "minLength": 1 },
         "note": { "type": "string" }
       }
