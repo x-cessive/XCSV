@@ -128,6 +128,7 @@ try {
         'tools/xcsv-repository-guardrails.ps1',
         'registry/components.json',
         'tools/tests/**',
+        'docs/wiki/**',
         '.github/workflows/ai-contract-drift.yml'
     )
     foreach ($path in $requiredPaths) {

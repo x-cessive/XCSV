@@ -40,6 +40,7 @@ on:
       - 'docs/wiki/AI-Start-Here.md'
       - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
+      - 'docs/wiki/**'
       - '.github/workflows/ai-contract-drift.yml'
   pull_request:
     paths:
@@ -79,6 +80,7 @@ on:
       - 'docs/wiki/AI-Start-Here.md'
       - 'docs/wiki/AI-Provenance-and-Doc-Sync.md'
       - 'docs/wiki/AI-Tooling.md'
+      - 'docs/wiki/**'
       - '.github/workflows/ai-contract-drift.yml'
   workflow_dispatch:
 
