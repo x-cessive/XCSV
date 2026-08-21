@@ -59,12 +59,138 @@ function New-File([string] $Path, [string] $Text = '') {
 
 function Invoke-GuardrailProcess([string[]] $ProcessArgs) {
     $scriptPath = (Resolve-Path (Join-Path $PSScriptRoot '..\xcsv-repository-guardrails.ps1')).Path
-    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @ProcessArgs 2>&1
-    $exitCode = $LASTEXITCODE
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @ProcessArgs 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $oldPreference
+    }
     [pscustomobject]@{
         exit_code = $exitCode
         output = @($output)
     }
+}
+
+function Invoke-RepoScriptProcess([string] $Root, [string] $ScriptRel, [string[]] $ProcessArgs = @()) {
+    $scriptPath = Join-Path $Root ($ScriptRel -replace '/', '\')
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @ProcessArgs 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $oldPreference
+    }
+    [pscustomobject]@{
+        exit_code = $exitCode
+        output = @($output)
+    }
+}
+
+function New-DocsFixtureRoot([string] $Name) {
+    $sourceRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+    $root = New-TestRoot $Name
+    foreach ($dir in @('.github', 'registry', 'wiki', 'docs\wiki', 'tools')) {
+        $target = Join-Path $root $dir
+        if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force }
+        Copy-Item -LiteralPath (Join-Path $sourceRoot $dir) -Destination $target -Recurse -Force
+    }
+    Copy-Item -LiteralPath (Join-Path $sourceRoot 'README.md') -Destination (Join-Path $root 'README.md') -Force
+    Copy-Item -LiteralPath (Join-Path $sourceRoot 'AI-START-HERE.md') -Destination (Join-Path $root 'AI-START-HERE.md') -Force
+    & git -C $root init | Out-Null
+    & git -C $root add README.md AI-START-HERE.md .github registry wiki docs tools | Out-Null
+    & git -C $root -c user.name=test -c user.email=test@example.com commit -m docs-fixture | Out-Null
+    return $root
+}
+
+try {
+    $root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+    $workflowPath = Join-Path $root '.github/workflows/ai-contract-drift.yml'
+    $workflow = Get-Content -LiteralPath $workflowPath -Raw
+    $requiredPaths = @(
+        '.gitmodules',
+        'addons',
+        'addons/**',
+        'catalogue',
+        'catalogue/**',
+        'guard',
+        'guard/**',
+        'README.md',
+        'wiki/**',
+        'tools/build-component-inventory.ps1',
+        'tools/build-docs.ps1',
+        'tools/check-doc-links.ps1',
+        'tools/check-docs-generated.ps1',
+        'tools/xcsv-repository-guardrails.ps1',
+        'registry/components.json',
+        'tools/tests/**',
+        '.github/workflows/ai-contract-drift.yml'
+    )
+    foreach ($path in $requiredPaths) {
+        $quoted = "'" + $path + "'"
+        Assert-True (([regex]::Matches($workflow, [regex]::Escape($quoted))).Count -ge 2) "workflow trigger paths include $path for push/main and pull_request"
+    }
+    foreach ($path in @('AI-START-HERE.md', 'AI-PROVENANCE.md', 'CLAUDE.md', 'AGENTS.md', 'opencode.json', '.agents/rules/**', 'wiki/AI-Start-Here.md', 'wiki/AI-Provenance-and-Doc-Sync.md', 'wiki/AI-Tooling.md')) {
+        $quoted = "'" + $path + "'"
+        Assert-True (([regex]::Matches($workflow, [regex]::Escape($quoted))).Count -ge 2) "workflow preserves AI-contract trigger path $path"
+    }
+    Assert-True ($workflow.Contains('git config --global --unset-all $rewriteKey')) 'workflow scrubs credential-bearing Git URL rewrite after member checkout'
+    Assert-True ($workflow.Contains("Verify member checkout credential scrubbed")) 'workflow verifies credential scrub before repository-controlled scripts run'
+    Assert-True ($workflow.IndexOf('Verify member checkout credential scrubbed') -lt $workflow.IndexOf('Repository guardrail regression suite')) 'credential scrub verification runs before repository-controlled guardrail tests'
+    Assert-True ($workflow.Contains('x-access-token') -and $workflow.Contains('Credential-bearing Git URL rewrite')) 'workflow asserts no credential-bearing x-access-token rewrite remains'
+    Assert-True ($workflow.Contains('tools/build-docs.ps1') -and $workflow.Contains('tools\check-docs-generated.ps1') -and $workflow.Contains('tools\check-doc-links.ps1')) 'workflow wires existing documentation guardrail tools'
+    Assert-True ($workflow.IndexOf('CI-safe repository guardrail audit') -lt $workflow.IndexOf('Documentation generation and link guardrails')) 'source audit runs before generated-doc checks can dirty docs/wiki'
+    Assert-True (!$workflow.Contains('.\tools\build-docs.ps1 -Root $PWD')) 'workflow does not pre-dirty docs/wiki before check-docs-generated.ps1'
+}
+finally {
+}
+
+try {
+    $root = New-DocsFixtureRoot 'docs-pass'
+    $generated = Invoke-RepoScriptProcess -Root $root -ScriptRel 'tools/check-docs-generated.ps1' -ProcessArgs @('-Root', $root)
+    $links = Invoke-RepoScriptProcess -Root $root -ScriptRel 'tools/check-doc-links.ps1' -ProcessArgs @('-Root', $root)
+    Assert-True ($generated.exit_code -eq 0) 'synchronized generated docs pass check-docs-generated.ps1'
+    Assert-True ($links.exit_code -eq 0) 'synchronized documentation links pass check-doc-links.ps1'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
+    $root = New-DocsFixtureRoot 'docs-drift'
+    Add-Content -LiteralPath (Join-Path $root 'docs/wiki/Home.md') -Value "`nmanual generated-doc drift" -Encoding UTF8
+    $generated = Invoke-RepoScriptProcess -Root $root -ScriptRel 'tools/check-docs-generated.ps1' -ProcessArgs @('-Root', $root)
+    Assert-True ($generated.exit_code -ne 0) 'generated-doc drift fails check-docs-generated.ps1'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
+    $root = New-DocsFixtureRoot 'docs-link'
+    Add-Content -LiteralPath (Join-Path $root 'README.md') -Value "`n[broken](wiki/Definitely-Missing.md)" -Encoding UTF8
+    $links = Invoke-RepoScriptProcess -Root $root -ScriptRel 'tools/check-doc-links.ps1' -ProcessArgs @('-Root', $root)
+    Assert-True ($links.exit_code -ne 0) 'broken internal documentation link fails check-doc-links.ps1'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
+    $root = New-DocsFixtureRoot 'docs-marker'
+    $homePath = Join-Path $root 'docs/wiki/Home.md'
+    $text = Get-Content -LiteralPath $homePath -Raw
+    $text = $text -replace '<!-- GENERATED FROM wiki/Home.md BY tools/build-docs.ps1\. DO NOT EDIT docs/wiki BY HAND\. -->', '<!-- marker removed -->'
+    Set-Content -LiteralPath $homePath -Value $text -Encoding UTF8
+    $generated = Invoke-RepoScriptProcess -Root $root -ScriptRel 'tools/check-docs-generated.ps1' -ProcessArgs @('-Root', $root)
+    Assert-True ($generated.exit_code -ne 0) 'missing generated-doc marker fails generated-doc equivalence check'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
 }
 
 try {

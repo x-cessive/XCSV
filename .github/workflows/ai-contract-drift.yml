@@ -9,15 +9,27 @@ on:
       - 'CLAUDE.md'
       - 'AGENTS.md'
       - 'opencode.json'
+      - '.gitmodules'
       - '.agents/rules/**'
+      - 'addons'
+      - 'addons/**'
+      - 'catalogue'
+      - 'catalogue/**'
+      - 'guard'
+      - 'guard/**'
+      - 'README.md'
       - 'wiki/AI-Start-Here.md'
       - 'wiki/AI-Provenance-and-Doc-Sync.md'
       - 'wiki/AI-Tooling.md'
       - 'wiki/Roadmap.md'
       - 'wiki/Home.md'
+      - 'wiki/**'
       - 'tools/ai-reconcile.ps1'
       - 'tools/ai-commit.ps1'
+      - 'tools/build-component-inventory.ps1'
       - 'tools/build-docs.ps1'
+      - 'tools/check-doc-links.ps1'
+      - 'tools/check-docs-generated.ps1'
       - 'tools/sync-all.ps1'
       - 'tools/sync-policy.ps1'
       - 'tools/check-text-safety.ps1'
@@ -36,15 +48,27 @@ on:
       - 'CLAUDE.md'
       - 'AGENTS.md'
       - 'opencode.json'
+      - '.gitmodules'
       - '.agents/rules/**'
+      - 'addons'
+      - 'addons/**'
+      - 'catalogue'
+      - 'catalogue/**'
+      - 'guard'
+      - 'guard/**'
+      - 'README.md'
       - 'wiki/AI-Start-Here.md'
       - 'wiki/AI-Provenance-and-Doc-Sync.md'
       - 'wiki/AI-Tooling.md'
       - 'wiki/Roadmap.md'
       - 'wiki/Home.md'
+      - 'wiki/**'
       - 'tools/ai-reconcile.ps1'
       - 'tools/ai-commit.ps1'
+      - 'tools/build-component-inventory.ps1'
       - 'tools/build-docs.ps1'
+      - 'tools/check-doc-links.ps1'
+      - 'tools/check-docs-generated.ps1'
       - 'tools/sync-all.ps1'
       - 'tools/sync-policy.ps1'
       - 'tools/check-text-safety.ps1'
@@ -244,11 +268,29 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($env:XCSV_MEMBER_REPO_TOKEN)) {
             throw 'XCSV_MEMBER_REPO_TOKEN is required to clone private member repositories for repository-fabric guardrails.'
           }
-          git config --global url."https://x-access-token:$env:XCSV_MEMBER_REPO_TOKEN@github.com/".insteadOf "https://github.com/"
-          git submodule sync --recursive
-          git submodule update --init --recursive
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $rewriteKey = "url.https://x-access-token:$env:XCSV_MEMBER_REPO_TOKEN@github.com/.insteadOf"
+          try {
+            git config --global $rewriteKey "https://github.com/"
+            git submodule sync --recursive
+            git submodule update --init --recursive
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          finally {
+            git config --global --unset-all $rewriteKey 2>$null
+          }
+          $globalConfig = git config --global --list 2>$null
+          if ($globalConfig -match 'x-access-token') {
+            throw 'Credential-bearing Git URL rewrite remains in global Git configuration after member checkout.'
+          }
           git submodule status --recursive
+
+      - name: Verify member checkout credential scrubbed
+        shell: powershell
+        run: |
+          $globalConfig = git config --global --list 2>$null
+          if ($globalConfig -match 'x-access-token') {
+            throw 'Credential-bearing Git URL rewrite is still present before repository-controlled scripts run.'
+          }
 
       - name: Repository guardrail regression suite
         shell: powershell
@@ -288,3 +330,15 @@ jobs:
               throw "Member-dependent audit did not execute: $check"
             }
           }
+
+      - name: Documentation generation and link guardrails
+        shell: powershell
+        run: |
+          git diff --quiet -- docs/wiki
+          if ($LASTEXITCODE -ne 0) { throw 'docs/wiki has content drift before generated-doc drift check.' }
+          .\tools\check-docs-generated.ps1 -Root $PWD
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git diff --exit-code -- docs/wiki
+          if ($LASTEXITCODE -ne 0) { throw 'Generated docs/wiki output is not committed or has drifted from canonical wiki source.' }
+          .\tools\check-doc-links.ps1 -Root $PWD
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
