@@ -237,10 +237,34 @@ function Get-SqfFiles([string[]] $Roots) {
     $files = @()
     foreach ($root in $Roots) {
         if (Test-Path -LiteralPath $root) {
-            $files += Get-ChildItem -LiteralPath $root -Recurse -File -Include *.sqf,*.cpp,*.hpp -ErrorAction SilentlyContinue
+            $files += Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction SilentlyContinue |
+                Where-Object { @('.sqf', '.cpp', '.hpp', '.ext') -contains $_.Extension.ToLowerInvariant() }
         }
     }
     return $files
+}
+
+function Test-ExecutableConfigSurface([IO.FileInfo] $File) {
+    $rel = $File.FullName.Replace('\', '/')
+    if ($rel -match '(?i)/(docs|wiki|docs/wiki)/') { return $false }
+    if ($File.Name -match '(?i)^(readme|license|changelog|history)(\..*)?$') { return $false }
+    return (@('.sqf', '.cpp', '.hpp', '.ext') -contains $File.Extension.ToLowerInvariant())
+}
+
+function Test-TraderEconomySurface([IO.FileInfo] $File, [string] $Text) {
+    $rel = $File.FullName.Replace('\', '/')
+    if ($File.Extension.ToLowerInvariant() -eq '.sqm') { return $false }
+    if (!(Test-ExecutableConfigSurface $File)) { return $false }
+    if ($rel -match '(?i)(trader|economy|market|price|vehicletrader|trade)') { return $true }
+    return ($Text -match '(?i)\b(CfgTrader|CfgExileArsenal|CfgTrading|CfgTraderCategories|traderCategories|sellPrice|buyPrice|quality\s*=\s*\d+\s*;\s*price)\b')
+}
+
+function Test-GenericMissionItemClass([string] $ClassName, [string[]] $Paths) {
+    if ($ClassName -notmatch '^Item\d+$') { return $false }
+    foreach ($path in $Paths) {
+        if ($path -notmatch '(?i)mission\.sqm$') { return $false }
+    }
+    return $true
 }
 
 function Test-CfgExileCustomCode([string] $MissionRoot) {
@@ -346,9 +370,11 @@ function Test-XM8Ui([string] $MissionRoot) {
         $findings += New-XCSVGuardrailFinding 'xm8-ui' 'WARN' 'UNSAFE_LOW_IDC_CANDIDATE' "Positive IDC is in a low/shared-looking range." 'config.cpp' "$idc"
     }
     foreach ($app in $appIds | Sort-Object -Unique) {
-        $candidate = Join-Path $MissionRoot ("xcsv\" + $app)
-        if (!(Test-Path -LiteralPath $candidate)) {
-            $findings += New-XCSVGuardrailFinding 'xm8-ui' 'WARN' 'XM8_REGISTERED_APP_SOURCE_NOT_PROVEN' 'Registered XM8 app has no same-name xcsv source directory; verify manually.' 'config.cpp' $app
+        $buttonClass = "XM8_${app}_Button"
+        $hasButtonClass = ($text -match ('(?s)\bclass\s+' + [regex]::Escape($buttonClass) + '\b'))
+        $hasXcsvSourceReference = ($text -match ('(?i)xcsv[/\\].*' + [regex]::Escape($app)) -or $text -match ('(?i)' + [regex]::Escape($app) + '.*xcsv[/\\]'))
+        if ($app -match '^(?i)xcsv' -and !$hasButtonClass -and !$hasXcsvSourceReference) {
+            $findings += New-XCSVGuardrailFinding 'xm8-ui' 'WARN' 'XM8_REGISTERED_APP_MAPPING_NOT_PROVEN' 'Registered XCSV-named XM8 app lacks a button/resource/source mapping in config evidence.' 'config.cpp' $app
         }
     }
     if ($findings.Count -eq 0) {
@@ -368,8 +394,8 @@ function Test-InitEventScheduler([string] $MissionRoot, [string] $ServerAddonsRo
         'SoundPlayed' = 'SoundPlayed'
         'eachFrame' = 'EachFrame|onEachFrame|while\s*\{\s*true\s*\}'
     }
-    foreach ($f in Get-SqfFiles @($MissionRoot, $ServerAddonsRoot)) {
-        $text = Get-Content -LiteralPath $f.FullName -Raw
+    foreach ($f in Get-SqfFiles @($MissionRoot, $ServerAddonsRoot) | Where-Object { Test-ExecutableConfigSurface $_ }) {
+        $text = Remove-SqfComments (Get-Content -LiteralPath $f.FullName -Raw)
         foreach ($name in $patterns.Keys) {
             if ($text -match $patterns[$name]) {
                 $findings += New-XCSVGuardrailFinding 'init-event-scheduler' 'WARN' 'INIT_EVENT_SCHEDULER_CANDIDATE' "Potential init/event/scheduler hook: $name." (Get-RelPath -Base (Split-Path $MissionRoot -Parent) -Path $f.FullName) ''
@@ -384,11 +410,11 @@ function Test-InitEventScheduler([string] $MissionRoot, [string] $ServerAddonsRo
 
 function Test-TraderEconomy([string] $MissionRoot) {
     $findings = @()
-    $files = Get-SqfFiles @($MissionRoot)
+    $files = Get-ChildItem -LiteralPath $MissionRoot -Recurse -File -ErrorAction SilentlyContinue
     $classNames = @()
     foreach ($f in $files) {
-        $text = Get-Content -LiteralPath $f.FullName -Raw
-        if ($text -notmatch '(?i)trader|price|sellPrice|buyPrice|category') { continue }
+        $text = Remove-SqfComments (Get-Content -LiteralPath $f.FullName -Raw)
+        if (!(Test-TraderEconomySurface -File $f -Text $text)) { continue }
         foreach ($m in [regex]::Matches($text, '(?m)^\s*class\s+([A-Za-z0-9_]+)')) {
             $classNames += [pscustomobject]@{ name = $m.Groups[1].Value; path = $f.FullName }
         }
@@ -401,7 +427,9 @@ function Test-TraderEconomy([string] $MissionRoot) {
         }
     }
     foreach ($g in ($classNames | Group-Object name | Where-Object Count -gt 1)) {
-        if ($g.Name -match '(?i)trader|category|vehicle|weapon|item') {
+        $paths = @($g.Group | Select-Object -ExpandProperty path)
+        if (Test-GenericMissionItemClass -ClassName $g.Name -Paths $paths) { continue }
+        if ($g.Name -match '(?i)trader|category|price|market|economy|trade|vehicle|weapon|item') {
             $findings += New-XCSVGuardrailFinding 'trader-economy' 'WARN' 'DUPLICATE_TRADER_ECONOMY_CLASS_CANDIDATE' "Duplicate economy-looking class $($g.Name)." '' (($g.Group.path | Sort-Object -Unique) -join '; ')
         }
     }
@@ -460,13 +488,38 @@ function Test-StaleCurrentDocs([string] $Root) {
         'wiki/Memory-Index.md'
     )
     $files = @('README.md', 'AI-START-HERE.md') + @(Get-ChildItem -LiteralPath (Join-Path $Root 'wiki') -File -Filter *.md | ForEach-Object { Get-RelPath -Base $Root -Path $_.FullName })
+    $knownValidPathPrefixes = @(
+        'D:\XCSV',
+        'D:\XCSV_GUARD',
+        'D:\XCSV_ORCH',
+        'D:\CAGE\xcsv-ai-continuity',
+        'E:\arma3server',
+        'E:\ExileRepo',
+        'E:\SteamCMD\steamcmd.exe'
+    )
+    $knownObsoletePathPatterns = @(
+        '(?i)^D:\\Old\\',
+        '(?i)^E:\\Old\\',
+        '(?i)^C:\\Users\\ARCHIT(?:\\|$)'
+    )
     foreach ($rel in $files | Sort-Object -Unique) {
         if ($excluded -contains $rel) { continue }
         $full = Join-Path $Root ($rel -replace '/', '\')
         if (!(Test-Path -LiteralPath $full)) { continue }
         $text = Get-Content -LiteralPath $full -Raw
         foreach ($m in [regex]::Matches($text, '[A-Z]:\\[A-Za-z0-9_.$()\\ /-]+')) {
-            $findings += New-XCSVGuardrailFinding 'stale-path-version-docs' 'WARN' 'ABSOLUTE_PATH_IN_CURRENT_DOC_CANDIDATE' 'Current documentation contains a machine-local absolute path candidate.' $rel $m.Value.Trim()
+            $pathText = $m.Value.Trim()
+            $isKnownValid = $false
+            foreach ($prefix in $knownValidPathPrefixes) {
+                if ($pathText.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { $isKnownValid = $true; break }
+            }
+            if ($isKnownValid) { continue }
+            foreach ($pattern in $knownObsoletePathPatterns) {
+                if ($pathText -match $pattern) {
+                    $findings += New-XCSVGuardrailFinding 'stale-path-version-docs' 'WARN' 'OBSOLETE_ABSOLUTE_PATH_CANDIDATE' 'Current documentation contains an absolute path contradicted by known current/canonical path evidence.' $rel $pathText
+                    break
+                }
+            }
         }
         foreach ($m in [regex]::Matches($text, '(?i)\b(?:pid|build id|build|run)\s*[:#]?\s*[0-9]{4,}\b')) {
             $findings += New-XCSVGuardrailFinding 'stale-path-version-docs' 'WARN' 'VOLATILE_RUNTIME_IDENTIFIER_CANDIDATE' 'Current documentation contains a volatile runtime/build identifier candidate.' $rel $m.Value.Trim()

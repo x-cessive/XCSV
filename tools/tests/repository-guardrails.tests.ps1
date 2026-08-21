@@ -149,12 +149,69 @@ finally {
 }
 
 try {
+    $root = New-TestRoot 'xm8-mapping'
+    $mission = Join-Path $root 'catalogue/LiveSource/mpmissions/Exile.Tanoa'
+    New-File (Join-Path $mission 'config.cpp') @'
+class CfgXM8
+{
+    class A { appID = "App01"; controlID = 9001; };
+    class B { appID = "xcsvMissing"; controlID = 9002; };
+};
+class XM8_App01_Button { resource = "RscApp01"; };
+'@
+    $findings = Test-XM8Ui -MissionRoot $mission
+    Assert-True (@($findings | Where-Object { $_.code -match 'SOURCE|MAPPING' -and $_.evidence -eq 'App01' }).Count -eq 0) 'XM8 audit does not warn solely because AppXX lacks a same-name source directory'
+    Assert-True (@($findings | Where-Object code -eq 'XM8_REGISTERED_APP_MAPPING_NOT_PROVEN' | Where-Object evidence -eq 'xcsvMissing').Count -eq 1) 'XM8 audit warns when XCSV app mapping cannot be proven from config/source evidence'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
+    $root = New-TestRoot 'init-precision'
+    $mission = Join-Path $root 'catalogue/LiveSource/mpmissions/Exile.Tanoa'
+    New-File (Join-Path $mission 'R3F_LOG/addons_config/logistics_config_maker_tool/readme.txt') 'Example text says execVM "tool.sqf"; but this is documentation.'
+    New-File (Join-Path $mission 'init.sqf') '[] execVM "real_hook.sqf";'
+    $findings = Test-InitEventScheduler -MissionRoot $mission -ServerAddonsRoot (Join-Path $root 'catalogue/LiveSource/server-addons')
+    Assert-True (@($findings | Where-Object path -match 'readme\.txt').Count -eq 0) 'init/event audit ignores README text mentioning execVM'
+    Assert-True (@($findings | Where-Object { $_.path -match 'init\.sqf' -and $_.code -eq 'INIT_EVENT_SCHEDULER_CANDIDATE' }).Count -eq 1) 'init/event audit detects executable SQF hook'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
+    $root = New-TestRoot 'trader-precision'
+    $mission = Join-Path $root 'catalogue/LiveSource/mpmissions/Exile.Tanoa'
+    $sqm = New-Object System.Text.StringBuilder
+    for ($i = 0; $i -lt 67; $i++) {
+        [void]$sqm.AppendLine("class Item$i {};")
+        [void]$sqm.AppendLine("class Item$i {};")
+    }
+    New-File (Join-Path $mission 'mission.sqm') $sqm.ToString()
+    New-File (Join-Path $mission 'config.cpp') @'
+class CfgTraderCategories
+{
+    class VehicleTrader {};
+    class VehicleTrader {};
+};
+'@
+    $findings = Test-TraderEconomy -MissionRoot $mission
+    Assert-True (@($findings | Where-Object { $_.code -eq 'DUPLICATE_TRADER_ECONOMY_CLASS_CANDIDATE' -and $_.detail -match 'Item\d+' }).Count -eq 0) 'trader/economy audit ignores generic mission.sqm Item classes'
+    Assert-True (@($findings | Where-Object { $_.code -eq 'DUPLICATE_TRADER_ECONOMY_CLASS_CANDIDATE' -and $_.detail -match 'VehicleTrader' }).Count -eq 1) 'trader/economy audit detects actual duplicate economy authority class'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+try {
     $root = New-TestRoot 'docs'
-    New-File (Join-Path $root 'README.md') 'Current doc mentions D:\Old\Runtime and build 12345.'
+    New-File (Join-Path $root 'README.md') 'Current doc mentions D:\XCSV, E:\arma3server, D:\Old\Runtime and build 12345.'
     New-File (Join-Path $root 'wiki/Roadmap-History.md') 'HISTORICAL EVIDENCE D:\Old\Runtime build 12345.'
     New-File (Join-Path $root 'wiki/Home.md') 'Current home without stale paths.'
     $findings = Test-StaleCurrentDocs -Root $root
-    Assert-True (@($findings | Where-Object code -eq 'ABSOLUTE_PATH_IN_CURRENT_DOC_CANDIDATE' | Where-Object path -eq 'README.md').Count -eq 1) 'stale docs audit flags current absolute path'
+    Assert-True (@($findings | Where-Object code -eq 'OBSOLETE_ABSOLUTE_PATH_CANDIDATE' | Where-Object path -eq 'README.md').Count -eq 1) 'stale docs audit flags known-obsolete absolute path'
+    Assert-True (@($findings | Where-Object { $_.evidence -eq 'D:\XCSV' -or $_.evidence -eq 'E:\arma3server' }).Count -eq 0) 'stale docs audit does not warn solely for known-valid absolute paths'
     Assert-True (@($findings | Where-Object path -eq 'wiki/Roadmap-History.md').Count -eq 0) 'stale docs audit excludes historical Roadmap History'
 }
 finally {
