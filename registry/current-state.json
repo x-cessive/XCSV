@@ -1,0 +1,73 @@
+{
+  "$schema": "current-state.schema.json",
+  "schema_version": "1.0.0",
+  "repository_id": "XCSV",
+  "observation_is_authority": false,
+  "generated_or_recorded_at": "2026-08-21T00:45:00Z",
+  "work_id": "XCSV-REPO-001",
+  "sources": {
+    "github_default_branch": {
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T00:45:00Z",
+      "identity": "main@06251c90d95f641c2487928f0eb3f2e1da375a3a",
+      "evidence": "GitHub branch API read of x-cessive/XCSV main during XCSV-REPO-001 bootstrap.",
+      "note": "This proves the observed remote default-branch identity only; it does not prove local or runtime equivalence."
+    },
+    "github_execution_record": {
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T00:45:29Z",
+      "identity": "issue#39",
+      "evidence": "XCSV issue #39 created and reconciled against existing issues #29, #31 and #37.",
+      "note": "Issue state is execution tracking, not source/runtime truth."
+    },
+    "sovran1_local_worktree": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "Current environment has not inspected the SOVRAN-1 local XCSV working tree.",
+      "note": "Do not pull, reset, merge or overwrite local state based on this GitHub-only observation."
+    },
+    "desktop_roadmap": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "Current environment has not inspected the authoritative desktop XCSV roadmap.",
+      "note": "Roadmap/GitHub documentation relationship remains unknown until the next real reconciliation."
+    },
+    "runtime_server": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "No live server/runtime evidence was inspected for this documentation/identity bootstrap.",
+      "note": "GitHub state must never be rendered as runtime health."
+    },
+    "deployed_artifacts": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected in this environment.",
+      "note": "Built, committed, deployed and runtime-verified are distinct states."
+    },
+    "published_github_wiki": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "The tracked wiki source was inspected, but the separate XCSV.wiki.git publication revision was not independently compared.",
+      "note": "Tracked wiki source and published wiki are separate freshness sources."
+    },
+    "github_pages": {
+      "freshness": "NOT_REVERIFIED",
+      "observed_at": null,
+      "identity": null,
+      "evidence": "Generated docs source exists, but the deployed Pages build/revision was not independently verified.",
+      "note": "Generated source presence is not proof of published Pages freshness."
+    }
+  },
+  "rules": [
+    "No global CURRENT state may be inferred from one verified source.",
+    "A source timestamp may advance only when that source was actually reverified.",
+    "This file is observation metadata and never authorizes execution, deployment, stage advancement or cross-repository mutation.",
+    "Historical evidence remains truthful to its observation time and is not rewritten to look current.",
+    "README and wiki should link to per-source freshness rather than embedding volatile claims without freshness context."
+  ]
+}
