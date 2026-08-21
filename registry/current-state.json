@@ -4,14 +4,14 @@
   "repository_id": "XCSV",
   "observation_is_authority": false,
   "currentness_is_derived": true,
-  "generated_or_recorded_at": "2026-08-21T01:23:02Z",
+  "generated_or_recorded_at": "2026-08-21T02:15:00Z",
   "work_id": "XCSV-REPO-001",
   "sources": {
     "github_default_branch": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T01:23:02Z",
-      "observed_identity": "main@06251c90d95f641c2487928f0eb3f2e1da375a3a",
-      "evidence": "git fetch/read-only comparison and gh repo view of x-cessive/XCSV main during XCSV-REPO-001 reconciliation.",
+      "observed_at": "2026-08-21T02:15:00Z",
+      "observed_identity": "main@081e820f14f50e4b842c67b24a16d17c3963564b",
+      "evidence": "PR #40 was merged with normal repository history; origin/main fetched and observed at merge commit 081e820f14f50e4b842c67b24a16d17c3963564b.",
       "note": "This proves the observed remote default-branch identity only. Consumers must compare observed_identity to live source identity before deriving CURRENT."
     },
     "github_execution_record": {
@@ -34,6 +34,13 @@
       "observed_identity": "repo-fabric/xcsv-v2-foundation@3f57e84487fcdae632a747fa242042e3d4e29e15 before reconciliation",
       "evidence": "origin/repo-fabric/xcsv-v2-foundation and refs/pull/40/head fetched/read without checking out over D:\\XCSV.",
       "note": "The reconciliation branch will advance from this candidate; this entry records the PR head observed before local preservation."
+    },
+    "github_pr40_merge": {
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-21T02:15:00Z",
+      "observed_identity": "PR#40 merged_at=2026-08-21T02:13:16Z; merge_commit=081e820f14f50e4b842c67b24a16d17c3963564b; head=e920d979e220707236e39dfe3b08b404de8c79da",
+      "evidence": "gh pr view #40 after merge and git fetch of origin/main.",
+      "note": "This records the merge event observation only; it does not make later main HEAD current by inheritance."
     },
     "member_repository_heads": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
@@ -71,18 +78,18 @@
       "note": "Built, committed, deployed and runtime-verified are distinct states."
     },
     "published_github_wiki": {
-      "observation_result": "STALE_AT_OBSERVATION",
-      "observed_at": "2026-08-21T01:23:02Z",
-      "observed_identity": "XCSV.wiki.git@60f27f3e19e893bccd776472f5047912275de8d4",
-      "evidence": "Read-only clone/hash comparison found tracked wiki differs from published Home.md, Memory-Index.md and Repositories.md; Repository-Identity-and-Freshness.md is missing from the published wiki.",
-      "note": "Tracked wiki source and published wiki are separate freshness sources. This reconciliation did not publish the candidate."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-21T02:15:00Z",
+      "observed_identity": "XCSV.wiki.git@5aa7b00ccf2a4a63219979f2a1a5ce9f8b0816b9",
+      "evidence": "Existing tools/push-wiki.ps1 run from merged main reported the wiki already up to date; independent clone/hash comparison found raw byte differences only from line-ending normalization in two pages and normalized Markdown content equality.",
+      "note": "Tracked wiki source and published wiki are separate freshness sources. Consumers should compare live wiki content to tracked wiki source before deriving CURRENT."
     },
     "github_pages": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "Generated docs source exists, but the deployed Pages build/revision was not independently verified.",
-      "note": "Generated source presence is not proof of published Pages freshness."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-21T02:15:00Z",
+      "observed_identity": "Deploy site workflow run 32439092532 for headSha 081e820f14f50e4b842c67b24a16d17c3963564b; live page https://x-cessive.github.io/XCSV/wiki/Repository-Identity-and-Freshness.html returned HTTP 200 with observation/currentness markers.",
+      "evidence": "GitHub Pages API reports build_type=workflow source main:/docs; gh run list shows Deploy site success for merge SHA 081e820; live page content check found the expected current-state markers.",
+      "note": "This records the observed Pages deployment/content at observation time only; consumers must re-check live deployment before deriving CURRENT."
     }
   },
   "rules": [

@@ -7,6 +7,8 @@
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, run the canonical `READ_ONLY_BOOTSTRAP` first. Reconcile roadmap intent against RAG/history, local working trees, Git history, GitHub/submodules and relevant live evidence. Work only on the remaining delta; do not duplicate equivalent functionality.
 >
 > **Do not inherit the 2026-08-07 `SYNCED` result as current truth.** It is historical evidence of that reconciliation. Current observations are source-specific; see [Repository Identity & Freshness](Repository-Identity-and-Freshness) and `registry/current-state.json`. `NOT_REVERIFIED`, `STALE` and `UNKNOWN` are valid outcomes.
+>
+> documentation state: `UNKNOWN`. The tracked XCSV wiki and published GitHub Wiki may be verified independently, but the desktop roadmap remains `NOT_REVERIFIED` until inspected.
 
 A dedicated **Arma 3 Exile** server on Tanoa, and every piece of software that keeps it alive.
 
