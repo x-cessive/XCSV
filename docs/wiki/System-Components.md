@@ -15,8 +15,8 @@ This page is generated from `registry/components.json` by `tools/build-component
 ## Inventory State
 
 - Registry classification: `PARTIAL_SOURCE_VERIFIED`
-- Component entries: 327
-- Source-wired/current LiveSource references: 35
+- Component entries: 328
+- Source-wired concrete wiring evidence: 35
 - Packed artifact evidence: 0
 - Deployed evidence: 0
 - Boot evidence: 0
@@ -27,7 +27,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | Repository | Count |
 | --- | ---: |
 | `x-cessive/Exile` | 221 |
-| `x-cessive/XCSV` | 26 |
+| `x-cessive/XCSV` | 27 |
 | `x-cessive/XCSV_ADDONS` | 13 |
 | `x-cessive/XCSV_GUARD` | 53 |
 | `x-cessive/XCSV_ORCH` | 14 |
@@ -42,7 +42,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `OTHER` | 25 |
 | `SCRIPT` | 29 |
 | `SERVER_ADDON` | 3 |
-| `TOOL` | 93 |
+| `TOOL` | 94 |
 
 ### By Working Verdict
 
@@ -50,7 +50,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | --- | ---: |
 | `CONSOLIDATE_DUPLICATE` | 1 |
 | `KEEP_VENDOR_REFERENCE` | 64 |
-| `REFACTOR_ACTIVE` | 154 |
+| `REFACTOR_ACTIVE` | 155 |
 | `UNKNOWN` | 108 |
 
 ## Duplicate / Overlap Matrix Draft
@@ -127,7 +127,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | xcsv_chatter | `config.cpp` defines preInit/postInit and `bootstrap/fn_postInit.sqf` registers Exile server thread tasks. |
 | XCSV mission modules | `fn_droneControl.sqf` registers an Exile client thread; several UI modules spawn scheduled client work. |
 | GUARD | Rust modules include stack/server/db/rcon/live/metrics/docs/ai and UI tabs; runtime state not reverified in this lane. |
-| ORCH | Local read-only `D:\XCSV_ORCH` exposes controller, gauntlet, Hermes, workers, integrity, deploy/release and tests. |
+| ORCH | `x-cessive/XCSV_ORCH@8cb52165912fd2dcd2890397c351b477ee63c2ce observed at 2026-08-21T03:17:45Z`; ORCH paths are repository-relative when an explicit verified source is supplied. |
 
 ## Prioritized Refactor Queue Draft
 
@@ -254,6 +254,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-HUB-TOOL-TOOLS-SEARCH-RAG-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/search-rag.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-SYNC-ALL-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-all.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-SYNC-POLICY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-policy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-PROVENANCE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory-provenance.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-CONTINUITY-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/continuity-state.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-CURRENT-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/current-state.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
@@ -275,20 +276,20 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-LIVE-MISSION-MISSION-SQM` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/mission.sqm` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-R3F-LOG` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/R3F_LOG` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-PRISONGRAYBOX-SQF` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_prisonGraybox.sqf` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-CONTROLLER-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-controller.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-GAUNTLET-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-gauntlet.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-HERMES-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-hermes.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-INTEGRITY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-integrity.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-WORKERS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-workers.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-FAILURE-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-failure-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-RUN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-run.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V2-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v2.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V3-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v3.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-INTEGRITY-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-integrity-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-REGRESSION-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-regression.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-DEPLOY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/deploy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-RELEASE-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/release.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-SECRET-SCAN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/secret-scan.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-SRC-XCSV-CONTROLLER-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `src/xcsv-controller.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-SRC-XCSV-GAUNTLET-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `src/xcsv-gauntlet.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-SRC-XCSV-HERMES-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `src/xcsv-hermes.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-SRC-XCSV-INTEGRITY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `src/xcsv-integrity.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-SRC-XCSV-WORKERS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `src/xcsv-workers.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-FAILURE-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-failure-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-GAUNTLET-RUN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-gauntlet-run.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-GAUNTLET-V2-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-gauntlet-v2.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-GAUNTLET-V3-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-gauntlet-v3.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-INTEGRITY-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-integrity-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-TESTS-XCSV-REGRESSION-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tests/xcsv-regression.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-TOOLS-DEPLOY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tools/deploy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-TOOLS-RELEASE-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tools/release.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-TOOLS-SECRET-SCAN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `tools/secret-scan.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-EXILEINCOMINGMISSILE` | QoL / player events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileIncomingMissile` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-FISHING-SCRIPT-FOR-EXTENDED-SURVIVAL-PACK-MOD` | QoL / player events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/fishing-script-for-Extended-Survival-Pack-Mod` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-A3WARNINGSCRIPT` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/A3WarningScript` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
