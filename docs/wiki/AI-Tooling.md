@@ -6,7 +6,11 @@ heading: AI / Development Tooling
 blurb: Selected, optional and rejected workflow tools, with the reason for each decision.
 order: 3
 source: AI-Tooling.md
+generated: true
+source_authority: wiki/AI-Tooling.md
 ---
+
+<!-- GENERATED FROM wiki/AI-Tooling.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 This page records tooling choices that affect XCSV's AI-assisted development workflow. Its purpose is to prevent every new AI session from re-evaluating the same project-management products and accidentally creating another source of truth.
 

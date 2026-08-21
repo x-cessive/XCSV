@@ -4,9 +4,13 @@ section: docs
 title: Memory
 heading: Memory
 blurb: Where project truth is recorded, and the RAG plan.
-order: 13
+order: 16
 source: Memory.md
+generated: true
+source_authority: wiki/Memory.md
 ---
+
+<!-- GENERATED FROM wiki/Memory.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 XCSV project memory has four required layers:
 

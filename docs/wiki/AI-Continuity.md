@@ -6,9 +6,15 @@ heading: AI Continuity
 blurb: Isolated Hermes/OpenClaw baton and failover workflow for XCSV.
 order: 4
 source: AI-Continuity.md
+generated: true
+source_authority: wiki/AI-Continuity.md
 ---
 
+<!-- GENERATED FROM wiki/AI-Continuity.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
+
 XCSV uses an isolated continuity lane named `XCSV_AI_CONTINUITY`.
+
+> **Historical/evidence boundary:** this page preserves continuity-lane design and receipts. Treat dated PASS/PARTIAL/runtime identity sections as evidence at their recorded time, not as standing currentness. Reverify XCSV_ORCH source, runtime release state, worker profiles, and baton state before relying on them.
 
 Runtime state root: `D:\CAGE\xcsv-ai-continuity`
 

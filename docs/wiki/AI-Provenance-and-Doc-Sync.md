@@ -6,7 +6,11 @@ heading: AI Provenance & Doc Sync
 blurb: AI commit attribution and safe desktop/GitHub documentation reconciliation.
 order: 2
 source: AI-Provenance-and-Doc-Sync.md
+generated: true
+source_authority: wiki/AI-Provenance-and-Doc-Sync.md
 ---
+
+<!-- GENERATED FROM wiki/AI-Provenance-and-Doc-Sync.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 **XCSV-AI-PROVENANCE: 1.0.0**
 

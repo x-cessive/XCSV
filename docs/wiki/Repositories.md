@@ -6,7 +6,11 @@ heading: Repositories
 blurb: Five repositories, one XCSV project: what lives where, and why.
 order: 9
 source: Repositories.md
+generated: true
+source_authority: wiki/Repositories.md
 ---
+
+<!-- GENERATED FROM wiki/Repositories.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 Five repositories currently make up the XCSV GitHub project family. The XCSV hub carries shared documentation, project-level navigation/tooling and selected submodule pointers; implementation source remains in the owning member repository.
 

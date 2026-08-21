@@ -4,9 +4,13 @@ section: docs
 title: System Components
 heading: System Components
 blurb: Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.
-order: 16
+order: 19
 source: System-Components.md
+generated: true
+source_authority: wiki/System-Components.md
 ---
+
+<!-- GENERATED FROM wiki/System-Components.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 This page is generated from `registry/components.json` by `tools/build-component-inventory.ps1` for XCSV-REFACTOR-INV-001 / issue #30.
 

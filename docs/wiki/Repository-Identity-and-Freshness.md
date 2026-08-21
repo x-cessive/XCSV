@@ -6,7 +6,11 @@ heading: Repository Identity & Freshness
 blurb: Machine-readable repository identity, per-source freshness and cold-rehydration semantics.
 order: 7
 source: Repository-Identity-and-Freshness.md
+generated: true
+source_authority: wiki/Repository-Identity-and-Freshness.md
 ---
+
+<!-- GENERATED FROM wiki/Repository-Identity-and-Freshness.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 > **Status:** XCSV reference-model material under `XCSV-REPO-001`.
 >

@@ -4,9 +4,13 @@ section: docs
 title: Lessons
 heading: Lessons
 blurb: Mistakes actually made here, and the rule each one produced.
-order: 15
+order: 18
 source: Lessons.md
+generated: true
+source_authority: wiki/Lessons.md
 ---
+
+<!-- GENERATED FROM wiki/Lessons.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 Mistakes that were actually made here, and the rule each one produced. Read this
 before repeating one someone already paid for.
@@ -488,3 +492,13 @@ release manifests, OpenClaw sessions, and runtime evidence. The work resumed fro
 OpenClaw proof instead of restarting. That proves the baton model for a
 human-directed cross-provider handoff, while still leaving automatic OpenClaw failover
 unclaimed.
+
+## Historical architecture and runtime lessons retained by #31
+
+**A local model is never an authority boundary.** The old Architecture page recorded the durable rule: model output is untrusted text, not a decision or action. It must not have unrestricted tools, players must not reach it, prompt/request handling must avoid unsafe command-line interpolation, and the server stack must remain operable without it. Reverify any actual model runtime before claiming it is available.
+
+**One Exile override wins.** `CfgExileCustomCode` registrations are a collision surface. A historical Scavenge failure came from multiple systems touching `ExileClient_object_player_initialize`; only part of the intended merge reached the active override path. The durable lesson is to reconcile duplicate override ownership deliberately before installing or refactoring an addon.
+
+**Do not make old anti-cheat numbers current by memory.** Historical documentation recorded selected BattlEye script-rule enforcement and infiSTAR cloud 403 behavior. Those details are forensic evidence, not current security posture. Inspect live filters/logs before claiming enforcement or reporting state.
+
+**The extDB2/x86 failure class is historical evidence.** XCSV documented a 2026-08-01 x64 failure tied to the old 32-bit extDB2 path. The durable lesson remains: verify the actual runtime bridge, DLL, config, SQL_CUSTOM path, and process architecture before treating database symptoms as gameplay faults.
