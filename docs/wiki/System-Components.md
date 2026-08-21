@@ -15,7 +15,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 ## Inventory State
 
 - Registry classification: `PARTIAL_SOURCE_VERIFIED`
-- Component entries: 328
+- Component entries: 329
 - Source-wired concrete wiring evidence: 35
 - Packed artifact evidence: 0
 - Deployed evidence: 0
@@ -27,7 +27,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | Repository | Count |
 | --- | ---: |
 | `x-cessive/Exile` | 221 |
-| `x-cessive/XCSV` | 27 |
+| `x-cessive/XCSV` | 28 |
 | `x-cessive/XCSV_ADDONS` | 13 |
 | `x-cessive/XCSV_GUARD` | 53 |
 | `x-cessive/XCSV_ORCH` | 14 |
@@ -42,7 +42,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `OTHER` | 25 |
 | `SCRIPT` | 29 |
 | `SERVER_ADDON` | 3 |
-| `TOOL` | 94 |
+| `TOOL` | 95 |
 
 ### By Working Verdict
 
@@ -50,7 +50,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | --- | ---: |
 | `CONSOLIDATE_DUPLICATE` | 1 |
 | `KEEP_VENDOR_REFERENCE` | 64 |
-| `REFACTOR_ACTIVE` | 155 |
+| `REFACTOR_ACTIVE` | 156 |
 | `UNKNOWN` | 108 |
 
 ## Duplicate / Overlap Matrix Draft
@@ -127,7 +127,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | xcsv_chatter | `config.cpp` defines preInit/postInit and `bootstrap/fn_postInit.sqf` registers Exile server thread tasks. |
 | XCSV mission modules | `fn_droneControl.sqf` registers an Exile client thread; several UI modules spawn scheduled client work. |
 | GUARD | Rust modules include stack/server/db/rcon/live/metrics/docs/ai and UI tabs; runtime state not reverified in this lane. |
-| ORCH | `x-cessive/XCSV_ORCH@8cb52165912fd2dcd2890397c351b477ee63c2ce observed at 2026-08-21T03:17:45Z`; ORCH paths are repository-relative when an explicit verified source is supplied. |
+| ORCH | `x-cessive/XCSV_ORCH@8cb52165912fd2dcd2890397c351b477ee63c2ce observed at 2026-08-21T03:33:01Z`; ORCH paths are repository-relative when an explicit verified source is supplied. |
 
 ## Prioritized Refactor Queue Draft
 
@@ -254,6 +254,7 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-HUB-TOOL-TOOLS-SEARCH-RAG-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/search-rag.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-SYNC-ALL-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-all.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-SYNC-POLICY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-policy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-MEMBER-SOURCE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory-member-source.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-PROVENANCE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory-provenance.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-HUB-TOOL-TOOLS-TESTS-CONTINUITY-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/continuity-state.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
