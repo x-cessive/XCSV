@@ -3,29 +3,50 @@
   "schema_version": "1.0.0",
   "repository_id": "XCSV",
   "observation_is_authority": false,
-  "generated_or_recorded_at": "2026-08-21T00:45:00Z",
+  "generated_or_recorded_at": "2026-08-21T01:23:02Z",
   "work_id": "XCSV-REPO-001",
   "sources": {
     "github_default_branch": {
       "freshness": "VERIFIED_CURRENT",
-      "observed_at": "2026-08-21T00:45:00Z",
+      "observed_at": "2026-08-21T01:23:02Z",
       "identity": "main@06251c90d95f641c2487928f0eb3f2e1da375a3a",
-      "evidence": "GitHub branch API read of x-cessive/XCSV main during XCSV-REPO-001 bootstrap.",
+      "evidence": "git fetch/read-only comparison and gh repo view of x-cessive/XCSV main during XCSV-REPO-001 reconciliation.",
       "note": "This proves the observed remote default-branch identity only; it does not prove local or runtime equivalence."
     },
     "github_execution_record": {
       "freshness": "VERIFIED_CURRENT",
-      "observed_at": "2026-08-21T00:45:29Z",
-      "identity": "issue#39",
-      "evidence": "XCSV issue #39 created and reconciled against existing issues #29, #31 and #37.",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "issue#39; pr#40@3f57e84487fcdae632a747fa242042e3d4e29e15 before local reconciliation",
+      "evidence": "gh issue view #39 and gh pr view #40 during XCSV-REPO-001 reconciliation.",
       "note": "Issue state is execution tracking, not source/runtime truth."
     },
     "sovran1_local_worktree": {
-      "freshness": "NOT_REVERIFIED",
-      "observed_at": null,
-      "identity": null,
-      "evidence": "Current environment has not inspected the SOVRAN-1 local XCSV working tree.",
-      "note": "Do not pull, reset, merge or overwrite local state based on this GitHub-only observation."
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "D:\\XCSV main@2207385017c3b8ea6dc64c59d42fd71262e2c6f9; upstream origin/main@06251c90d95f641c2487928f0eb3f2e1da375a3a; ahead 2, behind 2; untracked tools/local-ai/",
+      "evidence": "Read-only git status/log/submodule inventory recorded before integration; safety branch safety/xcsv-repo-001-local-main-20260820-212302-2207385017c3 preserves local HEAD.",
+      "note": "The local tree was preserved in place. Its useful hub gitlink delta was integrated into a separate reconciliation worktree; untracked local-ai tooling remains local."
+    },
+    "github_pr40_candidate": {
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "repo-fabric/xcsv-v2-foundation@3f57e84487fcdae632a747fa242042e3d4e29e15 before reconciliation",
+      "evidence": "origin/repo-fabric/xcsv-v2-foundation and refs/pull/40/head fetched/read without checking out over D:\\XCSV.",
+      "note": "The reconciliation branch will advance from this candidate; this entry records the PR head observed before local preservation."
+    },
+    "member_repository_heads": {
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "XCSV_ADDONS master@1481d6492524f0c9ecefaf8e48c3ae94e3c2f504; Exile master@64f5dff61059bdad2c1d608b60dcd00e583defa3; XCSV_GUARD master@af497d0dc6fb60dcf1bccbafcc531c7038d64f0c",
+      "evidence": ".gitmodules relationship map and git ls-remote refs/heads/master for the three configured hub submodules.",
+      "note": "This verifies the member repository heads used by the hub gitlinks only; it does not inspect member repository working trees, runtime behavior or deployment state."
+    },
+    "cold_rehydration_evaluation": {
+      "freshness": "VERIFIED_CURRENT",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "PASS via fresh unforked worker 01a021ee-ba36-7dc2-b01e-249ce1a47d72 against D:\\XCSV_RECONCILE_XCSV_REPO_001",
+      "evidence": "Fresh worker received the reconciliation worktree path and read-the-repo instruction, mutated no files, and correctly reported repository identity, canonical and non-canonical scope, authority boundaries, per-source freshness/UNKNOWNs, member routing, documentation source/projection rules, completion obligations, prohibited scope and read-only stop condition.",
+      "note": "This verifies the cold-rehydration contract for the candidate worktree only; it does not grant execution authority or runtime freshness."
     },
     "desktop_roadmap": {
       "freshness": "NOT_REVERIFIED",
@@ -49,11 +70,11 @@
       "note": "Built, committed, deployed and runtime-verified are distinct states."
     },
     "published_github_wiki": {
-      "freshness": "NOT_REVERIFIED",
-      "observed_at": null,
-      "identity": null,
-      "evidence": "The tracked wiki source was inspected, but the separate XCSV.wiki.git publication revision was not independently compared.",
-      "note": "Tracked wiki source and published wiki are separate freshness sources."
+      "freshness": "STALE",
+      "observed_at": "2026-08-21T01:23:02Z",
+      "identity": "XCSV.wiki.git@60f27f3e19e893bccd776472f5047912275de8d4",
+      "evidence": "Read-only clone/hash comparison found tracked wiki differs from published Home.md, Memory-Index.md and Repositories.md; Repository-Identity-and-Freshness.md is missing from the published wiki.",
+      "note": "Tracked wiki source and published wiki are separate freshness sources. This reconciliation did not publish the candidate."
     },
     "github_pages": {
       "freshness": "NOT_REVERIFIED",

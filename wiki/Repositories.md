@@ -28,7 +28,7 @@ See [Repository Identity & Freshness](Repository-Identity-and-Freshness).
 
 ## Working copies on disk — historical/documented layout
 
-The paths below are retained because they are operationally useful history, but they were **not reverified during the GitHub-only XCSV-REPO-001 bootstrap**. Treat them as `NOT_REVERIFIED` until inspected on SOVRAN-1.
+The paths below are retained because they are operationally useful history. During the XCSV-REPO-001 reconciliation, `D:\XCSV` was inspected and preserved; the other local/runtime paths in this table remain `NOT_REVERIFIED` unless `registry/current-state.json` records a newer observation.
 
 | documented path | repository / role |
 |---|---|

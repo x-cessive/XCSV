@@ -24,6 +24,7 @@
     "provenance"
   ],
   "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
     "schema_version": { "type": "string", "const": "1.0.0" },
     "repository_id": { "type": "string", "minLength": 1 },
     "github_full_name": { "type": "string", "pattern": "^[^/]+/[^/]+$" },

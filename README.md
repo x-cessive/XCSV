@@ -62,7 +62,7 @@ See [Repository Identity & Freshness](wiki/Repository-Identity-and-Freshness.md)
 
 The repository documents XCSV EXILE as a Tanoa-based Arma 3 Exile system under active development. **That narrative is not a live-health assertion.**
 
-For this GitHub-side repository refresh, live runtime, deployed artifacts, SOVRAN-1 local worktrees and published-site/wiki state were **not reverified**. See [`registry/current-state.json`](registry/current-state.json) before treating any operational statement as current evidence.
+For this repository refresh, `D:\XCSV`, GitHub source state, PR #40, issue #39, configured submodule heads and the published GitHub Wiki were rechecked. Live runtime, deployed artifacts, desktop roadmap and Pages deployment were **not reverified**. See [`registry/current-state.json`](registry/current-state.json) before treating any operational statement as current evidence.
 
 Last documented architecture includes:
 
