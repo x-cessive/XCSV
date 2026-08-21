@@ -4,9 +4,13 @@ section: docs
 title: Roadmap
 heading: Roadmap
 blurb: Done, in flight, next, and deliberately parked.
-order: 11
+order: 13
 source: Roadmap.md
+generated: true
+source_authority: wiki/Roadmap.md
 ---
+
+<!-- GENERATED FROM wiki/Roadmap.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 > ## AI / AGENT ROADMAP GATE - READ BEFORE ACTING
 >

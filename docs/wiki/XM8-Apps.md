@@ -6,10 +6,16 @@ heading: XM8 Apps
 blurb: How XM8 apps register, what is shipped, what is next.
 order: 10
 source: XM8-Apps.md
+generated: true
+source_authority: wiki/XM8-Apps.md
 ---
+
+<!-- GENERATED FROM wiki/XM8-Apps.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 The XM8 is Exile's in-game phone and the sanctioned place to put
 player-facing UI.
+
+> **Freshness boundary:** this page describes documented/source-inventory XM8 surfaces. It does not by itself prove that an app is currently deployed, live-exercised, or player-runtime verified. Use [System Components](System-Components.html) and current runtime receipts before making live claims.
 
 ## How Registration Works
 
@@ -37,7 +43,7 @@ structured-text rendering cannot be proven from static source alone.
    `deleteVehicle` or `setpos`. Write narrow exceptions by hand and gate the app
    on an admin UID.
 
-## Shipped
+## Documented App Surfaces
 
 ### App14 - Admin TP
 
@@ -62,8 +68,8 @@ server-specific manual covering survival, medical, money/respect, territory
 decay, building, vehicles/garage, safe zones, island context and faction
 dossiers.
 
-`FIELD-NOTES-001` added and live-deployed a `Fresh arrival` topic for the
-configured 5-minute Bambi window. `FIELD-NOTES-003` folds the first
+`FIELD-NOTES-001` recorded a `Fresh arrival` topic for the documented 5-minute
+Bambi window. `FIELD-NOTES-003` folds the first
 `Island intel / lore reader` slice into this same app as Warden Control, The
 Yard and Salvage Net dossiers.
 
@@ -109,12 +115,12 @@ for `XCSV-DRONE-001`: native UAV status/convenience surface with coarse RF
 detection, selected-drone connect/disconnect, and an ownership guard that refuses
 connections to UAVs carrying another player's `ExileOwnerUID`.
 
-The live trader category is `DRONES & ELECTRONICS`. V1 intentionally enables
+The documented trader category is `DRONES & ELECTRONICS`. V1 intentionally enables
 only the AAF terminal, AR-2 Darter backpack, Titan AA launcher and Titan AA
 missiles. Armed drones, Stompers, DLC UAVs, static AA and Nyx AA remain deferred
 until balance and runtime counterplay are proven.
 
-### Also Shipped, Not XM8
+### Also Documented, Not XM8
 
 `XCSV: World census` is an admin scroll action that buckets and maps simulated
 objects with `createMarkerLocal`, so markers exist only on the admin's machine.
@@ -154,7 +160,7 @@ handlers.
 ## Order Of Work
 
 ```text
-NOW      live-verify Insurance purchase and Field Notes render heartbeat
+NOW      verify Insurance purchase and Field Notes render heartbeat against live runtime evidence
 NEXT     territory browser / manager once a real territory exists
 THEN     bounty board write path, job board, virtual garage remote, lore reader
 LAST     anything that creates or deletes objects

@@ -3,12 +3,12 @@
 - [Home](Home)
 - [Architecture](Architecture)
 - [System Components](System-Components)
-- [Repository Identity & Freshness](Repository-Identity-and-Freshness)
-- [Runbook](Runbook)
 - [Repositories](Repositories)
+- [Runbook / Deployment & Operations](Runbook)
 - [XM8 Apps](XM8-Apps)
-- [Roadmap](Roadmap)
-- [Lessons](Lessons)
+- [Custom Map Editing](Custom-Map-Editing)
+- [Drone & Counter-UAS](Drone-and-Counter-UAS)
+- [GUARD Development](XCSV-GUARD-Development-Plan)
 
 ### AI / Engineering
 
@@ -16,17 +16,23 @@
 - [AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync)
 - [AI / Development Tooling](AI-Tooling)
 - [AI Continuity](AI-Continuity)
+- [Repository Identity & Freshness](Repository-Identity-and-Freshness)
 
-### Repos
+### Planning / Memory
 
-- [XCSV](https://github.com/x-cessive/XCSV) · hub
+- [Roadmap](Roadmap)
+- [Memory](Memory)
+- [Memory Index](Memory-Index)
+- [Lessons](Lessons)
+
+### Repositories
+
+- [XCSV](https://github.com/x-cessive/XCSV) - hub
 - [XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD)
 - [XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS)
 - [XCSV_ORCH](https://github.com/x-cessive/XCSV_ORCH)
 - [Exile](https://github.com/x-cessive/Exile)
 
-### Links
+### Published Site
 
-- [Site](https://x-cessive.github.io/XCSV/)
-- [Memory](Memory)
-- [Memory Index](Memory-Index)
+- [x-cessive.github.io/XCSV](https://x-cessive.github.io/XCSV/)

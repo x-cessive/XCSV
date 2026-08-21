@@ -6,7 +6,11 @@ heading: AI Start Here
 blurb: Mandatory reconciliation and navigation contract for AI-assisted XCSV work.
 order: 1
 source: AI-Start-Here.md
+generated: true
+source_authority: wiki/AI-Start-Here.md
 ---
+
+<!-- GENERATED FROM wiki/AI-Start-Here.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 **XCSV-AI-CONTRACT: 1.0.0**
 

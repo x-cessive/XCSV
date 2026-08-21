@@ -4,9 +4,13 @@ section: docs
 title: Lessons
 heading: Lessons
 blurb: Mistakes actually made here, and the rule each one produced.
-order: 15
+order: 17
 source: Lessons.md
+generated: true
+source_authority: wiki/Lessons.md
 ---
+
+<!-- GENERATED FROM wiki/Lessons.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 Mistakes that were actually made here, and the rule each one produced. Read this
 before repeating one someone already paid for.

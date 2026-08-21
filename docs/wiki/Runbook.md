@@ -1,20 +1,27 @@
 ---
 layout: wiki
 section: docs
-title: Runbook
-heading: Runbook
-blurb: The server is broken and you need it back.
+title: Deployment & Operations
+heading: Deployment & Operations
+blurb: Recovery and operating procedures, with currentness boundaries called out.
 order: 8
 source: Runbook.md
+generated: true
+source_authority: wiki/Runbook.md
 ---
+
+<!-- GENERATED FROM wiki/Runbook.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 For when the server is broken and you need it back.
 
+> **Freshness boundary:** this runbook preserves operational procedures and historical failure knowledge. It is not proof that GUARD, the server, database, BattlEye, deployed PBOs, or local paths are currently available. Reverify the relevant source before acting.
+
 ## 0. First move, always
 
-Open **XCSV GUARD**. Its Overview tab runs the pre-flight checks below
-automatically, every poll. If it is already telling you what is wrong, believe it
-before you believe the RPT.
+Open **XCSV GUARD** if it is available and current. Its Overview tab is designed
+to run the pre-flight checks below automatically. If a current GUARD instance is
+already telling you what is wrong, treat that as stronger evidence than a single
+RPT snippet.
 
 ![XCSV GUARD Overview](https://x-cessive.github.io/XCSV/assets/shots/overview.png)
 
@@ -56,12 +63,12 @@ In order of how often it has actually been the answer here:
    ```
    No entry may begin with `\` or `/`. XCSV GUARD's **Integrity** tab does this
    for every loaded PBO and refuses to start the server if any fails.
-2. **Wrong database bridge.** Production is `arma3server_x64.exe` + extDB3. If
+2. **Wrong database bridge.** The documented production target is `arma3server_x64.exe` + extDB3. If
    x64 is running, verify `@ExileServer\extDB3_x64.dll`,
    `@ExileServer\extdb3-conf.ini`, and `@ExileServer\sql_custom\exile.ini`.
 3. **Missing `-filePatching`.** A3XAI reads `a3xai_config.sqf` as a loose file
    and silently ends the mission during world init without it.
-4. **Database reachable?** MariaDB up, credentials in `extdb3-conf.ini` current.
+4. **Database reachable?** Verify MariaDB is up and the credentials in `extdb3-conf.ini` are current before treating database errors as gameplay faults.
 5. **A config parse error in the mission.** One bad brace in `config.cpp` ends
    the mission before anything else runs.
 
@@ -84,7 +91,7 @@ current launch parameters.
 
 ## 4.1 x64/extDB3 operating checks
 
-Production is `arma3server_x64.exe` + extDB3 with `-maxMem=12288`.
+The documented production target is `arma3server_x64.exe` + extDB3 with `-maxMem=12288`; verify the active process and launch arguments before treating that as current runtime truth.
 
 ```powershell
 E:\ExileRepo\tools\diagnostics\x64-baseline.ps1

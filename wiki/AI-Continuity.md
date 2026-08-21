@@ -2,6 +2,8 @@
 
 XCSV uses an isolated continuity lane named `XCSV_AI_CONTINUITY`.
 
+> **Historical/evidence boundary:** this page preserves continuity-lane design and receipts. Treat dated PASS/PARTIAL/runtime identity sections as evidence at their recorded time, not as standing currentness. Reverify XCSV_ORCH source, runtime release state, worker profiles, and baton state before relying on them.
+
 Runtime state root: `D:\CAGE\xcsv-ai-continuity`
 
 Tracked operator entrypoint: `D:\XCSV\tools\xcsv-continuity.ps1`

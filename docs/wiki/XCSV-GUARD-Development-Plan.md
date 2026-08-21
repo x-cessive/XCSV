@@ -1,12 +1,16 @@
 ---
 layout: wiki
 section: docs
-title: GUARD Development Plan
-heading: GUARD Development Plan
+title: GUARD Development
+heading: GUARD Development
 blurb: Gauntlet, reliability, UX, evidence, deployment and player-system programme.
-order: 12
+order: 14
 source: XCSV-GUARD-Development-Plan.md
+generated: true
+source_authority: wiki/XCSV-GUARD-Development-Plan.md
 ---
+
+<!-- GENERATED FROM wiki/XCSV-GUARD-Development-Plan.md BY tools/build-docs.ps1. DO NOT EDIT docs/wiki BY HAND. -->
 
 > Planning document synced from the 2026-08-07 XCSV design sessions.
 >
