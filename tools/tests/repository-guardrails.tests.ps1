@@ -57,11 +57,12 @@ function New-File([string] $Path, [string] $Text = '') {
     Set-Content -LiteralPath $Path -Value $Text -Encoding UTF8
 }
 
-function Invoke-GuardrailProcess([string[]] $Args) {
+function Invoke-GuardrailProcess([string[]] $ProcessArgs) {
     $scriptPath = (Resolve-Path (Join-Path $PSScriptRoot '..\xcsv-repository-guardrails.ps1')).Path
-    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @Args 2>&1
+    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @ProcessArgs 2>&1
+    $exitCode = $LASTEXITCODE
     [pscustomobject]@{
-        exit_code = $LASTEXITCODE
+        exit_code = $exitCode
         output = @($output)
     }
 }
