@@ -7,8 +7,8 @@ This page is generated from `registry/components.json` by `tools/build-component
 ## Inventory State
 
 - Registry classification: `PARTIAL_SOURCE_VERIFIED`
-- Component entries: 366
-- Source-wired/current LiveSource references: 154
+- Component entries: 327
+- Source-wired/current LiveSource references: 35
 - Packed artifact evidence: 0
 - Deployed evidence: 0
 - Boot evidence: 0
@@ -18,9 +18,9 @@ This page is generated from `registry/components.json` by `tools/build-component
 
 | Repository | Count |
 | --- | ---: |
-| `x-cessive/Exile` | 256 |
-| `x-cessive/XCSV` | 25 |
-| `x-cessive/XCSV_ADDONS` | 18 |
+| `x-cessive/Exile` | 221 |
+| `x-cessive/XCSV` | 26 |
+| `x-cessive/XCSV_ADDONS` | 13 |
 | `x-cessive/XCSV_GUARD` | 53 |
 | `x-cessive/XCSV_ORCH` | 14 |
 
@@ -29,12 +29,12 @@ This page is generated from `registry/components.json` by `tools/build-component
 | Kind | Count |
 | --- | ---: |
 | `ADDON` | 56 |
-| `DATABASE` | 118 |
+| `DATABASE` | 83 |
 | `MISSION_MODULE` | 38 |
 | `OTHER` | 25 |
 | `SCRIPT` | 29 |
-| `SERVER_ADDON` | 8 |
-| `TOOL` | 92 |
+| `SERVER_ADDON` | 3 |
+| `TOOL` | 93 |
 
 ### By Working Verdict
 
@@ -42,8 +42,8 @@ This page is generated from `registry/components.json` by `tools/build-component
 | --- | ---: |
 | `CONSOLIDATE_DUPLICATE` | 1 |
 | `KEEP_VENDOR_REFERENCE` | 64 |
-| `REFACTOR_ACTIVE` | 153 |
-| `UNKNOWN` | 148 |
+| `REFACTOR_ACTIVE` | 154 |
+| `UNKNOWN` | 108 |
 
 ## Duplicate / Overlap Matrix Draft
 
@@ -145,10 +145,10 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-ADDON-A3-EXILE-OCCUPATION-DEVELOPMENT` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/a3_exile_occupation-development` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-A3-VEMF-RELOADED` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/a3_vemf_reloaded` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-A3-VEMF-RE-RELOADED` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/A3_vemf_re-reloaded` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-A3XAI` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/A3XAI` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-A3XAI` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/A3XAI` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-CHANGING-RYAN-S-ZOMBIES-DEMONS-MOD-SOUNDS-FOR-DUMMIES` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Changing Ryan's Zombies & Demons Mod Sounds for dummies` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-CLAIMCRATES` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ClaimCrates` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-CLAIM-VEHICLES` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Claim-Vehicles` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-CLAIM-VEHICLES` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Claim-Vehicles` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-DMS-EXILE` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/DMS_Exile` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEREBORN-REBORN-ZOMBIES` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-FUMS-HC-EXILE` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
@@ -158,15 +158,14 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-ADDON-VCOMAI-3-0-DEVELOP` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/VcomAI-3.0-develop` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-ZCP-A3-EXILE` | AI / missions / HC | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ZCP-A3-Exile` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-LIVE-MISSION-CLAIMVEHICLES-CLIENT` | AI / missions / HC | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/ClaimVehicles_Client` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-SCRIPT-EXILE-ANTI-FLOATING-BUG-SCRIPT-AKA-STAIR-BUG` | AI / missions / HC | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Anti-Floating-bug-script-aka-stair-bug` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-EXILE-ANTI-FLOATING-BUG-SCRIPT-AKA-STAIR-BUG` | AI / missions / HC | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Anti-Floating-bug-script-aka-stair-bug` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-EXILEMOD-ADVANCED-REPAIR` | AI / missions / HC | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/ExileMod-Advanced-Repair` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILEMOD-SUPER-ADVANCED-REPAIR-SYSTEM-SARS` | AI / missions / HC | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exilemod-Super-Advanced-Repair-System-SARS` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `XCSV-ADDONS-SERVER-AI-START-HERE-MD` | AI / missions / HC | `SERVER_ADDON` | `x-cessive/XCSV_ADDONS` | `addons/AI-START-HERE.md` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `EXILE-ADDON-A3-EXILE-SCRATCHIE` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/a3-exile-scratchie` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEBARTERTRADER` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEBOUNTYSYSTEM` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileBountySystem` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-EXILELOADOUTS` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileLoadouts` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-ADDON-EXILESAFEX` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileSafeX` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILELOADOUTS` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileLoadouts` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILESAFEX` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileSafeX` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-EXILETRAVELLINGTRADER` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileTravellingTrader` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-PLAYERMARKETBYCYUNIDE` | Economy / traders / storage | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/PlayerMarketByCyunide` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-LIVE-MISSION-MARKETBYCYUNIDE` | Economy / traders / storage | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/MarketByCyunide` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
@@ -175,120 +174,121 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-SCRIPT-TRADER-MOD` | Economy / traders / storage | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Trader-Mod` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `XCSV-ADDONS-MISSION-FN-BOUNTYBOARD-SQF` | Economy / traders / storage | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_bountyBoard.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-TRADERVOICE-SQF` | Economy / traders / storage | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_traderVoice.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-AI-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/ai.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-ACTIONS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/actions.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-MOD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/mod.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-PACING-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/pacing.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-STATE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/state.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-SUPERVISOR-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/supervisor.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-AI-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/ai_tab.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-CONSOLES-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/consoles.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-DATABASE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/database.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-DOCS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/docs.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-INFISTAR-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/infistar_tab.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-INTEGRITY-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/integrity.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-METRICS-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/metrics_tab.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-MOD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/mod.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-OVERVIEW-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/overview.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-PLAYERS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/players.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-RCON-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/rcon_tab.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-RESTARTS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/restarts.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-SERVERLOG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/serverlog.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-SETTINGS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/settings.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-APP-WORKER-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/worker.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-CONFIG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/config.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-CONFIG-STORE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/config_store.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-CONSOLE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/console.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-DB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/db.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-DOCS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/docs.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-INFISTAR-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/infistar.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-LIVE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/live.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-MAIN-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/main.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-METRICS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/metrics.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-MISSION-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/mission.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-NOTIFY-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/notify.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-PBO-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/pbo.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-RAG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/rag.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-RCON-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/rcon.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-SECRETS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/secrets.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-SERVER-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/server.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-STACK-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/stack.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-STATE-MODEL-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/state_model.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-STEAMBUILD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/steambuild.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-SRC-GUARD-SRC-THEME-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/theme.rs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-CAPTURE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/capture.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPLOY-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deploy.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-CONVERT-EXILE-INI-SH` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/convert_exile_ini.sh` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-EXTDB2-TO-EXTDB3-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/extdb2_to_extdb3.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-PATCH-PBO-EXTDB3-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/patch_pbo_extdb3.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-README-MD` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/README.md` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-DOCTOR-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/doctor.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-MAKE-ICON-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/make_icon.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-SOURCE-GATE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/source-gate.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-TASKBAR-PIN-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/taskbar-pin.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-TELEGRAM-CAPTURE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/telegram-capture.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-GUARD-TOOL-GUARD-TOOLS-TESTS-SOURCE-GATE-TESTS-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/tests/source-gate.tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-AI-COMMIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-commit.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-AI-DESKTOP-CAPTURE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-desktop-capture.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-AI-RECONCILE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-reconcile.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-BACKUP-INFISTAR-LOGS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/backup-infistar-logs.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-BUILD-COMPONENT-INVENTORY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-component-inventory.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-BUILD-DOCS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-docs.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-BUILD-MEMORY-INDEX-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-memory-index.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-BUILD-RAG-INDEX-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-rag-index.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-CHECK-TEXT-SAFETY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/check-text-safety.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-CURRENT-STATE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/current-state.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-FPS-REPORT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/fps-report.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-FPS-WATCH-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/fps-watch.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-PBO-DRIFT-AUDIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/pbo-drift-audit.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-PUSH-WIKI-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/push-wiki.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-RCON-PROBE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/rcon-probe.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-ROTATE-RCON-PASSWORD-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/rotate-rcon-password.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-SEARCH-RAG-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/search-rag.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-SYNC-ALL-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-all.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-SYNC-POLICY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-policy.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-TESTS-CONTINUITY-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/continuity-state.tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-TESTS-CURRENT-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/current-state.tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-TESTS-SYNC-POLICY-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/sync-policy.tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-XCSV-COLDPATHS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-coldpaths.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-XCSV-CONTINUITY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-continuity.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-HUB-TOOL-TOOLS-XCSV-WIRING-AUDIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-wiring-audit.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-ADDON-A3-EXILE-LOOTBOX` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/a3_exile_lootbox` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-AI-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/ai.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-ACTIONS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/actions.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-MOD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/mod.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-PACING-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/pacing.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-STATE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/state.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-SUPERVISOR-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/supervisor.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-AI-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/ai_tab.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-CONSOLES-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/consoles.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-DATABASE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/database.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-DOCS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/docs.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-INFISTAR-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/infistar_tab.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-INTEGRITY-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/integrity.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-METRICS-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/metrics_tab.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-MOD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/mod.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-OVERVIEW-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/overview.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-PLAYERS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/players.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-RCON-TAB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/rcon_tab.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-RESTARTS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/restarts.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-SERVERLOG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/serverlog.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-UI-SETTINGS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/ui/settings.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-APP-WORKER-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/app/worker.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-CONFIG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/config.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-CONFIG-STORE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/config_store.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-CONSOLE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/console.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-DB-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/db.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-DOCS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/docs.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-INFISTAR-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/infistar.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-LIVE-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/live.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-MAIN-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/main.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-METRICS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/metrics.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-MISSION-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/mission.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-NOTIFY-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/notify.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-PBO-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/pbo.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-RAG-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/rag.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-RCON-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/rcon.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-SECRETS-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/secrets.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-SERVER-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/server.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-STACK-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/stack.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-STATE-MODEL-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/state_model.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-STEAMBUILD-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/steambuild.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-SRC-GUARD-SRC-THEME-RS` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/src/theme.rs` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-CAPTURE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/capture.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPLOY-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deploy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-CONVERT-EXILE-INI-SH` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/convert_exile_ini.sh` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-EXTDB2-TO-EXTDB3-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/extdb2_to_extdb3.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-PATCH-PBO-EXTDB3-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/patch_pbo_extdb3.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DEPRECATED-README-MD` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/deprecated/README.md` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-DOCTOR-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/doctor.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-MAKE-ICON-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/make_icon.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-SOURCE-GATE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/source-gate.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-TASKBAR-PIN-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/taskbar-pin.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-TELEGRAM-CAPTURE-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/telegram-capture.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-GUARD-TOOL-GUARD-TOOLS-TESTS-SOURCE-GATE-TESTS-PS1` | GUARD / operations | `TOOL` | `x-cessive/XCSV_GUARD` | `guard/tools/tests/source-gate.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-AI-COMMIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-commit.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-AI-DESKTOP-CAPTURE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-desktop-capture.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-AI-RECONCILE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/ai-reconcile.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-BACKUP-INFISTAR-LOGS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/backup-infistar-logs.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-BUILD-COMPONENT-INVENTORY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-component-inventory.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-BUILD-DOCS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-docs.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-BUILD-MEMORY-INDEX-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-memory-index.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-BUILD-RAG-INDEX-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/build-rag-index.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-CHECK-TEXT-SAFETY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/check-text-safety.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-CURRENT-STATE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/current-state.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-FPS-REPORT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/fps-report.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-FPS-WATCH-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/fps-watch.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-PBO-DRIFT-AUDIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/pbo-drift-audit.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-PUSH-WIKI-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/push-wiki.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-RCON-PROBE-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/rcon-probe.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-ROTATE-RCON-PASSWORD-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/rotate-rcon-password.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-SEARCH-RAG-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/search-rag.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-SYNC-ALL-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-all.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-SYNC-POLICY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/sync-policy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-COMPONENT-INVENTORY-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/component-inventory.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-CONTINUITY-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/continuity-state.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-CURRENT-STATE-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/current-state.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-TESTS-SYNC-POLICY-TESTS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/tests/sync-policy.tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-XCSV-COLDPATHS-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-coldpaths.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-XCSV-CONTINUITY-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-continuity.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-HUB-TOOL-TOOLS-XCSV-WIRING-AUDIT-PS1` | Hub build/sync/audit tooling | `TOOL` | `x-cessive/XCSV` | `tools/xcsv-wiring-audit.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-A3-EXILE-LOOTBOX` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/a3_exile_lootbox` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-BIGFOOTS-SHIPWRECKS` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/bigfoots-shipwrecks` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILE-LOOT-COMPILER-JS` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/exile-loot-compiler-js` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXTENDED-SURVIVAL-PACK-MOD` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Extended Survival Pack (Mod)` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-FARMING-SCRIPTS-FOR-EXTENDED-SURVIVAL-PACK-MOD` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Farming-scripts-for-Extended-Survival-Pack-Mod` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-TRICK-OR-TREAT` | Loot / survival / events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Trick-Or-Treat` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-ALIAS-ANOMALY-CREATURES` | Loot / survival / events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Alias-Anomaly-Creatures` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-BLOWOUT` | Loot / survival / events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Blowout` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-BLOWOUT` | Loot / survival / events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Blowout` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-EXILE-PLANTS` | Loot / survival / events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Plants` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-OBJECTS-SERVER-SIDE` | Map / Eden / static objects | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Objects-Server-Side` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-R3F-LOGISTICS` | Map / Eden / static objects | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/R3F Logistics` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-R3F-LOGISTICS` | Map / Eden / static objects | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/R3F Logistics` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-MISSION-SQM` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/mission.sqm` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-R3F-LOG` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/R3F_LOG` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ADDONS-MISSION-FN-PRISONGRAYBOX-SQF` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_prisonGraybox.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-CONTROLLER-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-controller.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-GAUNTLET-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-gauntlet.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-HERMES-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-hermes.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-INTEGRITY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-integrity.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-WORKERS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-workers.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-FAILURE-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-failure-tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-RUN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-run.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V2-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v2.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V3-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v3.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-INTEGRITY-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-integrity-tests.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-REGRESSION-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-regression.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-DEPLOY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/deploy.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-RELEASE-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/release.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-SECRET-SCAN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/secret-scan.ps1` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-ADDON-EXILEINCOMINGMISSILE` | QoL / player events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileIncomingMissile` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `XCSV-ADDONS-MISSION-FN-PRISONGRAYBOX-SQF` | Map / Eden / static objects | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_prisonGraybox.sqf` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-CONTROLLER-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-controller.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-GAUNTLET-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-gauntlet.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-HERMES-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-hermes.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-INTEGRITY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-integrity.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-SRC-XCSV-ORCH-SRC-XCSV-WORKERS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/src/xcsv-workers.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-FAILURE-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-failure-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-RUN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-run.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V2-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v2.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-GAUNTLET-V3-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-gauntlet-v3.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-INTEGRITY-TESTS-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-integrity-tests.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TEST-XCSV-ORCH-TESTS-XCSV-REGRESSION-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tests/xcsv-regression.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-DEPLOY-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/deploy.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-RELEASE-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/release.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `XCSV-ORCH-TOOL-XCSV-ORCH-TOOLS-SECRET-SCAN-PS1` | ORCH / AI workforce | `TOOL` | `x-cessive/XCSV_ORCH` | `D:/XCSV_ORCH/tools/secret-scan.ps1` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILEINCOMINGMISSILE` | QoL / player events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileIncomingMissile` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-FISHING-SCRIPT-FOR-EXTENDED-SURVIVAL-PACK-MOD` | QoL / player events | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/fishing-script-for-Extended-Survival-Pack-Mod` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-A3WARNINGSCRIPT` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/A3WarningScript` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILE-AUTO-RELOAD-MELEE-WEAPONS` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile_auto_Reload_melee_weapons` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILEMOD-HOLSTERPLUS` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/ExileMod-HolsterPlus` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILEMOD-STOPMOANING` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/ExileMod-StopMoaning` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILE-SAFEZONE-MARKERS` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Safezone-Markers` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-EXILE-SCAVENGE` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile_Scavenge` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-EXILE-SCAVENGE` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile_Scavenge` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-FISHINGBOAT` | QoL / player events | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/FishingBoat` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-LIVE-MISSION-CONFIG-CPP` | Server addons / network / database | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/config.cpp` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-INITSERVER-SQF` | Server addons / network / database | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/initServer.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
@@ -320,33 +320,25 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-BE-CATALOGUE-ADDONS-R3F-LOGISTICS-BATTLEEYE-SCRIPTS-TXT` | Server addons / network / database | `OTHER` | `x-cessive/Exile` | `catalogue/Addons/R3F Logistics/BattleEye/scripts.txt` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-BE-CATALOGUE-TOOLS-BATTLEYE-BE-AUTOFILTER-PS1` | Server addons / network / database | `OTHER` | `x-cessive/Exile` | `catalogue/tools/battleye/be-autofilter.ps1` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-BE-CATALOGUE-TOOLS-BATTLEYE-BE-EXCEPTION-PS1` | Server addons / network / database | `OTHER` | `x-cessive/Exile` | `catalogue/tools/battleye/be-exception.ps1` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-A3-EXILE-LOOTBOX-FUNCTIONS-FINDBUILDINGS-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/a3_exile_lootbox/functions/findBuildings.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-A3-EXILE-SCRATCHIE-MYSQL-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/a3-exile-scratchie/mysql/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-A3-EXILE-SCRATCHIE-MYSQL-SCRATCHIE-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/a3-exile-scratchie/mysql/scratchie.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-A3EXILEVPS-EXILESERVER-OBJECT-PLAYER-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/A3ExileVPS/ExileServer_object_player_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-A3EXILEVPS-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/A3ExileVPS/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-A3EXILEVPS-EXILESERVER-OBJECT-VEHICLE-DATABASE-UPDATE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/A3ExileVPS/ExileServer_object_vehicle_database_update.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-A3XAI-4-SQF-ADDONS-A3XAI-SCRIPTS-A3XAI-BUILDBACKPACKLIST-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/A3XAI/4. SQF/Addons/A3XAI/scripts/A3XAI_buildBackpackList.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-ARMA-3-EXILE-VIRTUAL-GARAGE-DATABASE-STUFF-SQLUPDATE-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Arma-3-Exile-Virtual-Garage/Database Stuff/SQLUpdate.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-ARMA-3-EXILE-VIRTUAL-GARAGE-DATABASE-STUFF-VIRTUALGARAGE-EXTDB2-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Arma-3-Exile-Virtual-Garage/Database Stuff/VirtualGarage_extDB2.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-ARMA-3-EXILE-VIRTUAL-GARAGE-DATABASE-STUFF-VIRTUALGARAGE-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Arma-3-Exile-Virtual-Garage/Database Stuff/VirtualGarage.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-ARMA-3-EXILE-VIRTUAL-GARAGE-EXILESERVER-EXTDB-SQL-CUSTOM-V2-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Arma-3-Exile-Virtual-Garage/@ExileServer/extDB/sql_custom_v2/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-ADDONS-AVS-HOOKS-AVS-PLAYER-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/addons/AVS/hooks/AVS_player_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-ADDONS-AVS-HOOKS-AVS-SYSTEM-DATABASE-CONNECT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/addons/AVS/hooks/AVS_system_database_connect.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-ADDONS-AVS-HOOKS-AVS-VEHICLE-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/addons/AVS/hooks/AVS_vehicle_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-ADDONS-AVS-HOOKS-AVS-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/addons/AVS/hooks/AVS_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-ADDONS-AVS-HOOKS-AVS-VEHICLE-DATABASE-UPDATE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/addons/AVS/hooks/AVS_vehicle_database_update.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-AVS-EXILESERVER-EXTDB-SQL-CUSTOM-V2-AVS-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/AVS/@ExileServer/extDB/sql_custom_v2/avs.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-DMS-EXILE-EXILESERVER-ADDONS-A3-DMS-MISSIONS-BANDIT-NEDBUILDING1-MISSION-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/DMS_Exile/@ExileServer/addons/a3_dms/missions/bandit/nedbuilding1_mission.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-DMS-EXILE-EXILESERVER-ADDONS-A3-DMS-OBJECTS-NEDBUILD1-OBJECTS-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/DMS_Exile/@ExileServer/addons/a3_dms/objects/nedbuild1_objects.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXAD-EXILESERVER-EXTDB-SQL-CUSTOM-64-BIT-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExAd/@ExileServer/extDB/sql_custom (64-bit)/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXAD-EXILESERVER-EXTDB-SQL-CUSTOM-V2-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExAd/@ExileServer/extDB/sql_custom_v2/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-CLIENT-CUSTOM-BARTER-EXILECLIENT-GUI-BARTERDIALOG-ADDBARTERITEM-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Client/custom/barter/ExileClient_gui_barterDialog_addBarterItem.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-CLIENT-CUSTOM-BARTER-EXILECLIENT-GUI-BARTERDIALOG-ADDBARTEROFFERITEM-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Client/custom/barter/ExileClient_gui_barterDialog_addBarterOfferItem.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-EXILE-ALTIS-CUSTOM-BARTER-EXILECLIENT-GUI-BARTERDIALOG-ADDBARTERITEM-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Exile.Altis/custom/barter/ExileClient_gui_barterDialog_addBarterItem.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-EXILE-ALTIS-CUSTOM-BARTER-EXILECLIENT-GUI-BARTERDIALOG-ADDBARTEROFFERITEM-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Exile.Altis/custom/barter/ExileClient_gui_barterDialog_addBarterOfferItem.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-SERVER-BARTER-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Server/barter.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEPERSISTENTVEHICLES-SERVER-VEHICLES-CODE-HOOKS-VEHICLESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExilePersistentVehicles/Server/vehicles/code/hooks/VehicleServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILEBARTERTRADER-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBarterTrader/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILEBASEMOVER-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileBaseMover/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILEFLAGHACKING-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileFlagHacking/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEPERSISTENTVEHICLES-VIEWREADMEFIRST-EXILE-ALTIS-CUSTOMCODE-SERVER-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExilePersistentVehicles/ViewReadMeFirst/Exile.Altis/customcode/server/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILEPUBLICVIRTUALGARAGE-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExilePublicVirtualGarage/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEPUBLICVIRTUALGARAGE-SERVER-PUBLICVG-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExilePublicVirtualGarage/Server/publicVG.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-CONSTRUCTION-DATABASE-DELETE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_construction_database_delete.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-CONSTRUCTION-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_construction_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
@@ -360,7 +352,6 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-PLAYER-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_player_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-PLAYER-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_player_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-PLAYER-DATABASE-UPDATE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_player_database_update.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-PLAYER-NETWORK-ENDBAMBISTATEREQUEST-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_player_network_endBambiStateRequest.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-VEHICLE-DATABASE-DELETE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_vehicle_database_delete.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-VEHICLE-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_vehicle_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
@@ -374,57 +365,31 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-DATABASE-QUERY-SELECTFULL-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_database_query_selectFull.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-DATABASE-QUERY-SELECTSINGLEFIELD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_database_query_selectSingleField.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-DATABASE-QUERY-SELECTSINGLE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_database_query_selectSingle.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-GARBAGECOLLECTOR-CLEANDATABASE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_garbageCollector_cleanDatabase.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-TERRITORY-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_territory_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-TERRITORY-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_territory_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-SYSTEM-XM8-SENDBASERAID-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_system_xm8_sendBaseRaid.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-UTIL-EXTDB2-CREATEMESSAGE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_util_extDB2_createMessage.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-WORLD-LOADALLDATABASECONSTRUCTIONS-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_world_loadAllDatabaseConstructions.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-WORLD-LOADALLDATABASECONTAINERS-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_world_loadAllDatabaseContainers.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-EXILESERVER-ADDONS-EXILE-SERVER-CODE-EXILESERVER-WORLD-LOADALLDATABASEVEHICLES-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/@ExileServer/addons/exile_server/code/ExileServer_world_loadAllDatabaseVehicles.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-MPMISSIONS-CORE-CLIENT-FILES-EXADCLIENT-STATSBAR-CUSTOMCODE-EXILESERVER-SYSTEM-TERRITORY-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/mpmissions/Core_client_files/ExAdClient/StatsBar/CustomCode/ExileServer_system_territory_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEREBORN-REBORN-ZOMBIES-MPMISSIONS-CORE-CLIENT-FILES-EXADCLIENT-VIRTUALGARAGE-CUSTOMCODE-EXILESERVER-SYSTEM-TERRITORY-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileReborn-Reborn_Zombies/mpmissions/Core_client_files/ExAdClient/VirtualGarage/CustomCode/ExileServer_system_territory_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILESAFEX-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileSafeX/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILESAFEX-SERVER-SAFEX-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileSafeX/Server/safex.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILE-TREE-STAY-DOWN-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/exile-tree-stay-down/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILE-TREE-STAY-DOWN-QUERY-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/exile-tree-stay-down/query.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-CLIENT-CUSTOMCODE-SERVER-EXILESERVER-OBJECT-VEHICLE-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Client/customcode/server/ExileServer_object_vehicle_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-CLIENT-CUSTOMCODE-SERVER-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Client/customcode/server/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-EXILE-ALTIS-CUSTOMCODE-SERVER-EXILESERVER-OBJECT-VEHICLE-DATABASE-INSERT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Exile.Altis/customcode/server/ExileServer_object_vehicle_database_insert.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-EXILE-ALTIS-CUSTOMCODE-SERVER-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Exile.Altis/customcode/server/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-SERVER-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Server/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEVEHICLECUSTOMSMODS-SERVER-VEHICLECUSTOMS-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileVehicleCustomsMods/Server/VehicleCustoms.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEZ-MOD-DATABASE-EXTDB2-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileZ-Mod/database/extDB2/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEZ-MOD-DATABASE-EXTDB3-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileZ-Mod/database/extDB3/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-EXILEZ-MOD-DATABASE-ZOMBIEKILL-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ExileZ-Mod/database/ZombieKill.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-HC-AI-LOGIC-AIGUARDBUILDING-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/HC/AI/Logic/AIGuardBuilding.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-HC-AI-RC-FORMATANDBROADCASTAI-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/HC/AI/RC/FormatAndBroadcastAI.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-HC-AI-RC-FORMATANDBROADCAST-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/HC/AI/RC/FormatAndBroadcast.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-DYNAMICAISPAWNS-FUMS-NEDBANDIT-MISSION-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/DynamicAISpawns/FuMS_nedbandit_mission.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-DYNAMICLOOTDROPS-FUMS-NEDBUILD1-MISSION-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/DynamicLootDrops/FuMS_nedbuild1_mission.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-ALTIS-168154-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Altis/168154.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-ALTIS-DUMP-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Altis/Dump.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-ALTIS-HIDDENBASE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Altis/HiddenBase.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-ALTIS-IOANNINA-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Altis/Ioannina.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-ALTIS-THEMEDATA-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Altis/ThemeData.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-TANOA-HIDDENBASE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Tanoa/HiddenBase.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-TANOA-SEISLAND-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Tanoa/SEIsland.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-TANOA-THEMEDATA-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Tanoa/ThemeData.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-FUMS-HC-EXILE-FUMS-ADDONS-FUMS-THEMES-ROADBLOCK-TANOA-WESTISLAND-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/FuMS-HC-Exile/@FuMS/addons/FuMS/Themes/RoadBlock_Tanoa/WestIsland.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-CLIENT-FUNCTIONS-EXILECLIENT-MOSTWANTED-DIALOG-ADDBOUNTY-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted_Client/functions/ExileClient_MostWanted_Dialog_addBounty.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-CLIENT-FUNCTIONS-EXILECLIENT-MOSTWANTED-NETWORK-ADDBOUNTYRESPONSE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted_Client/functions/ExileClient_MostWanted_network_addBountyResponse.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-CLIENT-OVERWRITES-EXILESERVER-OBJECT-PLAYER-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted_Client/overwrites/ExileServer_object_player_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-EXTDB-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted-extDB.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-SERVER-CODE-EXILESERVER-MOSTWANTED-BOUNTY-NETWORK-ADDBOUNTY-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted_Server/code/ExileServer_MostWanted_bounty_network_addBounty.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-MOSTWANTED-MOSTWANTED-SQL-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/MostWanted/MostWanted-SQL.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-ADDONS-PLAYERMARKETBYCYUNIDE-INSTALL-EXILE-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/PlayerMarketByCyunide/install/exile.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-PLAYERMARKETBYCYUNIDE-INSTALL-PLAYERMARKET-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/PlayerMarketByCyunide/install/playermarket.sql` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-SARGE-AI-MODNAME-MAPNAME-SCRIPTS-UPSMON-COMMON-UNIT-FNC-UPSMON-DEADBODIES-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Sarge-AI/ModName.MapName/scripts/UPSMON/COMMON/unit/fnc/UPSMON_deadbodies.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-SARGE-AI-SARGE-UPSMON-COMMON-UNIT-FNC-UPSMON-DEADBODIES-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Sarge-AI/Sarge/UPSMON/COMMON/unit/fnc/UPSMON_deadbodies.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-TRICK-OR-TREAT-RESET-KNOCKED-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Trick-Or-Treat/RESET KNOCKED.SQL` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-ADDONS-TRICK-OR-TREAT-TRICKORTREAT-SQL` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/Trick-Or-Treat/TrickOrTreat.SQL` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-VCOMAI-3-0-3-3-2-EXILE-YOURMISSION-VCOMAI-VCOMAI-FUNCTIONS-DANGERCAUSES-VCOMAI-DEADBODYDETECTION-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/VcomAI-3.0-3.3.2/Exile.YourMission/VCOMAI/VCOMAI/functions/DangerCauses/VCOMAI_DeadBodyDetection.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-VCOMAI-3-0-3-3-2-VCOM-FSMS-FN-SQUADBEH-FSM` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/VcomAI-3.0-3.3.2/Vcom/FSMS/fn_SQUADBEH.fsm` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-VCOMAI-3-0-DEVELOP-VCOM-FSMS-FN-SQUADBEH-FSM` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/VcomAI-3.0-develop/Vcom/FSMS/fn_SQUADBEH.fsm` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-ZCP-A3-EXILE-SERVER-ADDON-CODE-A3-ZCP-EXILE-FUNCTIONS-FN-CREATEEDENCONVERTEDBASE-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ZCP-A3-Exile/server_addon_code/a3_zcp_exile/functions/fn_createEdenConvertedBase.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-ZCP-A3-EXILE-SERVER-ADDON-CODE-A3-ZCP-EXILE-FUNCTIONS-FN-PREREWARDBOX-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ZCP-A3-Exile/server_addon_code/a3_zcp_exile/functions/fn_prerewardBox.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-DB-CATALOGUE-ADDONS-ZCP-A3-EXILE-SERVER-ADDON-CODE-A3-ZCP-EXILE-FUNCTIONS-FN-REWARDBOX-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/Addons/ZCP-A3-Exile/server_addon_code/a3_zcp_exile/functions/fn_rewardBox.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `XCSV-DB-CATALOGUE-EXILELOOTDROP-SRC-EXILELOOTDROP-EXILELOOTDROP-INI` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/ExileLootDrop/src/ExileLootDrop/ExileLootDrop.ini` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-LIVESOURCE-MPMISSIONS-EXILE-TANOA-CUSTOM-STATUSBAR-EXILESERVER-SYSTEM-DATABASE-CONNECT-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/custom/StatusBar/ExileServer_system_database_connect.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-LIVESOURCE-MPMISSIONS-EXILE-TANOA-CUSTOM-VPS-EXILESERVER-OBJECT-PLAYER-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/custom/VPS/ExileServer_object_player_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
 | `XCSV-DB-CATALOGUE-LIVESOURCE-MPMISSIONS-EXILE-TANOA-CUSTOM-VPS-EXILESERVER-OBJECT-VEHICLE-DATABASE-LOAD-SQF` | Server addons / network / database | `DATABASE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/custom/VPS/ExileServer_object_vehicle_database_load.sqf` | CATALOGUE_PRESENT | `UNKNOWN` |
@@ -441,17 +406,17 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-ADDON-ABANDON-FLAG` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Abandon Flag` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-ABANDON-FLAG-PBO` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Abandon Flag.pbo` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-DMD-BUILDINGREPLACE` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/DMD_BuildingReplace` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-EXILE-ABANDON-TERRITORY` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Exile_Abandon_Territory` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILE-ABANDON-TERRITORY` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Exile_Abandon_Territory` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-EXILEBASEMOVER` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileBaseMover` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-EXILEBUILDCHECK` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileBuildCheck` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-ADDON-EXILEFLAGHACKING` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileFlagHacking` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILEBUILDCHECK` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileBuildCheck` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXILEFLAGHACKING` | Territory / building / raiding | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileFlagHacking` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-BUILD-LIMITS` | Territory / building / raiding | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Build-Limits` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-EXILE-BLOCK-FLOOR-PEEKING` | Territory / building / raiding | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile_Block_Floor_Peeking` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-SCRIPT-W4-LOCKPICK` | Territory / building / raiding | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/w4_lockpick` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-EXILE-BLOCK-FLOOR-PEEKING` | Territory / building / raiding | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile_Block_Floor_Peeking` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-W4-LOCKPICK` | Territory / building / raiding | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/w4_lockpick` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-0-GO-GET-INFISTAR` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/0. GO GET INFISTAR` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-A3EX-CMAT` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/A3EX_CMAT` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-BLCKEAGLES-REVISITED-RC` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/blckeagles-revisited-RC` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-EXAD` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExAd` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-EXAD` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExAd` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-EXILEREVIVE` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileRevive` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILE-TREE-STAY-DOWN` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/exile-tree-stay-down` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEZ-MOD` | Unclassified inventory | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileZ-Mod` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
@@ -466,23 +431,19 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-LIVE-MISSION-HC` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/HC` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-INITPLAYERLOCAL-SQF` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/initPlayerLocal.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-INIT-SQF` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/init.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-LIVE-MISSION-INTRO-SQF` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/intro.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-LIVE-MISSION-PBOPREFIX` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/$PBOPREFIX$` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-LIVE-MISSION-INTRO-SQF` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/intro.sqf` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-LIVE-MISSION-PBOPREFIX` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/$PBOPREFIX$` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-RSCDEFINES-HPP` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/RscDefines.hpp` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-LIVE-MISSION-STRINGTABLE-XML` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/stringtable.xml` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-LIVE-MISSION-STRINGTABLE-XML` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/stringtable.xml` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-TOOLS` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/tools` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-XCSV` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/xcsv` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-XS` | Unclassified inventory | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/xs` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-ENIGMA-EXILE-REVIVE` | Unclassified inventory | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Enigma_Exile_Revive` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXAD-HALOPARACHUTE-STANDALONE` | Unclassified inventory | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/ExAd-HaloParachute-Standalone` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-HELIPAD` | Unclassified inventory | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Helipad` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ADDONS-SERVER-AGENTS` | Unclassified inventory | `SERVER_ADDON` | `x-cessive/XCSV_ADDONS` | `addons/.agents` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-ADDONS-SERVER-AGENTS-MD` | Unclassified inventory | `SERVER_ADDON` | `x-cessive/XCSV_ADDONS` | `addons/AGENTS.md` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-ADDONS-SERVER-CLAUDE-MD` | Unclassified inventory | `SERVER_ADDON` | `x-cessive/XCSV_ADDONS` | `addons/CLAUDE.md` | CATALOGUE_PRESENT | `UNKNOWN` |
-| `XCSV-ADDONS-SERVER-README-MD` | Unclassified inventory | `SERVER_ADDON` | `x-cessive/XCSV_ADDONS` | `addons/README.md` | CATALOGUE_PRESENT | `UNKNOWN` |
+| `EXILE-SCRIPT-HELIPAD` | Unclassified inventory | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Helipad` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-A3EXILEVPS` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/A3ExileVPS` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-ARMA-3-EXILE-VIRTUAL-GARAGE` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/Arma-3-Exile-Virtual-Garage` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-ADDON-AVS` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/AVS` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-ADDON-AVS` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/AVS` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-ADDON-EXILEHELICRASHES` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExileHelicrashes` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEPERSISTENTVEHICLES` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExilePersistentVehicles` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-ADDON-EXILEPUBLICVIRTUALGARAGE` | Vehicles | `ADDON` | `x-cessive/Exile` | `catalogue/Addons/ExilePublicVirtualGarage` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
@@ -493,13 +454,13 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `EXILE-SCRIPT-VEHICLE-SALVAGE` | Vehicles | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Vehicle_Salvage` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `XCSV-ADDONS-MISSION-FN-DRONECONTROL-SQF` | Vehicles | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_droneControl.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `EXILE-LIVE-MISSION-RSCINGAMEUI-HPP` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/RscInGameUI.hpp` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-LIVE-MISSION-XM8-SERVER-INFO-HTML` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/xm8_server_info.html` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `EXILE-SCRIPT-A3EXILEPILOTHUD` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/A3ExilePilotHUD` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-LIVE-MISSION-XM8-SERVER-INFO-HTML` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/Exile` | `catalogue/LiveSource/mpmissions/Exile.Tanoa/xm8_server_info.html` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-A3EXILEPILOTHUD` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/A3ExilePilotHUD` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-EXILE-LARGE-NUMBERS-IN-XM8` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-large-numbers-in-Xm8` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
 | `EXILE-SCRIPT-EXILEMOD-CRUISEMODE` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/ExileMod-CruiseMode` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-EXILE-VANILLA-HUD` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Vanilla-Hud` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-EXILE-VANILLA-HUD` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Exile-Vanilla-Hud` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `EXILE-SCRIPT-STATUSBAR-32-64BIT-MASTER` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/Statusbar-32-64Bit-master` | CATALOGUE_PRESENT | `KEEP_VENDOR_REFERENCE` |
-| `EXILE-SCRIPT-XSSPAWN` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/xsSpawn` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `EXILE-SCRIPT-XSSPAWN` | XM8 / UI / HUD | `SCRIPT` | `x-cessive/Exile` | `catalogue/Scripts/xsSpawn` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-ADMINTELEPORT-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_adminTeleport.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-CENSUS-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_census.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-FIELDNOTES-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_fieldNotes.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
@@ -507,4 +468,4 @@ This page is generated from `registry/components.json` by `tools/build-component
 | `XCSV-ADDONS-MISSION-FN-SCOREBOARD-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_scoreboard.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-STANDING-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_standing.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
 | `XCSV-ADDONS-MISSION-FN-WELCOME-SQF` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/fn_welcome.sqf` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
-| `XCSV-ADDONS-MISSION-UI` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/ui` | CATALOGUE_PRESENT, SOURCE_WIRED | `REFACTOR_ACTIVE` |
+| `XCSV-ADDONS-MISSION-UI` | XM8 / UI / HUD | `MISSION_MODULE` | `x-cessive/XCSV_ADDONS` | `addons/mission/xcsv/ui` | CATALOGUE_PRESENT | `REFACTOR_ACTIVE` |

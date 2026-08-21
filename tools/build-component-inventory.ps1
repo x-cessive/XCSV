@@ -132,6 +132,73 @@ function Test-SourceReference([string] $Name) {
     return ($hits.Count -gt 0)
 }
 
+function Test-DatabaseSurface([string] $Path) {
+    $rel = $Path.Replace('\', '/')
+    $file = [IO.Path]::GetFileName($rel)
+    if ($file -match '(?i)\.sql$') { return $true }
+    if ($rel -match '(?i)(^|/)(extdb|extdb2|extdb3)(/|$)') { return $true }
+    if ($rel -match '(?i)(^|/)(database|databases|sql_custom|sql_custom_v2)(/|$)') { return $true }
+    if ($file -match '(?i)(exile|avs|safex|scratchie|playermarket|virtualgarage|publicvg|barter|lockpick|vehiclecustoms|zombiekill|mostwanted).*\.ini$') { return $true }
+    if ($file -match '(?i)^Exile(Server|Client)_.*_database_.*\.sqf$') { return $true }
+    if ($file -match '(?i)^.*_system_database_.*\.sqf$') { return $true }
+    return $false
+}
+
+function Test-XcsvAddonsRuntimeSurface([IO.FileSystemInfo] $Item) {
+    if (-not $Item.PSIsContainer) { return $false }
+    if ($Item.Name -in @('.git', '.agents', 'mission')) { return $false }
+    if (Test-Path -LiteralPath (Join-Path $Item.FullName 'config.cpp')) { return $true }
+    if (Test-Path -LiteralPath (Join-Path $Item.FullName '$PBOPREFIX$')) { return $true }
+    return $false
+}
+
+function Get-ConcreteWiringEvidence([string] $RelPath, [string] $Kind) {
+    $rel = $RelPath.Replace('/', '\')
+    $missionRoot = Join-Path $Root 'catalogue/LiveSource/mpmissions/Exile.Tanoa'
+    $entryNames = @('config.cpp', 'description.ext', 'mission.sqm', 'init.sqf', 'initServer.sqf', 'initPlayerLocal.sqf')
+    $fileName = [IO.Path]::GetFileName($rel)
+    if ($RelPath -like 'catalogue/LiveSource/mpmissions/Exile.Tanoa/*' -and $entryNames -contains $fileName) {
+        return @("Concrete mission entrypoint/config file: $RelPath.")
+    }
+
+    if ($RelPath -like 'catalogue/LiveSource/server-addons/*') {
+        $abs = Join-Path $Root $RelPath
+        $config = Join-Path $abs 'config.cpp'
+        if (Test-Path -LiteralPath $config) {
+            $text = Get-Content -Raw -LiteralPath $config
+            if ($text -match '(?i)(preInit|postInit|CfgFunctions|CfgPatches)') {
+                return @("Server addon config.cpp contains CfgPatches/CfgFunctions/preInit/postInit evidence.")
+            }
+        }
+    }
+
+    if ($RelPath -like 'addons/mission/xcsv/*.sqf') {
+        $liveRel = 'xcsv\' + [IO.Path]::GetFileName($RelPath)
+        $init = Join-Path $missionRoot 'initPlayerLocal.sqf'
+        if (Test-Path -LiteralPath $init) {
+            $escaped = [regex]::Escape($liveRel)
+            if ((Get-Content -Raw -LiteralPath $init) -match $escaped) {
+                return @("LiveSource initPlayerLocal.sqf explicitly loads $liveRel.")
+            }
+        }
+    }
+
+    if ($RelPath -like 'catalogue/LiveSource/mpmissions/Exile.Tanoa/*') {
+        $target = $RelPath.Substring('catalogue/LiveSource/mpmissions/Exile.Tanoa/'.Length).Replace('/', '\')
+        foreach ($entry in @('config.cpp', 'description.ext', 'init.sqf', 'initServer.sqf', 'initPlayerLocal.sqf')) {
+            $entryPath = Join-Path $missionRoot $entry
+            if (Test-Path -LiteralPath $entryPath) {
+                $escaped = [regex]::Escape($target)
+                if ((Get-Content -Raw -LiteralPath $entryPath) -match $escaped) {
+                    return @("$entry explicitly references $target.")
+                }
+            }
+        }
+    }
+
+    return @()
+}
+
 $components = New-Object System.Collections.Generic.List[object]
 
 function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [string] $Kind, [string] $Ownership, [string] $Authority, [bool] $LiveSource) {
@@ -139,14 +206,18 @@ function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [stri
     if (!(Test-Path $base)) { return }
     Get-ChildItem -LiteralPath $base -Force | Where-Object { $_.Name -notin @('.git','.gitignore') } | Sort-Object Name | ForEach-Object {
         $rel = Get-Rel $Root $_.FullName
-        $wired = if ($LiveSource) { $true } else { Test-SourceReference $_.Name }
-        $action = if ($LiveSource -or $wired) { 'REFACTOR_ACTIVE' } else { 'KEEP_VENDOR_REFERENCE' }
+        $wiringEvidence = Get-ConcreteWiringEvidence -RelPath $rel -Kind $Kind
+        $wired = ($wiringEvidence.Count -gt 0)
+        $referenceCandidate = if ($wired) { $false } elseif ($LiveSource) { $true } else { Test-SourceReference $_.Name }
+        $action = if ($LiveSource -or $wired -or $referenceCandidate) { 'REFACTOR_ACTIVE' } else { 'KEEP_VENDOR_REFERENCE' }
         $status = if ($LiveSource) { 'UNKNOWN' } else { 'REFERENCE_ONLY' }
         $detail = @("Enumerated from $BaseRel at hub commit 38249878de2c03d6f5e2afd4884ee1b5beb9603d.")
-        if ($LiveSource) {
+        if ($wired) {
+            $detail += $wiringEvidence
+        } elseif ($LiveSource) {
             $detail += 'This is current LiveSource Git content. Deployment/runtime state was not inspected.'
-        } elseif ($wired) {
-            $detail += 'Name/reference appears in current LiveSource source; exact wiring requires deeper audit.'
+        } elseif ($referenceCandidate) {
+            $detail += 'SOURCE_REFERENCE_CANDIDATE: name/reference appears in current LiveSource source, but concrete include/config/init/module/handler wiring was not proven.'
         } else {
             $detail += 'No current LiveSource name/reference was found by the inventory scan.'
         }
@@ -162,9 +233,9 @@ function Add-TopLevel([string] $BaseRel, [string] $Repo, [string] $Prefix, [stri
             -Evidence (New-Evidence $true $wired $null $null $null $null $detail) `
             -Action $action `
             -Status $status `
-            -Confidence ($(if ($LiveSource -or $wired) { 'MEDIUM' } else { 'LOW' })) `
+            -Confidence ($(if ($wired) { 'HIGH' } elseif ($LiveSource -or $referenceCandidate) { 'MEDIUM' } else { 'LOW' })) `
             -Staleness 'CURRENT' `
-            -Verdict ($(if ($LiveSource) { 'LIVESOURCE_PRESENT_RUNTIME_UNKNOWN' } elseif ($wired) { 'CATALOGUE_PRESENT_WITH_SOURCE_REFERENCE' } else { 'CATALOGUE_ONLY_REFERENCE' })) `
+            -Verdict ($(if ($wired) { 'SOURCE_WIRED_RUNTIME_UNKNOWN' } elseif ($LiveSource) { 'LIVESOURCE_PRESENT_RUNTIME_UNKNOWN' } elseif ($referenceCandidate) { 'SOURCE_REFERENCE_CANDIDATE_RUNTIME_UNKNOWN' } else { 'CATALOGUE_ONLY_REFERENCE' })) `
             -Notes @('No deployed/boot/player-runtime evidence was inspected in this lane.')))
     }
 }
@@ -177,10 +248,11 @@ Add-TopLevel 'addons/mission/xcsv' 'x-cessive/XCSV_ADDONS' 'XCSV-ADDONS-MISSION'
 
 $addonRoot = Join-Path $Root 'addons'
 if (Test-Path $addonRoot) {
-    Get-ChildItem -LiteralPath $addonRoot -Force | Where-Object { $_.Name -notin @('.git','.gitignore','mission') } | Sort-Object Name | ForEach-Object {
+    Get-ChildItem -LiteralPath $addonRoot -Force | Where-Object { Test-XcsvAddonsRuntimeSurface $_ } | Sort-Object Name | ForEach-Object {
         $rel = Get-Rel $Root $_.FullName
         $livePeer = Join-Path $Root ("catalogue/LiveSource/server-addons/" + $_.Name)
-        $wired = Test-Path $livePeer
+        $wiringEvidence = Get-ConcreteWiringEvidence -RelPath ("catalogue/LiveSource/server-addons/" + $_.Name) -Kind 'SERVER_ADDON'
+        $wired = ($wiringEvidence.Count -gt 0)
         $components.Add((New-Component `
             -Id "XCSV-ADDONS-SERVER-$(Get-Slug $_.Name)" `
             -Name $_.Name `
@@ -190,7 +262,7 @@ if (Test-Path $addonRoot) {
             -Path $rel `
             -Ownership 'XCSV' `
             -Authority 'SERVER' `
-            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS top-level source.", $(if ($wired) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }))) `
+            -Evidence (New-Evidence $true $wired $null $null $null $null @("Enumerated from XCSV_ADDONS runtime top-level source.", $(if (Test-Path $livePeer) { "Matching LiveSource server-addon path exists: catalogue/LiveSource/server-addons/$($_.Name)." } else { 'No matching LiveSource server-addon path found.' }), $wiringEvidence)) `
             -Action ($(if ($wired) { 'CONSOLIDATE_DUPLICATE' } else { 'UNKNOWN' })) `
             -Confidence 'MEDIUM' `
             -Staleness 'CURRENT' `
@@ -216,7 +288,7 @@ function Add-FileGroup([string] $BaseRel, [string] $Repo, [string] $Prefix, [str
             -Path ($rel.Replace('\','/')) `
             -Ownership $Ownership `
             -Authority $Authority `
-            -Evidence (New-Evidence $true $true $null $null $null $null @("Enumerated source file during issue #30 inventory expansion.")) `
+            -Evidence (New-Evidence $true $false $null $null $null $null @("Enumerated source file during issue #30 inventory expansion. Source presence does not prove SOURCE_WIRED.")) `
             -Action 'REFACTOR_ACTIVE' `
             -Confidence 'MEDIUM' `
             -Staleness 'CURRENT' `
@@ -234,7 +306,7 @@ if (Test-Path $OrchRoot) {
     Add-FileGroup (Join-Path $OrchRoot 'tests') 'x-cessive/XCSV_ORCH' 'XCSV-ORCH-TEST' 'ORCH / AI workforce' 'TOOL' 'XCSV' 'NONE'
 }
 
-rg --files (Join-Path $Root 'catalogue') (Join-Path $Root 'addons') | Where-Object { $_ -match '(?i)(\.sql$|extdb|database|db)' } | Sort-Object | ForEach-Object {
+rg --files (Join-Path $Root 'catalogue') (Join-Path $Root 'addons') | Where-Object { Test-DatabaseSurface $_ } | Sort-Object | ForEach-Object {
     $rel = Get-Rel $Root $_
     $components.Add((New-Component `
         -Id "XCSV-DB-$(Get-Slug ($rel -replace '/', '-'))" `
