@@ -1,107 +1,120 @@
 # Repositories
 
-Four repos, one system. The hub carries documentation and submodule pointers;
-everything else lives where it is built.
+Five repositories currently make up the XCSV GitHub project family. The XCSV hub carries shared documentation, project-level navigation/tooling and selected submodule pointers; implementation source remains in the owning member repository.
 
-| repo | visibility | submodule path in hub | what is in it |
+Machine-readable hub identity and relationships are also recorded in `registry/repository-identity.json`.
+
+| repo | visibility | submodule path in hub | owning role |
 |---|---|---|---|
-| [XCSV](https://github.com/x-cessive/XCSV) | public | — | hub, site, wiki |
-| [XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD) | private | `guard/` | Rust operations console |
-| [XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS) | private | `addons/` | our own addons and mission scripts |
-| [Exile](https://github.com/x-cessive/Exile) | public | `catalogue/` | third-party addons, scripts, tooling |
+| [XCSV](https://github.com/x-cessive/XCSV) | public | — | project hub, site/wiki source, shared project tooling and estate map |
+| [XCSV_GUARD](https://github.com/x-cessive/XCSV_GUARD) | private | `guard/` | Rust operations-console application source, tests, build/deploy tooling |
+| [XCSV_ADDONS](https://github.com/x-cessive/XCSV_ADDONS) | private | `addons/` | first-party XCSV addons and mission modules |
+| [XCSV_ORCH](https://github.com/x-cessive/XCSV_ORCH) | private | — | XCSV-specific Gauntlet/orchestration source, routing and isolation tooling |
+| [Exile](https://github.com/x-cessive/Exile) | public | `catalogue/` | third-party catalogue/reference estate plus separated live-source/packaging/tooling context |
 
-The hub is **public** because GitHub Pages on the free plan only publishes from
-public repositories. Nothing private became public as a result — the hub holds
-documentation and gitlinks, not code.
+The hub is **public** because it provides the public XCSV documentation/site surface. Private member-repository source must not be copied into the public hub merely to improve discoverability.
 
-## Working copies on disk
+## Identity, state and authority
 
-| path | repo |
+Repository membership answers **where to route**, not **what is authorized**.
+
+- `registry/repository-identity.json` describes XCSV hub identity and member relationships.
+- `registry/current-state.json` records per-source observation/freshness.
+- The XCSV AI contract defines reconciliation-before-mutation behavior.
+- Member repositories remain authoritative for their own implementation source.
+- GitHub source presence is never sufficient proof of live runtime/deployment state.
+
+See [Repository Identity & Freshness](Repository-Identity-and-Freshness).
+
+## Working copies on disk — historical/documented layout
+
+The paths below are retained because they are operationally useful history, but they were **not reverified during the GitHub-only XCSV-REPO-001 bootstrap**. Treat them as `NOT_REVERIFIED` until inspected on SOVRAN-1.
+
+| documented path | repository / role |
 |---|---|
-| `D:\XCSV` | hub |
-| `D:\XCSV_GUARD` | console |
-| `E:\XCSV_ADDONS` | our addons |
-| `E:\ExileRepo` | catalogue |
-| `E:\arma3server` | the live server (**not** a repo) |
-| `E:\ArmaTools\mission\Exile.Tanoa` | live mission source (**not** a repo) |
-| `C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX` | Obsidian vault |
+| `D:\XCSV` | XCSV hub |
+| `D:\XCSV_GUARD` | GUARD console |
+| `D:\XCSV_ORCH` | XCSV orchestration source (documented canonical source in its own repo README) |
+| `E:\XCSV_ADDONS` | XCSV addons |
+| `E:\ExileRepo` | Exile catalogue/source checkout |
+| `E:\arma3server` | live server deployment target (**not** a repo) |
+| `E:\ArmaTools\mission\Exile.Tanoa` | documented mission/deployment working path (**not** a repo) |
+| `C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX` | documented desktop roadmap/vault location |
 
-Note the two that are not repositories. `E:\arma3server` and the live mission
-source are deployment targets. Content is authored in `E:\XCSV_ADDONS`, then
-copied and packed into them.
+Do not use this table to infer current filesystem state. Reverify before mutation, deployment or recovery work.
 
 ## XCSV_GUARD layout
+
+The owning repository is `x-cessive/XCSV_GUARD`. The following paths describe the documented GUARD source architecture and should be rechecked against the current GUARD HEAD when exact implementation detail matters.
 
 | path | purpose |
 |---|---|
 | `src/app.rs` | UI and application state |
-| `src/theme.rs` | palette, type scale, composite widgets — visual changes go here |
+| `src/theme.rs` | palette, type scale, composite widgets |
 | `src/pbo.rs` | PBO reader and integrity checker |
-| `src/rcon.rs` | BattlEye RCon client, protocol up from UDP |
-| `src/server.rs` | process supervision, RPT scanning, log-growth guard, crash autopsy |
-| `src/stack.rs` | whole-stack start / stop orchestration |
-| `src/ai.rs` | local model client — classification only, no tools |
-| `src/metrics.rs` | performance history from infiSTAR `meta_data.log` |
-| `src/secrets.rs` | DPAPI protection for credentials at rest |
-| `tools/deploy.ps1` | build, test, archive the outgoing binary, deploy, update taskbar pin |
-| `tools\taskbar-pin.ps1` | remove stale GUARD taskbar shortcuts and point the live shortcut at the deployed exe |
-| `tools\capture.ps1` | screenshot subsystem for named tabs and responsive viewports |
-| `tools/doctor.ps1` | 22 executable assertions, `-Json`, exit codes |
+| `src/rcon.rs` | BattlEye RCon client |
+| `src/server.rs` | process supervision and server/log handling |
+| `src/stack.rs` | stack orchestration |
+| `src/ai.rs` | local-model client boundary |
+| `src/metrics.rs` | performance history/metrics handling |
+| `src/secrets.rs` | credential-at-rest handling |
+| `tools/deploy.ps1` | GUARD deployment workflow |
+| `tools/capture.ps1` | publishable screenshot/media capture |
+| `tools/doctor.ps1` | executable diagnostic assertions |
 
-Deploy **through the script**, never by copying the exe. It refuses to deploy on
-failing tests, archives the binary it replaces, prunes to the newest N,
-regenerates SHA256/current-build manifests, updates the taskbar shortcut to the
-single live exe at `D:\XCSV_GUARD\live\XCSV_GUARD.exe`, and launches that exe.
-The live location always holds exactly one binary; taskbar pins must never point
-at `target\debug` or `target\release`.
+Deploy through the owning repository's established tooling; do not infer current deploy semantics from this hub summary when the GUARD repo has newer evidence.
 
-Any GUARD behavior or UI change must also refresh the GitHub-facing screenshots
-and GIFs across the XCSV repos before the work is called complete. Use
-`D:\XCSV_GUARD\tools\capture.ps1` for publishable tab captures and animated
-assets, then update the hub/site outputs and relevant repo READMEs/wiki
-references. For live debugging captures, use
-`D:\XCSV\tools\ai-desktop-capture.ps1 -Layout -Shot` so Orca stays pinned left
-and XCSV GUARD stays pinned right; `-WideGuardForShot` may temporarily enlarge
-GUARD only when the tool restores the right-pinned layout afterward.
+Any GUARD behavior or UI change must also refresh GitHub-facing screenshots/GIFs as required by the current XCSV agent contract.
 
 ## XCSV_ADDONS layout
 
+The owning repository is `x-cessive/XCSV_ADDONS`.
+
+Historically documented core surfaces include:
+
 | path | side | notes |
 |---|---|---|
-| `xcsv_chatter/` | server | packs to `@ExileServer\addons\xcsv_chatter.pbo` |
-| `mission/xcsv/` | client | copied into `Exile.Tanoa\xcsv\` |
+| `xcsv_chatter/` | server | first-party XCSV server-side module source |
+| `mission/` | client/mission | first-party XCSV mission-side source |
 
-Server addons live in `@ExileServer`, which is a *server mod* — clients never
-receive it. Anything that draws per-player UI must ship in the mission.
+Exact deployment mirror/canonical-source relationships are being reconciled under the active XCSV refactor programme; do not create a second hand-maintained copy merely because a deployment mirror exists.
 
-## House rules for anything added to XCSV_ADDONS
+## XCSV_ORCH boundary
 
-- **Static text only** for anything the world says. If a language model helps
-  write lines, that happens offline, a human reads the output, and survivors are
-  pasted in as literals. Players have no path to influence it because there is
-  nothing running to influence.
-- **Create no objects** unless there is no alternative. BattlEye fights
-  `createVehicle` / `deleteVehicle` / `setPos`, and auto-whitelisting those
-  filters is how a cheat vector gets opened.
-- **Never `while {true} do {sleep n}` on the server.** Use
-  `ExileServer_system_thread_addTask`. Client-side loops are fine — they cost the
-  player's frame, not the server's.
-- **Verify entry paths after packing.** A checksum verify passes on a PBO whose
-  internal paths are corrupt.
+`x-cessive/XCSV_ORCH` owns the XCSV-specific AI-workforce orchestration implementation: routing, authority envelopes, isolation enforcement, worker registry, tests and deployment tooling.
+
+The XCSV hub documents and routes to ORCH but does not become the orchestration source authority. XCSV_ORCH also remains distinct from the SOVRAN platform `the-stack`; no merge or authority transfer is implied by similar capability.
+
+## Exile boundary
+
+`x-cessive/Exile` contains a mixed estate: third-party catalogue/reference material and first-party packaging/live-source/tooling context.
+
+Catalogue presence is not evidence that a component is currently deployed. Preserve upstream attribution/licensing and distinguish historical install evidence from current source wiring and runtime verification.
 
 ## Keeping the hub honest
 
-Submodule pointers go stale **silently**. After pushing any member repo:
+The three configured hub submodules are currently:
 
-```bash
-cd D:\XCSV
-git submodule update --remote --merge
-git commit -am "bump submodules"
-git push
-```
+- `guard/` -> XCSV_GUARD `master`
+- `addons/` -> XCSV_ADDONS `master`
+- `catalogue/` -> Exile `master`
 
-Otherwise the hub advertises an old commit and nobody notices.
+`XCSV_ORCH` is a project member but is not currently configured as a hub submodule.
+
+Submodule pointers can go stale silently. Established XCSV reconciliation tooling should verify/publish pointer changes only after the member repository's source state is understood; do not blindly update a dirty local hub.
+
+## House rules that remain relevant
+
+- Preserve third-party provenance and licensing.
+- Prefer bounded module initialization over duplicate global/event/scheduler hooks.
+- Verify packed entry paths, not just artifact checksums.
+- Do not infer LIVE from README/catalogue presence.
+- Do not collapse project-hub routing into child-repository write authority.
+- Reconcile local/source/runtime truth before high-risk changes.
 
 ## Related
 
-- [Architecture](Architecture) · [Runbook](Runbook)
+- [Repository Identity & Freshness](Repository-Identity-and-Freshness)
+- [Architecture](Architecture)
+- [System Components](System-Components)
+- [Runbook](Runbook)
