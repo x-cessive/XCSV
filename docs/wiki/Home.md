@@ -33,7 +33,7 @@ The hub routes to member repositories. It does not replace their source authorit
 - Repository identity and routing are recorded in `registry/repository-identity.json`.
 - Source observations are recorded in `registry/current-state.json`.
 - The source inventory from issue #30 is accepted as `PARTIAL_INVENTORY / PARTIAL_SOURCE_VERIFIED`.
-- The component registry currently contains 330 components, including 35 with concrete `SOURCE_WIRED` evidence.
+- Component counts and concrete source-wiring evidence belong to [System Components](System-Components.html) and `registry/components.json`, not this front door.
 - Canonical wiki source is `wiki/`; generated Pages projection is `docs/wiki/`.
 
 ## What Is Not Verified By This Wiki

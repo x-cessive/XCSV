@@ -90,6 +90,32 @@ Mission-side UI, XM8 apps, client bootstrap, and client-visible resources belong
 | BattlEye filters | source exceptions are not proof of live enforcement or allow-list state |
 | XCSV_ADDONS <-> LiveSource mirrors | mirrored copies require custody and drift evidence, not two hand-maintained truths |
 
+## Local Model Trust Boundary
+
+XCSV design treats local model output as untrusted data. A model may help classify logs or produce explanations, but it must not become execution authority.
+
+Durable invariants:
+
+- model output is text to review, not a decision;
+- model output must not directly start/stop services, mutate files, issue RCon actions, change the database, or deploy artifacts;
+- players must not be able to reach or influence the local-model path;
+- request handling must avoid unsafe command-line interpolation, such as passing prompt text through shell arguments;
+- system operation must not depend on model availability.
+
+These are architectural/security constraints, not evidence that a specific local model server is currently running.
+
+## Override Collision Rule
+
+`CfgExileCustomCode` is the sanctioned Exile override seam. Exile functions are repointed by configuration; the upstream PBOs should remain unmodified unless a separately authorized vendor/source action says otherwise.
+
+Exactly one override path wins for each Exile function. When multiple systems need the same Exile function, their behavior must be deliberately reconciled into one active replacement. Duplicate override ownership is a material integration risk because the last registration can silently hide another feature.
+
+The historical Scavenge collision is preserved in [Lessons](Lessons). The current actionable rule is: never install or refactor an addon that touches `CfgExileCustomCode` without checking the existing override registry/source evidence first.
+
+## Historical Runtime Notes
+
+Historical runtime facts are useful failure evidence, but they are not current Architecture truth. Preserved examples include the x86/extDB2 failure class, historical BattlEye enforcement staging, and infiSTAR cloud-reporting failures. Treat those as dated lessons and reverify live runtime/security state before acting.
+
 ## Threading Constraint
 
 Arma server simulation is effectively single-threaded for mission SQF scheduling. More CPU cores do not make every addon cheap. Headless clients can move selected AI/mission load to a separate process, but runtime benefit must be measured, not inferred.

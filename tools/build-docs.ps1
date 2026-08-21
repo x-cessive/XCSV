@@ -41,12 +41,13 @@ $pages = [ordered]@{
     'XM8-Apps'                         = @{ Order = 10; Title = 'XM8 Apps'; Blurb = 'How XM8 apps register, what is shipped, what is next.' }
     'Custom-Map-Editing'               = @{ Order = 11; Title = 'Custom Map Editing'; Blurb = 'Map-authoring custody, Eden/static-object pipeline and deployment evidence boundaries.' }
     'Drone-and-Counter-UAS'            = @{ Order = 12; Title = 'Drone & Counter-UAS'; Blurb = 'Drone system and counterplay source/evidence boundaries.' }
-    'Roadmap'                          = @{ Order = 13; Title = 'Roadmap'; Blurb = 'Done, in flight, next, and deliberately parked.' }
-    'XCSV-GUARD-Development-Plan'      = @{ Order = 14; Title = 'GUARD Development'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
-    'Memory'                           = @{ Order = 15; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
-    'Memory-Index'                     = @{ Order = 16; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
-    'Lessons'                          = @{ Order = 17; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
-    'System-Components'                = @{ Order = 18; Title = 'System Components'; Blurb = 'Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.' }
+    'Roadmap'                          = @{ Order = 13; Title = 'Roadmap'; Blurb = 'Durable planning direction and issue routing, not execution/runtime proof.' }
+    'Roadmap-History'                  = @{ Order = 14; Title = 'Roadmap History'; Blurb = 'Historical roadmap/status evidence retained with currentness warnings.' }
+    'XCSV-GUARD-Development-Plan'      = @{ Order = 15; Title = 'GUARD Development'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
+    'Memory'                           = @{ Order = 16; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
+    'Memory-Index'                     = @{ Order = 17; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
+    'Lessons'                          = @{ Order = 18; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'System-Components'                = @{ Order = 19; Title = 'System Components'; Blurb = 'Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }

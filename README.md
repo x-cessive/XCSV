@@ -4,8 +4,8 @@
 
 [![Project hub](https://img.shields.io/badge/repository-XCSV%20hub-2f6f9f)](https://github.com/x-cessive/XCSV)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-2ea44f)](https://x-cessive.github.io/XCSV/)
-[![Inventory](https://img.shields.io/badge/components-330-6f42c1)](registry/components.json)
-[![Source wired](https://img.shields.io/badge/source--wired-35-8957e5)](wiki/System-Components.md)
+[![Inventory](https://img.shields.io/badge/inventory-evidence--backed-6f42c1)](wiki/System-Components.md)
+[![Freshness](https://img.shields.io/badge/freshness-per--source-8957e5)](registry/current-state.json)
 
 ## AI / AGENT START HERE
 
@@ -37,14 +37,7 @@ Repository identity is machine-readable in [registry/repository-identity.json](r
 
 Stored observations are not standing currentness. [registry/current-state.json](registry/current-state.json) records what was observed, when, and with what evidence. Consumers derive `CURRENT`, `STALE`, `UNKNOWN`, or `NOT_REVERIFIED` by comparing recorded identity to the live source at read time.
 
-Current issue #30 inventory state is accepted as:
-
-- `PARTIAL_INVENTORY / PARTIAL_SOURCE_VERIFIED`
-- 330 components
-- 35 `SOURCE_WIRED`
-- runtime/deployment/live DB/live BattlEye/RPT/player behavior: `NOT_REVERIFIED` unless separately inspected
-
-For the human-facing inventory, see [System Components](wiki/System-Components.md).
+The source inventory is accepted as `PARTIAL_INVENTORY / PARTIAL_SOURCE_VERIFIED`. Read current component counts and source-wiring evidence from [System Components](wiki/System-Components.md) and [registry/components.json](registry/components.json), not from front-door prose. Runtime/deployment/live DB/live BattlEye/RPT/player behavior remains `NOT_REVERIFIED` unless separately inspected.
 
 ## Architecture At A Glance
 
