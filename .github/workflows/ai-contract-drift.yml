@@ -233,7 +233,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
-          submodules: false
+          fetch-depth: 0
+          submodules: recursive
 
       - name: Repository guardrail regression suite
         shell: powershell
@@ -244,6 +245,32 @@ jobs:
       - name: CI-safe repository guardrail audit
         shell: powershell
         run: |
-          .\tools\xcsv-repository-guardrails.ps1 -Mode CI_SAFE_SOURCE_CHECK -Json | Out-File -Encoding utf8 repository-guardrails-report.json
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $reportJson = .\tools\xcsv-repository-guardrails.ps1 -Mode CI_SAFE_SOURCE_CHECK -RequireMemberSources -FailOnFindings -Json
+          $exitCode = $LASTEXITCODE
+          $reportJson | Out-File -Encoding utf8 repository-guardrails-report.json
           Get-Content repository-guardrails-report.json
+          if ($exitCode -ne 0) { exit $exitCode }
+
+          $report = Get-Content repository-guardrails-report.json -Raw | ConvertFrom-Json
+          foreach ($name in @('addons', 'catalogue', 'guard')) {
+            $obs = $report.observations.$name
+            if ($obs.result -ne 'VERIFIED_AT_OBSERVATION') {
+              throw "$name source was not verified: $($obs.detail)"
+            }
+            if ($obs.sha -ne $obs.expected_gitlink_sha) {
+              throw "$name source HEAD $($obs.sha) does not match gitlink $($obs.expected_gitlink_sha)"
+            }
+            if ($obs.clean -ne $true) {
+              throw "$name source is not clean"
+            }
+          }
+
+          if ($report.sourceReady -ne $true) {
+            throw 'sourceReady is false; member-dependent audits did not have authoritative source.'
+          }
+
+          foreach ($check in @('registry-completeness', 'cfgexilecustomcode', 'network-messages', 'xm8-ui', 'init-event-scheduler', 'trader-economy', 'mirror-drift')) {
+            if ($report.member_dependent_audits_executed -notcontains $check) {
+              throw "Member-dependent audit did not execute: $check"
+            }
+          }

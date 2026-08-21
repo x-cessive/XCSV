@@ -5,7 +5,8 @@ param(
     [ValidateSet('CI_SAFE_SOURCE_CHECK', 'LIVE_DEPLOY_VERIFY')]
     [string] $Mode = 'CI_SAFE_SOURCE_CHECK',
     [switch] $Json,
-    [switch] $FailOnFindings
+    [switch] $FailOnFindings,
+    [switch] $RequireMemberSources
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,6 +42,11 @@ function New-XCSVGuardrailFinding(
         detail = $Detail
         evidence = $Evidence
     }
+}
+
+function Remove-SqfComments([string] $Text) {
+    $withoutBlocks = [regex]::Replace($Text, '(?s)/\*.*?\*/', '')
+    return [regex]::Replace($withoutBlocks, '(?m)//.*$', '')
 }
 
 function Get-GitSourceObservation(
@@ -243,7 +249,7 @@ function Test-CfgExileCustomCode([string] $MissionRoot) {
     if (!(Test-Path -LiteralPath $cfg)) {
         return @(New-XCSVGuardrailFinding 'cfgexilecustomcode' 'UNKNOWN' 'MISSION_CONFIG_NOT_REVERIFIED' 'Mission config.cpp unavailable.' $cfg '')
     }
-    $text = Get-Content -LiteralPath $cfg -Raw
+    $text = Remove-SqfComments (Get-Content -LiteralPath $cfg -Raw)
     $entries = @()
     foreach ($m in [regex]::Matches($text, '(?m)^\s*(Exile(?:Client|Server)_[A-Za-z0-9_]+)\s*=\s*"([^"]+)"\s*;')) {
         $entries += [pscustomobject]@{ function = $m.Groups[1].Value; replacement = $m.Groups[2].Value }
@@ -265,7 +271,7 @@ function Test-CfgExileCustomCode([string] $MissionRoot) {
     foreach ($entry in $entries) {
         $registered[($entry.replacement -replace '\\','/').ToLowerInvariant()] = $true
     }
-    foreach ($f in Get-ChildItem -LiteralPath $MissionRoot -Recurse -File -Include ExileClient_*.sqf,ExileServer_*.sqf -ErrorAction SilentlyContinue) {
+    foreach ($f in Get-ChildItem -LiteralPath $MissionRoot -Recurse -File -Filter *.sqf -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^Exile(?:Client|Server)_.+\.sqf$' }) {
         $rel = (Get-RelPath -Base $MissionRoot -Path $f.FullName).ToLowerInvariant()
         if ($rel -match '^(?:overrides|customcode|xcsv)/' -and !$registered.ContainsKey($rel)) {
             $findings += New-XCSVGuardrailFinding 'cfgexilecustomcode' 'WARN' 'UNREGISTERED_OVERRIDE_CANDIDATE' 'Exile override-shaped source file is not registered in CfgExileCustomCode.' $rel ''
@@ -489,20 +495,20 @@ function Test-ColdRehydrationResponse([string] $ResponseText) {
     }
     $findings = @()
     if ($ResponseText -match 'SOVRAN Command Deck|the-stack' -and $ResponseText -notmatch 'x-cessive/XCSV') {
-        $findings += New-XCSVGuardrailFinding 'cold-rehydration' 'FAIL' 'WRONG_REPOSITORY_CONTEXT' 'Cold worker response appears anchored to unrelated Command Deck/the-stack context.' '' ''
+        $findings += New-XCSVGuardrailFinding 'cold-rehydration-transcript-validator' 'FAIL' 'WRONG_REPOSITORY_CONTEXT' 'Cold worker response appears anchored to unrelated Command Deck/the-stack context.' '' ''
     }
     foreach ($key in $requirements.Keys) {
         if ($ResponseText -notmatch $requirements[$key]) {
-            $findings += New-XCSVGuardrailFinding 'cold-rehydration' 'FAIL' 'COLD_REHYDRATION_REQUIREMENT_MISSING' "Fresh worker response did not demonstrate $key." '' $requirements[$key]
+            $findings += New-XCSVGuardrailFinding 'cold-rehydration-transcript-validator' 'FAIL' 'COLD_REHYDRATION_REQUIREMENT_MISSING' "Fresh worker response did not demonstrate $key." '' $requirements[$key]
         }
     }
     if ($findings.Count -eq 0) {
-        $findings += New-XCSVGuardrailFinding 'cold-rehydration' 'PASS' 'COLD_REHYDRATION_RESPONSE_ACCEPTED' 'Response demonstrates required XCSV bootstrap discoveries.' '' ''
+        $findings += New-XCSVGuardrailFinding 'cold-rehydration-transcript-validator' 'PASS' 'COLD_REHYDRATION_RESPONSE_ACCEPTED' 'Response demonstrates required XCSV bootstrap discoveries.' '' ''
     }
     return $findings
 }
 
-function Invoke-XCSVRepositoryGuardrails([string] $Root, [string] $OrchRoot = '', [string] $Mode = 'CI_SAFE_SOURCE_CHECK', [string] $ColdResponsePath = '') {
+function Invoke-XCSVRepositoryGuardrails([string] $Root, [string] $OrchRoot = '', [string] $Mode = 'CI_SAFE_SOURCE_CHECK', [string] $ColdResponsePath = '', [bool] $RequireMemberSources = $false) {
     $rootObservation = Get-GitSourceObservation -Path $Root -ExpectedRepo 'x-cessive/XCSV' -Required $true
     $observations = [ordered]@{ xcsv = $rootObservation }
 
@@ -537,7 +543,8 @@ function Invoke-XCSVRepositoryGuardrails([string] $Root, [string] $OrchRoot = ''
     $sourceReady = ($rootObservation.result -eq 'VERIFIED_AT_OBSERVATION')
     foreach ($key in @('addons', 'catalogue', 'guard')) {
         if ($observations[$key].result -ne 'VERIFIED_AT_OBSERVATION') {
-            $findings += New-XCSVGuardrailFinding 'source-observation' 'UNKNOWN' 'MEMBER_SOURCE_NOT_VERIFIED' "Member source $key was not verified; member enumeration is not authoritative." $key $observations[$key].detail
+            $severity = $(if ($RequireMemberSources) { 'FAIL' } else { 'UNKNOWN' })
+            $findings += New-XCSVGuardrailFinding 'source-observation' $severity 'MEMBER_SOURCE_NOT_VERIFIED' "Member source $key was not verified; member enumeration is not authoritative." $key $observations[$key].detail
             $sourceReady = $false
         }
     }
@@ -564,13 +571,23 @@ function Invoke-XCSVRepositoryGuardrails([string] $Root, [string] $OrchRoot = ''
 
     if (![string]::IsNullOrWhiteSpace($ColdResponsePath) -and (Test-Path -LiteralPath $ColdResponsePath)) {
         $findings += Test-ColdRehydrationResponse -ResponseText (Get-Content -LiteralPath $ColdResponsePath -Raw)
+        $findings += New-XCSVGuardrailFinding 'cold-rehydration-launcher' 'UNKNOWN' 'COLD_REHYDRATION_LAUNCHER_BLOCKED' 'A transcript was validated, but this run did not prove a repository-anchored fresh-worker launch.' '' 'TRANSCRIPT_VALIDATOR is separate from FRESH_WORKER_LAUNCHER.'
     } else {
-        $findings += New-XCSVGuardrailFinding 'cold-rehydration' 'UNKNOWN' 'FRESH_WORKER_NOT_RUN' 'No fresh-worker transcript was supplied. Harness did not manufacture PASS.' '' 'effective instruction must be exactly: Read the repo.'
+        $findings += New-XCSVGuardrailFinding 'cold-rehydration-transcript-validator' 'UNKNOWN' 'TRANSCRIPT_NOT_SUPPLIED' 'No fresh-worker transcript was supplied; transcript validator was not exercised.' '' ''
+        $findings += New-XCSVGuardrailFinding 'cold-rehydration-launcher' 'UNKNOWN' 'COLD_REHYDRATION_LAUNCHER_BLOCKED' 'No admitted deterministic fresh-worker launcher is available in this CI-safe path. Harness did not manufacture PASS.' '' 'effective instruction must be exactly: Read the repo.'
     }
 
     [pscustomobject][ordered]@{
         tool = 'xcsv-repository-guardrails'
         mode = $Mode
+        sourceReady = $sourceReady
+        member_sources_required = $RequireMemberSources
+        member_dependent_audits_executed = @($findings | Where-Object { @('registry-completeness', 'cfgexilecustomcode', 'network-messages', 'xm8-ui', 'init-event-scheduler', 'trader-economy', 'mirror-drift') -contains $_.check } | Select-Object -ExpandProperty check -Unique)
+        cold_rehydration = [pscustomobject][ordered]@{
+            transcript_validator = $(if (![string]::IsNullOrWhiteSpace($ColdResponsePath) -and (Test-Path -LiteralPath $ColdResponsePath)) { 'VERIFIED_BY_SUPPLIED_TRANSCRIPT' } else { 'NOT_REVERIFIED' })
+            fresh_worker_launcher = 'UNKNOWN_BLOCKED'
+            end_to_end_pass = $false
+        }
         observations = $observations
         findings = @($findings)
         summary = [pscustomobject][ordered]@{
@@ -583,7 +600,7 @@ function Invoke-XCSVRepositoryGuardrails([string] $Root, [string] $OrchRoot = ''
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
-    $report = Invoke-XCSVRepositoryGuardrails -Root $Root -OrchRoot $OrchRoot -Mode $Mode -ColdResponsePath $ColdResponsePath
+    $report = Invoke-XCSVRepositoryGuardrails -Root $Root -OrchRoot $OrchRoot -Mode $Mode -ColdResponsePath $ColdResponsePath -RequireMemberSources:$RequireMemberSources
     if ($Json) {
         $report | ConvertTo-Json -Depth 12
     } else {

@@ -57,6 +57,15 @@ function New-File([string] $Path, [string] $Text = '') {
     Set-Content -LiteralPath $Path -Value $Text -Encoding UTF8
 }
 
+function Invoke-GuardrailProcess([string[]] $Args) {
+    $scriptPath = (Resolve-Path (Join-Path $PSScriptRoot '..\xcsv-repository-guardrails.ps1')).Path
+    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath @Args 2>&1
+    [pscustomobject]@{
+        exit_code = $LASTEXITCODE
+        output = @($output)
+    }
+}
+
 try {
     $root = New-TestRoot 'completeness'
     New-Item -ItemType Directory -Path (Join-Path $root 'catalogue/Addons/FooAddon') -Force | Out-Null
@@ -161,6 +170,67 @@ registry/current-state.json preserves freshness and UNKNOWN / NOT_REVERIFIED. Sy
 Roadmap is planning intent, not runtime evidence. Roadmap-History is historical. Completion requires DOC_IMPACT and COMPLETION_IMPACT. Stop if identity is wrong.
 '@
 Assert-True (@($goodCold | Where-Object severity -eq 'FAIL').Count -eq 0) 'cold harness accepts response that demonstrates XCSV bootstrap discoveries'
+
+try {
+    $badTranscript = Join-Path ([IO.Path]::GetTempPath()) ("xcsv-cold-bad-" + [guid]::NewGuid().ToString('N') + ".txt")
+    Set-Content -LiteralPath $badTranscript -Value 'SOVRAN Command Deck should read the-stack CONTROL.md.' -Encoding UTF8
+    $process = Invoke-GuardrailProcess @('-Root', (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path, '-ColdResponsePath', $badTranscript, '-FailOnFindings')
+    Assert-True ($process.exit_code -ne 0) 'process enforcement exits non-zero for a deterministic FAIL finding'
+}
+finally {
+    if ($badTranscript -and (Test-Path -LiteralPath $badTranscript)) { Remove-Item -LiteralPath $badTranscript -Force }
+}
+
+$process = Invoke-GuardrailProcess @('-Root', (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path, '-FailOnFindings')
+Assert-True ($process.exit_code -eq 0) 'process enforcement remains successful for WARN and UNKNOWN-only current findings'
+Assert-True (($process.output -join "`n") -match 'LIVE_DEPLOY_NOT_REVERIFIED') 'UNKNOWN live deployment evidence is reported but non-fatal in CI_SAFE_SOURCE_CHECK'
+
+try {
+    $root = New-TestRoot 'missing-member-process'
+    & git -C $root init | Out-Null
+    & git -C $root remote add origin https://github.com/x-cessive/XCSV.git
+    New-File (Join-Path $root 'registry/components.json') '{"registry_version":"fixture","classification":"PARTIAL_SOURCE_VERIFIED","components":[]}'
+    New-File (Join-Path $root 'README.md') 'fixture'
+    & git -C $root add registry/components.json README.md | Out-Null
+    & git -C $root -c user.name=test -c user.email=test@example.com commit -m init | Out-Null
+    $process = Invoke-GuardrailProcess @('-Root', $root, '-RequireMemberSources', '-FailOnFindings')
+    Assert-True ($process.exit_code -ne 0) 'missing/unverified member source fails enforcement when CI requires members'
+    Assert-True (($process.output -join "`n") -match 'MEMBER_SOURCE_NOT_VERIFIED') 'missing member source does not produce a false healthy audit'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
+
+$report = Invoke-XCSVRepositoryGuardrails -Root (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path -RequireMemberSources $true
+$requiredAudits = @('registry-completeness', 'cfgexilecustomcode', 'network-messages', 'xm8-ui', 'init-event-scheduler', 'trader-economy', 'mirror-drift')
+foreach ($audit in $requiredAudits) {
+    Assert-True (@($report.member_dependent_audits_executed | Where-Object { $_ -eq $audit }).Count -eq 1) "verified exact gitlink members execute $audit"
+}
+
+try {
+    $root = New-TestRoot 'wrong-member'
+    & git -C $root init | Out-Null
+    & git -C $root remote add origin https://github.com/x-cessive/XCSV.git
+    New-File (Join-Path $root 'registry/components.json') '{"registry_version":"fixture","classification":"PARTIAL_SOURCE_VERIFIED","components":[]}'
+    New-File (Join-Path $root 'README.md') 'fixture'
+    & git -C $root add registry/components.json README.md | Out-Null
+    & git -C $root -c user.name=test -c user.email=test@example.com commit -m init | Out-Null
+    foreach ($member in @('addons', 'catalogue', 'guard')) {
+        $memberRoot = Join-Path $root $member
+        New-Item -ItemType Directory -Path $memberRoot | Out-Null
+        & git -C $memberRoot init | Out-Null
+        & git -C $memberRoot remote add origin https://github.com/wrong/example.git
+        New-File (Join-Path $memberRoot 'README.md') 'wrong origin fixture'
+        & git -C $memberRoot add README.md | Out-Null
+        & git -C $memberRoot -c user.name=test -c user.email=test@example.com commit -m init | Out-Null
+    }
+    $report = Invoke-XCSVRepositoryGuardrails -Root $root -RequireMemberSources $true
+    Assert-True (@($report.findings | Where-Object { $_.code -eq 'MEMBER_SOURCE_NOT_VERIFIED' -and $_.severity -eq 'FAIL' }).Count -eq 3) 'wrong member origins fail closed under required-member enforcement'
+    Assert-True ($report.sourceReady -eq $false) 'wrong member origins block authoritative member-dependent audit execution'
+}
+finally {
+    if ($root -and (Test-Path -LiteralPath $root)) { Remove-Item -LiteralPath $root -Recurse -Force }
+}
 
 if ($script:Failures.Count -gt 0) {
     Write-Output "repository-guardrails.tests: FAIL"
