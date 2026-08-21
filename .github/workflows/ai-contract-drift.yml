@@ -21,6 +21,8 @@ on:
       - 'tools/sync-all.ps1'
       - 'tools/sync-policy.ps1'
       - 'tools/check-text-safety.ps1'
+      - 'tools/xcsv-repository-guardrails.ps1'
+      - 'registry/components.json'
       - 'tools/tests/**'
       - '.github/workflows/sync.yml'
       - 'docs/wiki/AI-Start-Here.md'
@@ -46,6 +48,8 @@ on:
       - 'tools/sync-all.ps1'
       - 'tools/sync-policy.ps1'
       - 'tools/check-text-safety.ps1'
+      - 'tools/xcsv-repository-guardrails.ps1'
+      - 'registry/components.json'
       - 'tools/tests/**'
       - '.github/workflows/sync.yml'
       - 'docs/wiki/AI-Start-Here.md'
@@ -221,3 +225,25 @@ jobs:
         run: |
           .\tools\check-text-safety.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  repository-guardrails:
+    name: Repository fabric guardrails
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          submodules: false
+
+      - name: Repository guardrail regression suite
+        shell: powershell
+        run: |
+          .\tools\tests\repository-guardrails.tests.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: CI-safe repository guardrail audit
+        shell: powershell
+        run: |
+          .\tools\xcsv-repository-guardrails.ps1 -Mode CI_SAFE_SOURCE_CHECK -Json | Out-File -Encoding utf8 repository-guardrails-report.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-Content repository-guardrails-report.json
