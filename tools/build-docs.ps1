@@ -35,15 +35,16 @@ $pages = [ordered]@{
     'AI-Continuity'                    = @{ Order = 4;  Title = 'AI Continuity'; Blurb = 'Isolated Hermes/OpenClaw baton and failover workflow for XCSV.' }
     'Home'                             = @{ Order = 5;  Title = 'Overview'; Blurb = 'What XCSV EXILE is, and where to start.' }
     'Architecture'                     = @{ Order = 6;  Title = 'Architecture'; Blurb = 'Processes, threading, content layers, and the override seam.' }
-    'Runbook'                          = @{ Order = 7;  Title = 'Runbook'; Blurb = 'The server is broken and you need it back.' }
-    'Repositories'                     = @{ Order = 8;  Title = 'Repositories'; Blurb = 'Four repos, one system: what lives where, and why.' }
-    'XM8-Apps'                         = @{ Order = 9;  Title = 'XM8 Apps'; Blurb = 'How XM8 apps register, what is shipped, what is next.' }
-    'Roadmap'                          = @{ Order = 10; Title = 'Roadmap'; Blurb = 'Done, in flight, next, and deliberately parked.' }
-    'XCSV-GUARD-Development-Plan'      = @{ Order = 11; Title = 'GUARD Development Plan'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
-    'Memory'                           = @{ Order = 12; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
-    'Memory-Index'                     = @{ Order = 13; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
-    'Lessons'                          = @{ Order = 14; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
-    'System-Components'                = @{ Order = 15; Title = 'System Components'; Blurb = 'Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.' }
+    'Repository-Identity-and-Freshness'= @{ Order = 7;  Title = 'Repository Identity & Freshness'; Blurb = 'Machine-readable repository identity, per-source freshness and cold-rehydration semantics.' }
+    'Runbook'                          = @{ Order = 8;  Title = 'Runbook'; Blurb = 'The server is broken and you need it back.' }
+    'Repositories'                     = @{ Order = 9;  Title = 'Repositories'; Blurb = 'Five repositories, one XCSV project: what lives where, and why.' }
+    'XM8-Apps'                         = @{ Order = 10; Title = 'XM8 Apps'; Blurb = 'How XM8 apps register, what is shipped, what is next.' }
+    'Roadmap'                          = @{ Order = 11; Title = 'Roadmap'; Blurb = 'Done, in flight, next, and deliberately parked.' }
+    'XCSV-GUARD-Development-Plan'      = @{ Order = 12; Title = 'GUARD Development Plan'; Blurb = 'Gauntlet, reliability, UX, evidence, deployment and player-system programme.' }
+    'Memory'                           = @{ Order = 13; Title = 'Memory'; Blurb = 'Where project truth is recorded, and the RAG plan.' }
+    'Memory-Index'                     = @{ Order = 14; Title = 'Memory Index'; Blurb = 'Heading-level map of vault and wiki memory.' }
+    'Lessons'                          = @{ Order = 15; Title = 'Lessons'; Blurb = 'Mistakes actually made here, and the rule each one produced.' }
+    'System-Components'                = @{ Order = 16; Title = 'System Components'; Blurb = 'Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.' }
 }
 
 if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }
