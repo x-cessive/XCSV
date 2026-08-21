@@ -18,6 +18,12 @@ For execution state, read the linked GitHub issues and pull requests. For compon
 
 Historical roadmap/status material was moved to [Roadmap History](Roadmap-History.html).
 
+## AI / AGENT ROADMAP GATE
+
+Before acting on Roadmap material, read the root `AI-START-HERE.md` and reconcile the target against actual source, registry, issue, pull request and runtime evidence. This Roadmap records planning intent; it is not implementation proof, deployment proof or player-runtime proof.
+
+Work only on the remaining verified delta. Treat `UNKNOWN` and `NOT_REVERIFIED` as valid outcomes when evidence is missing, and do not build duplicate functionality where an owning repository, issue or component already exists.
+
 ## Authority Boundary
 
 Roadmap intent does not prove:
