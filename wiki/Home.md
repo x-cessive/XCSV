@@ -4,6 +4,8 @@ XCSV is the project hub for a Tanoa-based Arma 3 Exile server estate. It provide
 
 > **AI / AGENT START HERE:** begin at the root `AI-START-HERE.md`, then read [AI Start Here](AI-Start-Here), [Repository Identity & Freshness](Repository-Identity-and-Freshness), and [AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync) before interpreting roadmap state or creating commits.
 
+> **documentation state: `UNKNOWN`:** this page records the documentation reconciliation state required by the AI contract. Treat GitHub Wiki and Pages publication as unverified unless a later receipt proves synchronization from merged canonical `wiki/` source.
+
 ## What Makes Up XCSV
 
 | repository | owns |
