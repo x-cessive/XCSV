@@ -10,11 +10,11 @@ source: Home.md
 
 > ## AI / AGENT START HERE
 >
-> **Read [AI Start Here](AI-Start-Here.html) and [AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync.html) before acting on the roadmap or creating commits.**
+> **Start at the root `AI-START-HERE.md`, then read [AI Start Here](AI-Start-Here.html) and [AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync.html) before acting on the roadmap or creating commits.**
 >
 > If Architect says **"read the GitHub"**, **"read the roadmap"**, **"get caught up"**, or equivalent, run the canonical `READ_ONLY_BOOTSTRAP` first. Reconcile roadmap intent against RAG/history, local working trees, Git history, GitHub/submodules and relevant live evidence. Work only on the remaining delta; do not duplicate equivalent functionality.
 >
-> **Current documentation state: `SYNCED` as of 2026-08-07 (work ID `XCSV-AI-001`).** The first SOVRAN-1 reconciliation is complete. The AI contract, provenance policy, tooling decision and GUARD development programme were absorbed into the desktop roadmap as Phase 15 by append, with no existing section rewritten; this wiki keeps its deliberate abstraction of the desktop's measurements, RPT filenames and refuted hypotheses. That abstraction is the intended layering, not drift.
+> **Do not inherit the 2026-08-07 `SYNCED` result as current truth.** It is historical evidence of that reconciliation. Current observations are source-specific; see [Repository Identity & Freshness](Repository-Identity-and-Freshness.html) and `registry/current-state.json`. `NOT_REVERIFIED`, `STALE` and `UNKNOWN` are valid outcomes.
 
 A dedicated **Arma 3 Exile** server on Tanoa, and every piece of software that keeps it alive.
 
@@ -25,12 +25,13 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 | page | when you need it |
 |---|---|
 | **[AI Start Here](AI-Start-Here.html)** | mandatory AI navigation, reconciliation, delta-first workflow and GitHub work-tracking contract |
+| **[Repository Identity & Freshness](Repository-Identity-and-Freshness.html)** | what XCSV is/is not canonical for, per-source freshness, and cold-rehydration rules |
 | **[AI Provenance & Doc Sync](AI-Provenance-and-Doc-Sync.html)** | AI commit attribution, issue work receipts, and safe desktop/GitHub documentation reconciliation |
 | **[AI / Development Tooling](AI-Tooling.html)** | selected/rejected workflow tools, GitHub-native tracking decision, optional MCP and recommended CI/security helpers |
-| **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | full current design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
-| **[Roadmap](Roadmap.html)** | current order, completed work and planning priorities |
+| **[XCSV GUARD Development Plan](XCSV-GUARD-Development-Plan.html)** | durable GUARD design programme: Gauntlet, restart safety, replay, backplane, UX, evidence, deployment, staging, player systems |
+| **[Roadmap](Roadmap.html)** | priority/order, completed work and planning intent; not implementation proof by itself |
 | **[Architecture](Architecture.html)** | understanding what talks to what |
-| **[Runbook](Runbook.html)** | the server is broken and you need the operating procedure |
+| **[Runbook](Runbook.html)** | operating/recovery procedures |
 | **[Repositories](Repositories.html)** | where a given file lives and why |
 | **[XM8 Apps](XM8-Apps.html)** | player/admin-facing app work |
 | **[Memory](Memory.html)** | project memory / retrieval workflow |
@@ -38,11 +39,11 @@ This wiki is the operator/development map. The [site](https://x-cessive.github.i
 
 ## Workflow/tooling decision
 
-XCSV uses **GitHub Issues + GitHub Projects** as the primary execution tracker so tasks, commits, PRs and sub-issues remain attached to the source instead of being copied into a second board. The official GitHub MCP Server is an optional enhancement after the baseline `git`/`gh` workflow is verified. Linear remains the only serious external future candidate, and only if GitHub Projects proves to have a measurable limitation.
+XCSV uses **GitHub Issues + GitHub Projects** as the primary execution tracker so tasks, commits, PRs and sub-issues remain attached to the source instead of being copied into a second board. The official GitHub MCP Server is an optional enhancement after the baseline `git`/`gh` workflow is verified. External planning tools must not silently become a competing execution authority.
 
 See [AI / Development Tooling](AI-Tooling.html) for the full decision record.
 
-## Current GUARD programme
+## GUARD development programme
 
 GUARD is being evolved around these principles:
 
@@ -67,6 +68,8 @@ GUARD is being evolved around these principles:
 - isolated staging for risky G3/G4 work
 - GUARD evidence exported to development AI without granting unrestricted production authority
 
+These are durable programme directions, not proof that every item is implemented or currently deployed.
+
 Core invariants:
 
 > **GUARD should never need to remember that the server is healthy. It should be able to prove the server is healthy again every time it starts.**
@@ -75,14 +78,15 @@ Core invariants:
 
 ## Player-development direction
 
-The estate is already large. Prefer coherence and progression over blind addon count: Territory Manager, contracts/jobs, bounties, meaningful faction standing, Chronicle/community systems, choreographed world events and selective objective systems. Keep heavyweight additional AI frameworks parked until measured headroom supports them.
+The estate is already large. Prefer coherence and progression over blind addon count: Territory Manager, contracts/jobs, bounties, meaningful faction standing, Chronicle/community systems, choreographed world events and selective objective systems. Performance-sensitive additions remain subject to measured headroom and current evidence.
 
 ## Non-negotiables
 
-- production remains x64 + extDB3
-- `-filePatching` remains load-bearing for the current A3XAI configuration path
+- production architecture is documented as x64 + extDB3; reverify runtime before treating documentation as live proof
+- `-filePatching` is documented as load-bearing for the A3XAI configuration path; reverify before operational use
 - no Exile source copied into XCSV original addons
 - secrets stay out of git
 - runtime local-model output is untrusted and non-load-bearing
 - UNKNOWN is not zero; absence of logged failure is not proof of function
 - performance changes require settled, comparable evidence
+- built, committed, accepted, deployed and runtime-verified are distinct states

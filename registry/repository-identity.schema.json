@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/x-cessive/XCSV/blob/main/registry/repository-identity.schema.json",
+  "title": "XCSV Repository Identity",
+  "description": "Machine-readable repository identity and routing metadata. Identity describes what the repository is; it does not grant execution authority or prove runtime state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repository_id",
+    "github_full_name",
+    "family_id",
+    "owner_scope",
+    "role",
+    "lifecycle",
+    "visibility",
+    "default_branch",
+    "canonical_for",
+    "not_canonical_for",
+    "authority",
+    "bootstrap",
+    "documentation",
+    "relationships",
+    "provenance"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "repository_id": { "type": "string", "minLength": 1 },
+    "github_full_name": { "type": "string", "pattern": "^[^/]+/[^/]+$" },
+    "family_id": { "type": "string", "minLength": 1 },
+    "owner_scope": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "minLength": 1 },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["ACTIVE", "MAINTAINED", "REFERENCE", "INCUBATING", "HOLD", "DEPRECATED", "ARCHIVED", "UNKNOWN"]
+    },
+    "visibility": { "type": "string", "enum": ["public", "private", "internal", "unknown"] },
+    "default_branch": { "type": "string", "minLength": 1 },
+    "canonical_for": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "not_canonical_for": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity_is_authority", "execution_model", "rules"],
+      "properties": {
+        "identity_is_authority": { "type": "boolean", "const": false },
+        "execution_model": { "type": "string", "minLength": 1 },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "bootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["human_entry", "ai_entry", "canonical_ai_contract", "provenance_contract"],
+      "properties": {
+        "human_entry": { "type": "string", "minLength": 1 },
+        "ai_entry": { "type": "string", "minLength": 1 },
+        "canonical_ai_contract": { "type": "string", "minLength": 1 },
+        "provenance_contract": { "type": "string", "minLength": 1 },
+        "provider_adapters": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_source", "generated_projection", "published_wiki", "generated_is_authority"],
+      "properties": {
+        "canonical_source": { "type": "string", "minLength": 1 },
+        "generated_projection": { "type": "string", "minLength": 1 },
+        "published_wiki": { "type": "string", "minLength": 1 },
+        "generated_is_authority": { "type": "boolean", "const": false },
+        "build_tool": { "type": "string" },
+        "publish_tool": { "type": "string" }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "repository"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "repository": { "type": "string", "pattern": "^[^/]+/[^/]+$" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work_id", "basis"],
+      "properties": {
+        "work_id": { "type": "string", "minLength": 1 },
+        "basis": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@ section: docs
 title: System Components
 heading: System Components
 blurb: Evidence-backed registry contract for addons, scripts, mods, live wiring and refactor status.
-order: 15
+order: 16
 source: System-Components.md
 ---
 
