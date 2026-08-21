@@ -4,14 +4,14 @@
   "repository_id": "XCSV",
   "observation_is_authority": false,
   "currentness_is_derived": true,
-  "generated_or_recorded_at": "2026-08-21T02:23:00Z",
-  "work_id": "XCSV-REPO-001",
+  "generated_or_recorded_at": "2026-08-21T04:26:39Z",
+  "work_id": "XCSV-REFACTOR-INV-001",
   "sources": {
     "github_default_branch": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T02:23:00Z",
-      "observed_identity": "main@eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d",
-      "evidence": "PR #40 was merged with normal repository history at 081e820f14f50e4b842c67b24a16d17c3963564b; final bounded follow-up eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d was pushed normally to record publication observations and satisfy the AI contract drift guard.",
+      "observed_at": "2026-08-21T04:26:39Z",
+      "observed_identity": "main@09e4b61168904e9fd04e001f7f10d44917d2cc82",
+      "evidence": "PR #41 accepted candidate d2373eabbdb6f35ce312eb2c4df546049f9078ab was merged into main with normal repository history as merge commit 09e4b61168904e9fd04e001f7f10d44917d2cc82 and pushed to origin/main. GitHub PR metadata remained draft/open because PR metadata mutation was blocked by token scope, but origin/main contains the accepted candidate.",
       "note": "This proves the observed remote default-branch identity only. Consumers must compare observed_identity to live source identity before deriving CURRENT."
     },
     "github_execution_record": {
@@ -23,9 +23,9 @@
     },
     "sovran1_local_worktree": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T02:23:00Z",
-      "observed_identity": "D:\\XCSV main@eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d; upstream origin/main@eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d; ahead 0, behind 0; untracked tools/local-ai/",
-      "evidence": "After merged-main, wiki and Pages verification, D:\\XCSV was fetched and moved to origin/main without reset/clean/delete. Safety branch safety/xcsv-repo-001-local-main-20260820-212302-2207385017c3 still preserves 2207385017c3b8ea6dc64c59d42fd71262e2c6f9. Untracked tools/local-ai files still exist.",
+      "observed_at": "2026-08-21T04:26:39Z",
+      "observed_identity": "D:\\XCSV main@09e4b61168904e9fd04e001f7f10d44917d2cc82; upstream origin/main@09e4b61168904e9fd04e001f7f10d44917d2cc82; ahead 0, behind 0; untracked tools/local-ai/",
+      "evidence": "After merged-main, wiki and Pages verification, D:\\XCSV safety branch safety/xcsv-repo-001-local-main-20260820-212302-2207385017c3 was confirmed to preserve 2207385017c3b8ea6dc64c59d42fd71262e2c6f9. Only tools/local-ai untracked material was present. D:\\XCSV was fast-forwarded to origin/main without reset, clean or deleting local-ai.",
       "note": "The local checkout was reconciled to final main while preserving the safety branch and local-only tools/local-ai material."
     },
     "github_pr40_candidate": {
@@ -41,6 +41,13 @@
       "observed_identity": "PR#40 merged_at=2026-08-21T02:13:16Z; merge_commit=081e820f14f50e4b842c67b24a16d17c3963564b; head=e920d979e220707236e39dfe3b08b404de8c79da",
       "evidence": "gh pr view #40 after merge and git fetch of origin/main.",
       "note": "This records the merge event observation only; it does not make later main HEAD current by inheritance."
+    },
+    "github_pr41_merge": {
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-21T04:26:39Z",
+      "observed_identity": "PR#41 accepted_head=d2373eabbdb6f35ce312eb2c4df546049f9078ab; merge_commit=09e4b61168904e9fd04e001f7f10d44917d2cc82; origin/main@09e4b61168904e9fd04e001f7f10d44917d2cc82",
+      "evidence": "Independent acceptance comments 5365124892 and 5365125715 accepted PR #41 for merge. Pre-merge verification found PR head exactly d2373eabbdb6f35ce312eb2c4df546049f9078ab, open, unmerged and with no newer candidate. Local merge worktree from origin/main 38249878de2c03d6f5e2afd4884ee1b5beb9603d produced merge commit 09e4b61168904e9fd04e001f7f10d44917d2cc82 and pushed it to main.",
+      "note": "This records the merge transaction observation only; issue #30 remains open for live/deployment/runtime evidence."
     },
     "member_repository_heads": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
@@ -67,28 +74,49 @@
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No live server/runtime evidence was inspected for this documentation/identity bootstrap.",
-      "note": "GitHub state must never be rendered as runtime health."
+      "evidence": "No live server/runtime evidence was inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
+      "note": "GitHub source and documentation publication must never be rendered as runtime health."
     },
     "deployed_artifacts": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected in this environment.",
+      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
       "note": "Built, committed, deployed and runtime-verified are distinct states."
+    },
+    "live_database": {
+      "observation_result": "NOT_REVERIFIED",
+      "observed_at": null,
+      "observed_identity": null,
+      "evidence": "No live DB schema/query state was inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
+      "note": "Source database files in the component registry are not live DB evidence."
+    },
+    "live_battleye": {
+      "observation_result": "NOT_REVERIFIED",
+      "observed_at": null,
+      "observed_identity": null,
+      "evidence": "No live BattlEye filter deployment was inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
+      "note": "Source filter references are not live BattlEye deployment evidence."
+    },
+    "player_runtime_behavior": {
+      "observation_result": "NOT_REVERIFIED",
+      "observed_at": null,
+      "observed_identity": null,
+      "evidence": "No player-runtime behavior was inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
+      "note": "Issue #30 remains open for player/runtime evidence."
     },
     "published_github_wiki": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T02:23:00Z",
-      "observed_identity": "XCSV.wiki.git@0cdcf767280ea2f690457e1b6016bb8eee3701aa",
-      "evidence": "Existing tools/push-wiki.ps1 run from final merged main reported the wiki already up to date; independent clone comparison found 17 tracked wiki pages and 17 published pages with normalized Markdown content equality. Raw byte differences were line-ending normalization only in Home.md, Repositories.md and Repository-Identity-and-Freshness.md.",
+      "observed_at": "2026-08-21T04:26:39Z",
+      "observed_identity": "XCSV.wiki.git@f55184f0bf71e366e29db2bb454ae7136692fb12",
+      "evidence": "tools/push-wiki.ps1 was run from merged canonical main wiki/ source and reported the wiki already up to date. A fresh clone of https://github.com/x-cessive/XCSV.wiki.git was compared against tracked wiki/*.md; all 17 files matched by SHA256 byte hash.",
       "note": "Tracked wiki source and published wiki are separate freshness sources. Consumers should compare live wiki content to tracked wiki source before deriving CURRENT."
     },
     "github_pages": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T02:23:00Z",
-      "observed_identity": "Deploy site workflow run 32439472860 for headSha eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d; live page https://x-cessive.github.io/XCSV/wiki/Home.html returned HTTP 200 with documentation state marker.",
-      "evidence": "GitHub Pages API reports build_type=workflow source main:/docs status=built; gh run list shows Deploy site success for final SHA eea9aa0c5ef85f3f7002f33e2c94cc2bb275289d; live page content check found the final documentation-state marker.",
+      "observed_at": "2026-08-21T04:26:39Z",
+      "observed_identity": "github-pages deployment 6015372598 for main@09e4b61168904e9fd04e001f7f10d44917d2cc82; Deploy site run 32446547804 success",
+      "evidence": "GitHub Pages API reported build_type=workflow source main:/docs status=built. GitHub deployment 6015372598 for environment github-pages had state success at 2026-08-21T04:20:22Z. https://x-cessive.github.io/XCSV/wiki/System-Components.html returned HTTP 200 and contained merged System Components inventory content including XCSV-ORCH-TOOL-TOOLS-DEPLOY-PS1 and SOURCE_WIRED markers.",
       "note": "This records the observed Pages deployment/content at observation time only; consumers must re-check live deployment before deriving CURRENT."
     }
   },
