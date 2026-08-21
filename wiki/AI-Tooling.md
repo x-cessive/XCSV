@@ -145,6 +145,16 @@ Add read-only CI checks that fail when deterministic project invariants drift, f
 
 CI should detect drift, not auto-rewrite authoritative roadmap decisions.
 
+### Repository guardrail audit — CI-safe source checks
+
+**Decision: USE.**
+
+`tools/xcsv-repository-guardrails.ps1` owns the durable source-side audit surface for XCSV repository fabric checks. It reuses the component registry, member gitlink/source-cleanliness model, existing documentation generators and existing wiring/PBO-drift lessons instead of creating unrelated one-off audit lanes.
+
+CI-safe mode reports deterministic source findings and keeps live-only evidence separate. It must not claim deployed PBOs, live server state, DB state, BattlEye state, boot logs or player-runtime behavior from Git source alone.
+
+The cold-rehydration harness accepts an explicitly captured fresh-worker transcript and verifies that the worker was anchored to `x-cessive/XCSV` before scoring bootstrap behavior. If no genuinely fresh transcript is supplied, the correct result is `UNKNOWN`, not PASS.
+
 ### Dependabot — dependency update visibility
 
 **Recommendation: MEDIUM-HIGH FOR XCSV_GUARD.**
