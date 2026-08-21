@@ -33,7 +33,35 @@ function Get-RepoSlugFromRemote([string] $RemoteUrl) {
     return $null
 }
 
-function Get-GitObservation([string] $Path, [string] $ExpectedRepo, [bool] $Required) {
+function Get-PorcelainPath([string] $Line) {
+    if ($Line.Length -lt 4) { return '' }
+    $path = $Line.Substring(3)
+    if ($path -match ' -> ') { $path = ($path -split ' -> ')[-1] }
+    return $path.Trim('"').Replace('\', '/')
+}
+
+function Test-AllowedRootDirtyLine([string] $Line, [string[]] $AllowedGeneratedPaths, [string[]] $DelegatedMemberPaths) {
+    $path = Get-PorcelainPath $Line
+    if ($AllowedGeneratedPaths -contains $path) { return $true }
+
+    # Member working-tree dirtiness is checked by dedicated member observations.
+    # Staged superproject gitlink changes are not delegated and must still block.
+    if ($DelegatedMemberPaths -contains $path) {
+        $indexStatus = $Line.Substring(0, 1)
+        return ($indexStatus -eq ' ')
+    }
+    return $false
+}
+
+function Get-GitObservation(
+    [string] $Path,
+    [string] $ExpectedRepo,
+    [bool] $Required,
+    [bool] $RequireClean = $false,
+    [string] $DirtyLabel = 'DIRTY_SOURCE',
+    [string[]] $AllowedGeneratedPaths = @(),
+    [string[]] $DelegatedMemberPaths = @()
+) {
     if ([string]::IsNullOrWhiteSpace($Path) -or !(Test-Path -LiteralPath $Path)) {
         if ($Required) { throw "Required source path is unavailable: $Path" }
         return [pscustomobject][ordered]@{
@@ -96,6 +124,36 @@ function Get-GitObservation([string] $Path, [string] $ExpectedRepo, [bool] $Requ
         }
     }
 
+    $clean = $null
+    $allowedDirty = @()
+    if ($RequireClean) {
+        $dirty = @(& git -C $top status --porcelain --untracked-files=all 2>$null)
+        if ($LASTEXITCODE -ne 0) {
+            throw "UNKNOWN_SOURCE_STATE: cannot inspect worktree status for $ExpectedRepo at $top."
+        }
+        $blockedDirty = @()
+        foreach ($line in $dirty) {
+            if (Test-AllowedRootDirtyLine -Line $line -AllowedGeneratedPaths $AllowedGeneratedPaths -DelegatedMemberPaths $DelegatedMemberPaths) {
+                $allowedDirty += $line
+            } else {
+                $blockedDirty += $line
+            }
+        }
+        if ($blockedDirty.Count -gt 0) {
+            $fingerprint = Get-DirtyFingerprint $blockedDirty
+            throw "${DirtyLabel}: $ExpectedRepo at $top has $($blockedDirty.Count) dirty/untracked source entries; dirty_fingerprint=$fingerprint."
+        }
+        $clean = $true
+    }
+
+    $detail = "Observed $ExpectedRepo@$sha at $($script:ObservedAtUtc)."
+    if ($RequireClean) {
+        $detail = "Observed $ExpectedRepo@$sha at $($script:ObservedAtUtc); source worktree clean."
+        if ($allowedDirty.Count -gt 0) {
+            $detail = "Observed $ExpectedRepo@$sha at $($script:ObservedAtUtc); source worktree clean except permitted generated output surfaces ($($allowedDirty.Count))."
+        }
+    }
+
     return [pscustomobject][ordered]@{
         repo = $ExpectedRepo
         available = $true
@@ -103,8 +161,10 @@ function Get-GitObservation([string] $Path, [string] $ExpectedRepo, [bool] $Requ
         sha = $sha
         remote = $remote
         top = $top
+        clean = $clean
+        allowed_generated_dirty_count = $allowedDirty.Count
         observed_at = $script:ObservedAtUtc
-        detail = "Observed $ExpectedRepo@$sha at $($script:ObservedAtUtc)."
+        detail = $detail
     }
 }
 
@@ -151,7 +211,7 @@ function Get-MemberObservation([string] $RelPath, [string] $ExpectedRepo) {
     }
 
     $observation | Add-Member -NotePropertyName expected_gitlink_sha -NotePropertyValue $expectedSha
-    $observation | Add-Member -NotePropertyName clean -NotePropertyValue $true
+    $observation.clean = $true
     $observation.detail = "Observed $ExpectedRepo@$($observation.sha) at $($script:ObservedAtUtc); expected XCSV gitlink $expectedSha; member worktree clean."
     return $observation
 }
@@ -338,13 +398,25 @@ function Get-ConcreteWiringEvidence([string] $RelPath, [string] $Kind) {
     return @()
 }
 
-$script:XcsvObservation = Get-GitObservation -Path $Root -ExpectedRepo 'x-cessive/XCSV' -Required $true
+$script:XcsvObservation = Get-GitObservation `
+    -Path $Root `
+    -ExpectedRepo 'x-cessive/XCSV' `
+    -Required $true `
+    -RequireClean $true `
+    -DirtyLabel 'DIRTY_XCSV_SOURCE' `
+    -AllowedGeneratedPaths @('registry/components.json', 'wiki/System-Components.md', 'docs/wiki/System-Components.md') `
+    -DelegatedMemberPaths @('addons', 'catalogue', 'guard')
 $script:MemberObservations = [ordered]@{
     addons = Get-MemberObservation -RelPath 'addons' -ExpectedRepo 'x-cessive/XCSV_ADDONS'
     catalogue = Get-MemberObservation -RelPath 'catalogue' -ExpectedRepo 'x-cessive/Exile'
     guard = Get-MemberObservation -RelPath 'guard' -ExpectedRepo 'x-cessive/XCSV_GUARD'
 }
-$script:OrchObservation = Get-GitObservation -Path $OrchRoot -ExpectedRepo 'x-cessive/XCSV_ORCH' -Required (-not [string]::IsNullOrWhiteSpace($OrchRoot))
+$script:OrchObservation = Get-GitObservation `
+    -Path $OrchRoot `
+    -ExpectedRepo 'x-cessive/XCSV_ORCH' `
+    -Required (-not [string]::IsNullOrWhiteSpace($OrchRoot)) `
+    -RequireClean (-not [string]::IsNullOrWhiteSpace($OrchRoot)) `
+    -DirtyLabel 'DIRTY_EXTERNAL_SOURCE'
 
 $components = New-Object System.Collections.Generic.List[object]
 
@@ -544,11 +616,11 @@ $registry = [ordered]@{
     classification = 'PARTIAL_SOURCE_VERIFIED'
     notes = @(
         "Expanded by XCSV-REFACTOR-INV-001 (#30) from Git source enumeration at $($script:ObservedAtUtc).",
-        "XCSV source observation: $($script:XcsvObservation.repo)@$($script:XcsvObservation.sha) ($($script:XcsvObservation.result)).",
+        "XCSV source observation: $($script:XcsvObservation.repo)@$($script:XcsvObservation.sha) ($($script:XcsvObservation.result)); clean=$($script:XcsvObservation.clean); permitted_generated_dirty=$($script:XcsvObservation.allowed_generated_dirty_count).",
         "XCSV_ADDONS member observation: $($script:MemberObservations.addons.repo)@$($script:MemberObservations.addons.sha) ($($script:MemberObservations.addons.result)); expected gitlink $($script:MemberObservations.addons.expected_gitlink_sha); clean=$($script:MemberObservations.addons.clean).",
         "Exile member observation: $($script:MemberObservations.catalogue.repo)@$($script:MemberObservations.catalogue.sha) ($($script:MemberObservations.catalogue.result)); expected gitlink $($script:MemberObservations.catalogue.expected_gitlink_sha); clean=$($script:MemberObservations.catalogue.clean).",
         "XCSV_GUARD member observation: $($script:MemberObservations.guard.repo)@$($script:MemberObservations.guard.sha) ($($script:MemberObservations.guard.result)); expected gitlink $($script:MemberObservations.guard.expected_gitlink_sha); clean=$($script:MemberObservations.guard.clean).",
-        $(if ($script:OrchObservation.available -eq $true) { "XCSV_ORCH external source observation: $($script:OrchObservation.repo)@$($script:OrchObservation.sha) ($($script:OrchObservation.result)); ORCH canonical paths are repository-relative." } else { "XCSV_ORCH external source observation: $($script:OrchObservation.result); ORCH file-level inventory omitted rather than inferred from a machine-local default." }),
+        $(if ($script:OrchObservation.available -eq $true) { "XCSV_ORCH external source observation: $($script:OrchObservation.repo)@$($script:OrchObservation.sha) ($($script:OrchObservation.result)); clean=$($script:OrchObservation.clean); ORCH canonical paths are repository-relative." } else { "XCSV_ORCH external source observation: $($script:OrchObservation.result); ORCH file-level inventory omitted rather than inferred from a machine-local default." }),
         'This is not PASS_INVENTORY_VERIFIED because deployed server, boot logs, live DB, live BattlEye and player-runtime evidence were not inspected.',
         'Catalogue/source presence is not runtime truth; SOURCE_WIRED requires concrete evidence such as engine entrypoint, config/include, init/bootstrap, module/handler or direct load/import/call-path evidence. Presence and name/reference candidates remain non-wired evidence.detail/notes.'
     )
