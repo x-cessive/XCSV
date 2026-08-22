@@ -4,7 +4,7 @@
   "repository_id": "XCSV",
   "observation_is_authority": false,
   "currentness_is_derived": true,
-  "generated_or_recorded_at": "2026-08-22T04:52:00Z",
+  "generated_or_recorded_at": "2026-08-22T05:10:00Z",
   "work_id": "XCSV-REFACTOR-INV-001-LANE-C",
   "sources": {
     "github_default_branch": {
@@ -92,11 +92,17 @@
       "note": "This is direct live-process/RPT observation, not inference from GitHub/CI/source. Whether the server is intentionally offline or crashed is UNKNOWN; no crash/shutdown reason was found in the available RPT tail."
     },
     "deployed_artifacts": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "Live server root E:\\arma3server confirmed accessible (addons, @Exile, @ExileServer, @A3XAI_HC, @FuMS, @infiSTAR_A3_vision, @ScratchieServer, mpmissions present) but no deployed PBO/GUARD/addon artifact hashes were compared against source in this pass.",
-      "note": "Built, committed, deployed and runtime-verified are distinct states. Directory presence alone is not artifact-identity evidence."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T05:10:00Z",
+      "observed_identity": "SHA256 comparison of every deployed server-side PBO in E:\\arma3server\\@ExileServer\\addons, @Exile\\addons, @FuMS\\addons, @ScratchieServer\\addons, @infiSTAR_A3_vision\\addons against same-basename PBOs found in the D:\\XCSV catalogue/addons submodules (Exile.git / XCSV_ADDONS.git checked out in-worktree at catalogue@64f5dff6/addons@1481d649). Result: 8 BYTE-IDENTICAL MATCH (a3_travellingTrader.pbo, A3XAI.pbo, ClaimVehicles_Server.pbo, DMD_BuildingReplace.pbo, GADD_TrickOrTreat_Server.pbo, PlayerMarketByCyunide.pbo, revive_server.pbo, scratchie_server.pbo); 5 DIVERGED same-name/different-hash (a3_exile_occupation.pbo deployed 234064B@2026-08-03 vs source 233093B@2026-08-02; BigfootsShipwrecks_Server.pbo deployed 36112B@2026-08-13 vs source 35362B@2026-08-02; exile_abandon.pbo deployed 2794B@2026-07-31 vs source 1887B@2026-08-02; Server.pbo deployed 4818B@2026-08-01 vs source 4856B@2026-08-02 [ExileLoadouts vs deployed identity unconfirmed as the same logical component]; FuMS.pbo deployed 3445032B@2026-08-13 vs source 3445132B@2026-08-07); remainder (exile_server.pbo, exile_server_config.pbo, xcsv_chatter.pbo, sovran_zeus.pbo, safex_server.pbo, w4_lockpick.pbo, helicrash_server.pbo, vehicles.pbo, ExileHalvPaintshop_Server.pbo, FlagHack_server.pbo, a3_dms.pbo, a3_exile_lootbox.pbo, a3_infiSTAR_vision.pbo, all @Exile client/vehicle assets, dbo_old_bike.pbo, gnt_c185.pbo) have NO same-named built .pbo artifact found anywhere under D:\\XCSV\\addons or D:\\XCSV\\catalogue.",
+      "note": "This is byte-level identity evidence for the subset of deployed PBOs that have a same-named pre-built PBO checked into a reachable submodule; it is not proof for the remainder, which may be built by a toolchain/repo outside this worktree (e.g. XCSV_ADDONS build pipeline, XCSV_ORCH, or vendor-distributed assets), may be hand-packed, or may simply lack a committed built artifact. Divergence does not by itself indicate which side is authoritative -- it only proves the deployed binary and the in-repo pre-built binary are not the same bytes. Root-cause classification (rebuilt-newer vs rebuilt-older vs unrelated same-name collision) was NOT performed this pass. xcsv_chatter and sovran_zeus have XCSV_ADDONS/XCSV_ORCH-owned script source directories in this worktree (D:\\XCSV\\addons\\xcsv_chatter) but no committed built .pbo to hash against; no local pack/build action was taken (out of scope for this evidence-only tranche)."
+    },
+    "server_startup_wiring": {
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T05:02:00Z",
+      "observed_identity": "E:\\arma3server\\Start_Exile_Server.cmd: arma3server_x64.exe -mod=@Exile -servermod=@ExileServer;@infiSTAR_A3_vision;@ScratchieServer;@FuMS -config=@ExileServer\\config.cfg -cfg=@ExileServer\\basic.cfg -profiles=E:\\arma3server\\profiles -bepath=E:\\arma3server\\battleye -name=exile -port=2302 -world=empty -autoInit -filePatching -showScriptErrors -noPause -noSound -noBenchmark -maxMem=12288 -cpuCount=12 -exThreads=7 -enableHT",
+      "evidence": "Direct read of E:\\arma3server\\Start_Exile_Server.cmd (no server start/stop performed; file read only).",
+      "note": "This is the intended/configured startup wiring only, since the server process was not running at observation time (see runtime_server). @A3XAI_HC and @ScratchieServer's headless-client-specific launcher were not inspected this pass; a separate Start_HeadlessClient.cmd exists at E:\\arma3server\\Start_HeadlessClient.cmd and was not read in this tranche."
     },
     "live_database": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
