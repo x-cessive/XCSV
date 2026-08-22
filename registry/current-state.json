@@ -4,14 +4,14 @@
   "repository_id": "XCSV",
   "observation_is_authority": false,
   "currentness_is_derived": true,
-  "generated_or_recorded_at": "2026-08-21T05:34:44Z",
-  "work_id": "XCSV-REFACTOR-DOCS-001",
+  "generated_or_recorded_at": "2026-08-21T22:46:20Z",
+  "work_id": "XCSV-REFACTOR-TOOLS-001",
   "sources": {
     "github_default_branch": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T05:34:44Z",
-      "observed_identity": "main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683",
-      "evidence": "PR #42 accepted candidate dba49ae7a905bee631cdd9f412f8e09b7346dc1f was marked ready and merged into main with normal repository history as merge commit f2eb6b5035628b1cbc38fa5ef73dbc85298dd683. origin/main was fetched and observed at f2eb6b5035628b1cbc38fa5ef73dbc85298dd683.",
+      "observed_at": "2026-08-21T22:46:20Z",
+      "observed_identity": "main@39de15c0b3dd9897e53be168a6436e071cb4e487",
+      "evidence": "PR #43 merged normally at 2026-08-21T22:38:47Z as commit 39de15c0b3dd9897e53be168a6436e071cb4e487. Post-merge issue #37 finalization evidence independently observed origin/main and canonical D:\\XCSV at the same SHA; main workflow run 32533816091 succeeded.",
       "note": "This proves the observed remote default-branch identity only. Consumers must compare observed_identity to live source identity before deriving CURRENT."
     },
     "github_execution_record": {
@@ -23,10 +23,10 @@
     },
     "sovran1_local_worktree": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T05:34:44Z",
-      "observed_identity": "D:\\XCSV main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683; upstream origin/main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683; ahead 0, behind 0; untracked tools/local-ai/",
-      "evidence": "Before local reconciliation, D:\\XCSV was verified on main at 0cb610d8430543a5474191c466d1439b5479a1d8 with only expected untracked tools/local-ai material. Safety branch safety/xcsv-repo-001-local-main-20260820-212302-2207385017c3 was confirmed to preserve 2207385017c3b8ea6dc64c59d42fd71262e2c6f9. D:\\XCSV was fast-forwarded to origin/main f2eb6b5035628b1cbc38fa5ef73dbc85298dd683 without reset, clean or deleting local-ai.",
-      "note": "The local checkout was reconciled to final main while preserving the safety branch and local-only tools/local-ai material."
+      "observed_at": "2026-08-21T22:46:20Z",
+      "observed_identity": "D:\\XCSV main@39de15c0b3dd9897e53be168a6436e071cb4e487; upstream origin/main@39de15c0b3dd9897e53be168a6436e071cb4e487; ahead 0, behind 0; untracked tools/local-ai/",
+      "evidence": "Issue #37 finalization verified D:\\XCSV behind origin/main with no unexpected tracked local work, preserved safety branch safety/xcsv-repo-001-local-main-20260820-212302-2207385017c3 and untracked tools/local-ai material, then fast-forwarded with git merge --ff-only origin/main. Final D:\\XCSV HEAD and origin/main both equaled 39de15c0b3dd9897e53be168a6436e071cb4e487; no git clean or safety-ref deletion occurred.",
+      "note": "The canonical local checkout was reconciled to final main while preserving the safety branch and local-only tools/local-ai material."
     },
     "github_pr40_candidate": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
@@ -56,6 +56,13 @@
       "evidence": "Independent review accepted PR #42 as PASS_DOCS_REFACTOR_CANDIDATE. Pre-merge verification found PR head exactly dba49ae7a905bee631cdd9f412f8e09b7346dc1f, ready/open/unmerged, mergeable, and GitHub Actions XCSV AI contract drift run 32450185772 successful for both Verify XCSV-AI-CONTRACT 1.0.0 and Sync policy regression suite. PR #42 was merged normally as f2eb6b5035628b1cbc38fa5ef73dbc85298dd683.",
       "note": "This records the documentation merge transaction observation only; it does not prove live runtime/deployment state."
     },
+    "github_pr43_merge": {
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-21T22:46:20Z",
+      "observed_identity": "PR#43 accepted_head=9eab5d708f12e3d44c3460982103f5a312512af3; merged_at=2026-08-21T22:38:47Z; merge_commit=39de15c0b3dd9897e53be168a6436e071cb4e487; origin/main@39de15c0b3dd9897e53be168a6436e071cb4e487",
+      "evidence": "Issue #37 finalization records normal GitHub merge with no history rewrite, post-merge isolated verification at 39de15c0b3dd9897e53be168a6436e071cb4e487, member gitlink checks, and XCSV AI contract drift run 32533816091 SUCCESS for Verify XCSV-AI-CONTRACT 1.0.0, Sync policy regression suite, and Repository fabric guardrails.",
+      "note": "This records the refactor-guardrails merge/source observation only; it does not prove live server, deployment, database, BattlEye, RPT or player-runtime state."
+    },
     "member_repository_heads": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
       "observed_at": "2026-08-21T01:23:02Z",
@@ -68,7 +75,7 @@
       "observed_at": "2026-08-21T01:23:02Z",
       "observed_identity": "PASS via fresh unforked worker 01a021ee-ba36-7dc2-b01e-249ce1a47d72 against D:\\XCSV_RECONCILE_XCSV_REPO_001",
       "evidence": "Fresh worker received the reconciliation worktree path and read-the-repo instruction, mutated no files, and correctly reported repository identity, canonical and non-canonical scope, authority boundaries, per-source freshness/UNKNOWNs, member routing, documentation source/projection rules, completion obligations, prohibited scope and read-only stop condition.",
-      "note": "This verifies the cold-rehydration contract for the candidate worktree only; it does not grant execution authority or runtime freshness."
+      "note": "This verifies the cold-rehydration contract for the candidate worktree only; it does not grant execution authority or runtime freshness. The issue #37 fresh-worker launcher itself remains NOT_REVERIFIED / UNKNOWN."
     },
     "desktop_roadmap": {
       "observation_result": "NOT_REVERIFIED",
@@ -81,49 +88,49 @@
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No live server/runtime evidence was inspected during XCSV-REFACTOR-DOCS-001 merge/publication/reconciliation finalization.",
-      "note": "GitHub source and documentation publication must never be rendered as runtime health."
+      "evidence": "No live server/runtime evidence was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
+      "note": "GitHub source and CI publication must never be rendered as runtime health."
     },
     "deployed_artifacts": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected during XCSV-REFACTOR-DOCS-001 merge/publication/reconciliation finalization.",
+      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
       "note": "Built, committed, deployed and runtime-verified are distinct states."
     },
     "live_database": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No live DB schema/query state was inspected during XCSV-REFACTOR-DOCS-001 merge/publication/reconciliation finalization.",
+      "evidence": "No live DB schema/query state was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
       "note": "Source database files in the component registry are not live DB evidence."
     },
     "live_battleye": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No live BattlEye filter deployment was inspected during XCSV-REFACTOR-DOCS-001 merge/publication/reconciliation finalization.",
+      "evidence": "No live BattlEye filter deployment was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
       "note": "Source filter references are not live BattlEye deployment evidence."
     },
     "player_runtime_behavior": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No player-runtime behavior was inspected during XCSV-REFACTOR-INV-001 merge/publication/reconciliation finalization.",
+      "evidence": "No player-runtime behavior was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
       "note": "Issue #30 remains open for player/runtime evidence."
     },
     "published_github_wiki": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T05:34:44Z",
-      "observed_identity": "XCSV.wiki.git@9dcb360fda63d2c5429d99c31796aafc08947b8f; 20 pages byte-equivalent to merged wiki/*.md",
-      "evidence": "tools/push-wiki.ps1 was run from merged canonical main wiki/ source and reported the wiki already up to date. A fresh clone of https://github.com/x-cessive/XCSV.wiki.git was compared against tracked wiki/*.md from main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683; all 20 files matched by SHA256 byte hash.",
+      "observed_at": "2026-08-21T22:46:20Z",
+      "observed_identity": "XCSV.wiki.git@d60b1e9d57602ef68e1ffa2074710e3aa12b9adc; WIKI_SYNCHRONIZED after PR#43",
+      "evidence": "Issue #37 finalization records synchronization of the published GitHub wiki from the merged canonical source and verifies published wiki SHA d60b1e9d57602ef68e1ffa2074710e3aa12b9adc.",
       "note": "Tracked wiki source and published wiki are separate freshness sources. Consumers should compare live wiki content to tracked wiki source before deriving CURRENT."
     },
     "github_pages": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
-      "observed_at": "2026-08-21T05:34:44Z",
-      "observed_identity": "github-pages deployment 6016064120 for main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683; Deploy site run 32450802169 success",
-      "evidence": "GitHub Pages API reported build_type=workflow source main:/docs status=built. GitHub Deploy site workflow run 32450802169 completed successfully for main@f2eb6b5035628b1cbc38fa5ef73dbc85298dd683 with build job 96678831762 and deploy job 96678902737. GitHub deployment 6016064120 records sha f2eb6b5035628b1cbc38fa5ef73dbc85298dd683. Live Pages URLs returned HTTP 200 and contained expected merged documentation content for the front door, Home, Architecture, Roadmap, Roadmap History, Custom Map Editing and Drone & Counter-UAS.",
+      "observed_at": "2026-08-21T22:46:20Z",
+      "observed_identity": "Deploy site run 32533816105 for main@39de15c0b3dd9897e53be168a6436e071cb4e487; SUCCESS",
+      "evidence": "Issue #37 finalization records GitHub Pages verification after PR #43 merge, including successful Pages run 32533816105 and deployed content checks.",
       "note": "This records the observed Pages deployment/content at observation time only; consumers must re-check live deployment before deriving CURRENT."
     }
   },
