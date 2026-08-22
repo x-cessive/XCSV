@@ -4,8 +4,8 @@
   "repository_id": "XCSV",
   "observation_is_authority": false,
   "currentness_is_derived": true,
-  "generated_or_recorded_at": "2026-08-21T22:46:20Z",
-  "work_id": "XCSV-REFACTOR-TOOLS-001",
+  "generated_or_recorded_at": "2026-08-22T04:52:00Z",
+  "work_id": "XCSV-REFACTOR-INV-001-LANE-C",
   "sources": {
     "github_default_branch": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
@@ -85,39 +85,39 @@
       "note": "Roadmap/GitHub documentation relationship remains unknown until the next real reconciliation."
     },
     "runtime_server": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "No live server/runtime evidence was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
-      "note": "GitHub source and CI publication must never be rendered as runtime health."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T04:50:00Z",
+      "observed_identity": "arma3server_x64.exe/arma3server.exe NOT RUNNING on SOVRAN-1 at observation time; most recent RPT is profiles\\arma3server_x64_2026-08-14_19-16-57.rpt, last write 2026-08-14T21:48:31; RPT tail shows no graceful shutdown message, log stream simply stops after in-progress AI/Exile scheduler activity at 21:48:31",
+      "evidence": "Get-CimInstance Win32_Process filter for arma3server_x64.exe/arma3server.exe returned no process; Get-ChildItem E:\\arma3server\\profiles *.rpt sorted by LastWriteTime shows newest RPT dated 2026-08-14, 8 days stale relative to this observation (2026-08-22); tail of that RPT ends mid-activity with no logged shutdown reason.",
+      "note": "This is direct live-process/RPT observation, not inference from GitHub/CI/source. Whether the server is intentionally offline or crashed is UNKNOWN; no crash/shutdown reason was found in the available RPT tail."
     },
     "deployed_artifacts": {
       "observation_result": "NOT_REVERIFIED",
       "observed_at": null,
       "observed_identity": null,
-      "evidence": "No deployed PBO/GUARD/addon artifact hashes were inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
-      "note": "Built, committed, deployed and runtime-verified are distinct states."
+      "evidence": "Live server root E:\\arma3server confirmed accessible (addons, @Exile, @ExileServer, @A3XAI_HC, @FuMS, @infiSTAR_A3_vision, @ScratchieServer, mpmissions present) but no deployed PBO/GUARD/addon artifact hashes were compared against source in this pass.",
+      "note": "Built, committed, deployed and runtime-verified are distinct states. Directory presence alone is not artifact-identity evidence."
     },
     "live_database": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "No live DB schema/query state was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
-      "note": "Source database files in the component registry are not live DB evidence."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T04:52:00Z",
+      "observed_identity": "mysqld.exe process running (PID 8428) on SOVRAN-1; E:\\arma3server\\extdb3-conf.ini configures extDB3 for IP=127.0.0.1 Port=3306 Database=exile; no LISTENING socket on TCP 3306 found via Get-NetTCPConnection at observation time",
+      "evidence": "Get-Process mysqld returned a running process; Get-Content extdb3-conf.ini (no credentials printed) confirmed target IP/port/database name; Get-NetTCPConnection -LocalPort 3306 returned no rows.",
+      "note": "Process presence is not proof of accepting connections; the empty TCP 3306 listener result is unresolved (could be a permissions artifact of the observing shell, a different bind address, or the server genuinely not listening). Schema/query-level DB state remains NOT_REVERIFIED; no credentials were used to connect."
     },
     "live_battleye": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "No live BattlEye filter deployment was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
-      "note": "Source filter references are not live BattlEye deployment evidence."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T04:49:00Z",
+      "observed_identity": "E:\\arma3server\\battleye present with active beserver.cfg, beserver_active_134f.cfg, BEServer_x64_active_274a.cfg and RCon dll/config files; most recent BE log activity (mpeventhandler.log) is 2026-08-14T18:22:14, consistent with the server having been offline since the same period as the stale RPT",
+      "evidence": "Get-ChildItem E:\\arma3server\\battleye listing and Get-Content mpeventhandler.log -Tail 5, both freshly read at observation time.",
+      "note": "This confirms BattlEye deployment presence and last-active timestamp only; it does not confirm BattlEye is currently protecting an active session, since no server process is currently running."
     },
     "player_runtime_behavior": {
-      "observation_result": "NOT_REVERIFIED",
-      "observed_at": null,
-      "observed_identity": null,
-      "evidence": "No player-runtime behavior was inspected during XCSV-REFACTOR-TOOLS-001 finalization.",
-      "note": "Issue #30 remains open for player/runtime evidence."
+      "observation_result": "VERIFIED_AT_OBSERVATION",
+      "observed_at": "2026-08-22T04:49:00Z",
+      "observed_identity": "No active players observable: server process not running at observation time; last recorded player/session activity in mpeventhandler.log and the newest RPT is 2026-08-14 (player \"Mr. Sage\", curator respawn RemoteExec entries at 17:14-18:22 that day)",
+      "evidence": "RPT tail and battleye\\mpeventhandler.log tail read directly; both stop at 2026-08-14, no fresher session evidence exists on this host.",
+      "note": "Issue #30 remains open for player/runtime evidence; this observation establishes there is currently no live player session to observe on SOVRAN-1, and the last known session ended by 2026-08-14T21:48:31 without a logged graceful-shutdown line."
     },
     "published_github_wiki": {
       "observation_result": "VERIFIED_AT_OBSERVATION",
