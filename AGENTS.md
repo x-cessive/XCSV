@@ -138,3 +138,24 @@ Rules that matter most in practice:
 - It never authorizes editing control pointers, durable decisions, historical
   evidence or generated projections, and never authorizes running a migration.
 
+
+## AI engineering activity visibility
+
+ARCHITECT uses GitHub notifications/email as an engineering activity radar.
+
+For every GitHub-bound change:
+- meaningful commit messages;
+- phase/correlation ID when available;
+- bounded PR titles/bodies;
+- explicit completion vs acceptance;
+- blockers/UNKNOWNs preserved;
+- no secrets/private raw data in notification-facing text.
+
+Email/notification is a projection.
+GitHub source is evidence.
+Repository-local governance remains authority.
+
+Do not disable push-email/notification configuration without explicit authority.
+
+For the common event standard, consult:
+x-cessive/Chatgpt-Project-Organization-/AI_ENGINEERING_EVENT_STANDARD.md
