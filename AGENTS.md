@@ -133,7 +133,8 @@ Rules that matter most in practice:
 - Assess by **consequence, not diff size**. A one-line change can be material; a
   large internal refactor with no observable effect need not be.
 - Out-of-scope impact is routed durably: non-documentation domains to
-  `registry/completion-impact-debt.json` (`CID-nnnn`), documentation to
+  `SOVRAN_PROJECT_BOUNDARIES` -> `registry/completion-impact-debt.json`
+  (`CID-nnnn`), documentation to `SOVRAN_PROJECT_BOUNDARIES` ->
   `registry/documentation-debt.json` (`DEBT-nnnn`).
 - It never authorizes editing control pointers, durable decisions, historical
   evidence or generated projections, and never authorizes running a migration.
