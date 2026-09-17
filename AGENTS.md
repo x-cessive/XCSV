@@ -139,6 +139,21 @@ Rules that matter most in practice:
 - It never authorizes editing control pointers, durable decisions, historical
   evidence or generated projections, and never authorizes running a migration.
 
+## SOVRAN peer display identity
+
+* **`sovran-0` (ThinkPad)** is named **Otto** in the human-facing experience.
+* **`sovran-1` (Hermes peer / Heavy Compute)** is named **Gigi** in the human-facing experience.
+* **`pixel-node` (Pixel 9 Pro)** is named **Pip** in the human-facing experience.
+* **`tablet-node` (Samsung Galaxy Tablet)** is named **Toby** in the human-facing experience.
+* **`sovran-node-droid-consigliere` (Android Advisor)** is named **Silvio** in the human-facing experience.
+* **`sovran-sentinel-physical-server` (Physical Sentinel Server)** is named **Atlas** in the human-facing experience.
+* **`sovran-partner-sentinelvm-windows` (Sentinel VM)** is named **Sentry** in the human-facing experience.
+* **`justins-iphone` (Personal iPhone)** is named **Jasper** in the human-facing experience.
+
+Use **Otto**, **Gigi**, **Pip**, **Toby**, and **Silvio** in operator-facing UI, notices, summaries, and documentation.
+Preserve `sovran-0`, `sovran-1`, and `pixel-node` for transport commands, SSH targets,
+fleet/node identifiers, and persisted state. The shared reference is `~/dev/SOVRAN_IDENTITY.md`;
+this rule applies to every repository under `~/dev`.
 
 ## AI engineering activity visibility
 
