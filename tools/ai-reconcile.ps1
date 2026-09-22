@@ -20,7 +20,7 @@ param(
     [string] $Guard = 'D:\XCSV_GUARD',
     [string] $Addons = 'E:\XCSV_ADDONS',
     [string] $Catalogue = 'E:\ExileRepo',
-    [string] $Roadmap = 'C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX\ROADMAP.md',
+    [string] $Roadmap = 'C:\Users\justi\Desktop\ARMA3_EXILE_CODEX\ROADMAP.md',
     [switch] $Json
 )
 

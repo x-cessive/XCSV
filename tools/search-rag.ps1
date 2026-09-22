@@ -4,7 +4,7 @@
 param(
     [Parameter(Mandatory=$true)]
     [string]$Query,
-    [string]$IndexFile = 'D:\CAGE\xcsv-rag\xcsv-rag.jsonl',
+    [string]$IndexFile = 'J:\CAGE\xcsv-rag\xcsv-rag.jsonl',
     [int]$Top = 8
 )
 

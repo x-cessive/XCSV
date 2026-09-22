@@ -5,7 +5,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$RuntimeTool = "D:\CAGE\xcsv-ai-continuity\tools\xcsv-continuity.ps1"
+$RuntimeTool = "J:\CAGE\xcsv-ai-continuity\tools\xcsv-continuity.ps1"
 if (-not (Test-Path -LiteralPath $RuntimeTool)) {
     throw "XCSV continuity runtime tool is missing: $RuntimeTool"
 }

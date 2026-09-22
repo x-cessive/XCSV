@@ -3,7 +3,7 @@
 
 [CmdletBinding()]
 param(
-    [string]$VaultDir = 'C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX',
+    [string]$VaultDir = 'C:\Users\justi\Desktop\ARMA3_EXILE_CODEX',
     [string]$WikiDir = 'D:\XCSV\wiki',
     [string]$OutFile = 'D:\XCSV\wiki\Memory-Index.md'
 )

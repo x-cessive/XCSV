@@ -4,8 +4,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$OutDir = 'D:\CAGE\xcsv-rag',
-    [string]$VaultDir = 'C:\Users\Architect\Desktop\ARMA3_EXILE_CODEX',
+    [string]$OutDir = 'J:\CAGE\xcsv-rag',
+    [string]$VaultDir = 'C:\Users\justi\Desktop\ARMA3_EXILE_CODEX',
     [string]$XcsvDir = 'D:\XCSV',
     [string]$ExileRepo = 'E:\ExileRepo',
     [string]$GuardRepo = 'D:\XCSV_GUARD',

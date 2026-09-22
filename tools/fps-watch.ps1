@@ -31,7 +31,7 @@
 [CmdletBinding()]
 param(
     [string]$ProfilesDir = 'E:\arma3server\profiles',
-    [string]$OutCsv      = 'D:\CAGE\xcsv-fps-watch.csv',
+    [string]$OutCsv      = 'J:\CAGE\xcsv-fps-watch.csv',
     [int]$IntervalSec    = 60,
     [int]$TopN           = 6,
     [switch]$Once

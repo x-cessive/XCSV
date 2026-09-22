@@ -79,7 +79,7 @@ param(
     [string]$PboTool   = 'E:\ArmaTools\pbo.ps1',
     # Scratch space. On D: on purpose - a temp_dir under C:\Users once filled
     # the system drive to zero bytes with orphaned projections.
-    [string]$TempRoot  = 'D:\CAGE\tmp\pbo-drift-audit',
+    [string]$TempRoot  = 'J:\CAGE\tmp\pbo-drift-audit',
     # Lines of unified diff shown per differing file. Enough to judge whether a
     # difference is a tuned constant or a missing function, not enough to turn
     # the report into the diff itself.

@@ -10,12 +10,12 @@
     then captures the whole desktop plus a JSON/text manifest. The manifest is
     the accessibility-friendly record for agents that cannot read images.
 
-    Output defaults to D:\CAGE\xcsv-desktop-shots and must not be committed.
+    Output defaults to J:\CAGE\xcsv-desktop-shots and must not be committed.
 #>
 
 [CmdletBinding()]
 param(
-    [string] $OutDir = 'D:\CAGE\xcsv-desktop-shots',
+    [string] $OutDir = 'J:\CAGE\xcsv-desktop-shots',
     [switch] $Layout,
     [switch] $Shot,
     [ValidateSet('Overview','Integrity','AI','Metrics','Players','Database','RCon','InfiSTAR','ServerLog','Consoles','Restarts','Docs','Settings')]

@@ -104,7 +104,7 @@ Test-Case 'AI-Continuity page records the current partial boundary' {
 
 Test-Case 'hub wrapper points at the governed runtime tool' {
     $wrapper = [System.IO.File]::ReadAllText((Join-Path $Root 'tools\xcsv-continuity.ps1'))
-    Assert-True ($wrapper.Contains('D:\CAGE\xcsv-ai-continuity\tools\xcsv-continuity.ps1')) 'wrapper must delegate to governed runtime'
+    Assert-True ($wrapper.Contains('J:\CAGE\xcsv-ai-continuity\tools\xcsv-continuity.ps1')) 'wrapper must delegate to governed runtime'
     Assert-True ($wrapper.Contains('Test-Path -LiteralPath $RuntimeTool')) 'wrapper must fail closed if runtime tool is missing'
 }
 

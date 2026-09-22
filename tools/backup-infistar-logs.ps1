@@ -31,13 +31,13 @@
     -----
         .\tools\backup-infistar-logs.ps1
         .\tools\backup-infistar-logs.ps1 -Keep 60
-        .\tools\backup-infistar-logs.ps1 -DestRoot D:\CAGE\xcsv-audit-archive
+        .\tools\backup-infistar-logs.ps1 -DestRoot J:\CAGE\xcsv-audit-archive
 #>
 
 [CmdletBinding()]
 param(
     [string]$SourceDir = 'E:\arma3server\@infiSTAR_A3_vision',
-    [string]$DestRoot  = 'D:\CAGE\xcsv-audit-archive',
+    [string]$DestRoot  = 'J:\CAGE\xcsv-audit-archive',
     [int]$Keep         = 30
 )
 

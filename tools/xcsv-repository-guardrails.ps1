@@ -492,7 +492,7 @@ function Test-StaleCurrentDocs([string] $Root) {
         'D:\XCSV',
         'D:\XCSV_GUARD',
         'D:\XCSV_ORCH',
-        'D:\CAGE\xcsv-ai-continuity',
+        'J:\CAGE\xcsv-ai-continuity',
         'E:\arma3server',
         'E:\ExileRepo',
         'E:\SteamCMD\steamcmd.exe'
