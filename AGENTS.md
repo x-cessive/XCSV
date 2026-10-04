@@ -195,3 +195,21 @@ from a blank page:
 **Scope.** Applies to every user-facing surface built from this repo: app
 UI, web pages, generated docs/presentations, screenshots. Don't invent
 brand silently - propose it in the change and get it reviewed.
+
+---
+
+## Release management
+
+**The rule.** One repo, one canonical checkout per build machine. Stale
+duplicate checkouts are how an AI ends up building the wrong thing.
+
+- Canonical checkout on the build machine: TBD — do not assume; if multiple checkouts exist, ask the operator which is canonical.
+- Never create suffixed duplicate clones (`-old`, `-backup`, `-copy`,
+  `-2`, `-final`, etc.). Scratch copies get deleted when done.
+- If you discover multiple checkouts of this repo on the build machine,
+  STOP and ask the operator which is canonical. Do not guess.
+- Build outputs are versioned artifacts. After a new build is verified
+  and pushed, archive superseded builds: move them to
+  `_archive/<name>-<date>/`, keep the last 2, older ones may be deleted.
+- This section governs hygiene. The repo's own build docs are the
+  authority on where artifacts go.
