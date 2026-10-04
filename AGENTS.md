@@ -175,3 +175,23 @@ Do not disable push-email/notification configuration without explicit authority.
 
 For the common event standard, consult:
 x-cessive/Chatgpt-Project-Organization-/AI_ENGINEERING_EVENT_STANDARD.md
+
+---
+
+## UI/UX design
+
+Full library: https://raw.githubusercontent.com/x-cessive/design-library/main/DESIGN_LIBRARY.md
+
+**The rule.** AI output is bounded by reference quality. Never design a UI
+from a blank page:
+1. Pick 2-3 references from the library before building (galleries for the
+   visual bar, pattern libraries for the specific elements).
+2. Describe with patterns, not adjectives - link the pattern.
+3. If this repo has a design-system doc, it is the source of truth and wins
+   over generic references.
+
+**Brand for this repo.** Unknown — propose brand tokens on the next UI change and get them reviewed. Don't invent silently.
+
+**Scope.** Applies to every user-facing surface built from this repo: app
+UI, web pages, generated docs/presentations, screenshots. Don't invent
+brand silently - propose it in the change and get it reviewed.
